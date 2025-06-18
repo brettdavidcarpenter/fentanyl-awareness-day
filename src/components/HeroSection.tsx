@@ -1,5 +1,5 @@
 
-import { Heart, Clock, Bell } from "lucide-react";
+import { Heart, Clock, Bell, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,9 @@ const HeroSection = () => {
   
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [testMode, setTestMode] = useState(false);
+  const [showTestSettings, setShowTestSettings] = useState(false);
+  const [reminderOffset, setReminderOffset] = useState(10); // Default 10 minutes for testing
   const { toast } = useToast();
 
   useEffect(() => {
@@ -50,7 +53,11 @@ const HeroSection = () => {
     
     try {
       const { data, error } = await supabase.functions.invoke('email-signup', {
-        body: { email }
+        body: { 
+          email,
+          testMode,
+          reminderOffsetMinutes: testMode ? reminderOffset : null
+        }
       });
 
       if (error) {
@@ -63,7 +70,9 @@ const HeroSection = () => {
       } else {
         toast({
           title: "Success!",
-          description: "We'll remind you to post on Fentanyl Awareness Day (August 21).",
+          description: testMode 
+            ? `Test mode enabled! You'll receive a reminder in ${reminderOffset} minutes, plus a welcome email.`
+            : "We'll remind you to post on Fentanyl Awareness Day (August 21). Check your email for a welcome message!",
         });
         setEmail("");
       }
@@ -134,13 +143,57 @@ const HeroSection = () => {
           {/* Email Signup Card - Takes 2/5 of the width on desktop */}
           <div className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
             <div className="mb-3">
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
-                Get Reminded
-              </h2>
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-xl md:text-2xl font-bold text-white">
+                  Get Reminded
+                </h2>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowTestSettings(!showTestSettings)}
+                  className="text-gray-400 hover:text-white p-1"
+                >
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </div>
               <p className="text-gray-300 text-sm">
                 We'll remind you to post on Awareness Day
               </p>
             </div>
+
+            {/* Test Mode Settings */}
+            {showTestSettings && (
+              <div className="mb-4 p-3 bg-white/10 rounded-lg border border-white/20">
+                <div className="flex items-center gap-2 mb-2">
+                  <input
+                    type="checkbox"
+                    id="testMode"
+                    checked={testMode}
+                    onChange={(e) => setTestMode(e.target.checked)}
+                    className="rounded"
+                  />
+                  <label htmlFor="testMode" className="text-sm text-white">
+                    Test Mode
+                  </label>
+                </div>
+                {testMode && (
+                  <div className="mt-2">
+                    <label className="block text-xs text-gray-300 mb-1">
+                      Reminder in (minutes):
+                    </label>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="60"
+                      value={reminderOffset}
+                      onChange={(e) => setReminderOffset(parseInt(e.target.value) || 10)}
+                      className="bg-white/10 border-white/20 text-white text-sm h-8"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
             
             <form onSubmit={handleEmailSubmit} className="space-y-3">
               <Input

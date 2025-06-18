@@ -14,37 +14,46 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          reminder_offset_minutes: number | null
           reminder_sent_3_days_before: boolean | null
           reminder_sent_day_of: boolean | null
           reminder_sent_week_before: boolean | null
           source: string | null
+          test_mode: boolean | null
           timezone: string | null
           unsubscribe_token: string | null
           unsubscribed: boolean | null
+          welcome_email_sent: boolean | null
         }
         Insert: {
           created_at?: string
           email: string
           id?: string
+          reminder_offset_minutes?: number | null
           reminder_sent_3_days_before?: boolean | null
           reminder_sent_day_of?: boolean | null
           reminder_sent_week_before?: boolean | null
           source?: string | null
+          test_mode?: boolean | null
           timezone?: string | null
           unsubscribe_token?: string | null
           unsubscribed?: boolean | null
+          welcome_email_sent?: boolean | null
         }
         Update: {
           created_at?: string
           email?: string
           id?: string
+          reminder_offset_minutes?: number | null
           reminder_sent_3_days_before?: boolean | null
           reminder_sent_day_of?: boolean | null
           reminder_sent_week_before?: boolean | null
           source?: string | null
+          test_mode?: boolean | null
           timezone?: string | null
           unsubscribe_token?: string | null
           unsubscribed?: boolean | null
+          welcome_email_sent?: boolean | null
         }
         Relationships: []
       }

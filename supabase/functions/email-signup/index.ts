@@ -16,8 +16,8 @@ serve(async (req) => {
   }
 
   try {
-    const { email } = await req.json();
-    console.log('Received email signup request for:', email);
+    const { email, testMode = false, reminderOffsetMinutes = null } = await req.json();
+    console.log('Received email signup request for:', email, 'testMode:', testMode, 'reminderOffset:', reminderOffsetMinutes);
 
     if (!email) {
       console.error('No email provided');
@@ -105,12 +105,14 @@ serve(async (req) => {
       );
     }
 
-    // Insert new email signup
+    // Insert new email signup with test mode settings
     const { data, error } = await supabase
       .from('email_signups')
       .insert([{ 
         email: email.toLowerCase().trim(),
-        source: 'website'
+        source: 'website',
+        test_mode: testMode,
+        reminder_offset_minutes: testMode ? (reminderOffsetMinutes || 10) : null
       }])
       .select()
       .single();
@@ -128,10 +130,35 @@ serve(async (req) => {
 
     console.log('Email signup successful:', data);
 
+    // Send welcome email in the background
+    try {
+      console.log('Sending welcome email to:', data.email);
+      const welcomeResponse = await supabase.functions.invoke('send-welcome-email', {
+        body: { 
+          email: data.email, 
+          signupId: data.id 
+        }
+      });
+
+      if (welcomeResponse.error) {
+        console.error('Error sending welcome email:', welcomeResponse.error);
+      } else {
+        console.log('Welcome email sent successfully');
+      }
+    } catch (welcomeError) {
+      console.error('Failed to send welcome email:', welcomeError);
+      // Don't fail the signup if welcome email fails
+    }
+
     return new Response(
       JSON.stringify({ 
         message: 'Successfully registered for reminders',
-        data: { id: data.id, email: data.email }
+        data: { 
+          id: data.id, 
+          email: data.email,
+          testMode: data.test_mode,
+          reminderOffset: data.reminder_offset_minutes
+        }
       }),
       { 
         status: 200, 
