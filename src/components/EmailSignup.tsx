@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, CheckCircle } from "lucide-react";
+import { Mail, CheckCircle, Bell } from "lucide-react";
 
 const EmailSignup = () => {
   const [email, setEmail] = useState("");
@@ -51,11 +51,11 @@ const EmailSignup = () => {
   if (isSubmitted) {
     return (
       <section className="py-16">
-        <Card className="max-w-md mx-auto bg-green-900/30 border-green-500/30 p-8 text-center">
+        <Card className="max-w-lg mx-auto bg-green-900/30 border-green-500/30 p-8 text-center">
           <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-          <h3 className="text-2xl font-semibold text-white mb-2">You're on the list!</h3>
-          <p className="text-green-200">
-            We'll remind you before August 21.
+          <h3 className="text-2xl font-bold text-white mb-2">You're on the list!</h3>
+          <p className="text-green-200 text-lg">
+            We'll remind you before August 21, 2025
           </p>
         </Card>
       </section>
@@ -64,28 +64,29 @@ const EmailSignup = () => {
 
   return (
     <section className="py-16">
-      <Card className="max-w-md mx-auto bg-white/5 backdrop-blur-sm border-white/10 p-8">
-        <div className="text-center mb-6">
-          <Mail className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-          <h3 className="text-2xl font-semibold text-white mb-2">
+      <Card className="max-w-lg mx-auto bg-black/40 backdrop-blur-sm border-blue-500/30 p-8">
+        <div className="text-center mb-8">
+          <Bell className="w-16 h-16 text-blue-400 mx-auto mb-6" />
+          <h3 className="text-3xl font-bold text-white mb-4">
             Get Your Reminder
           </h3>
-          <p className="text-gray-300">
-            We'll send you a gentle reminder before National Fentanyl Awareness Day.
+          <p className="text-gray-300 text-lg leading-relaxed">
+            We'll send you a gentle reminder before<br />
+            National Fentanyl Awareness Day
           </p>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <Input
             type="email"
             placeholder="Enter your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-white/10 border-white/20 text-white placeholder-gray-400 focus:border-blue-400"
+            className="bg-white/10 border-white/30 text-white placeholder-gray-400 focus:border-blue-400 h-14 text-lg"
           />
           <Button 
             type="submit" 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 text-lg rounded-lg"
             disabled={isLoading}
           >
             {isLoading ? "Adding you to the list..." : "Remind me to post on Awareness Day"}
