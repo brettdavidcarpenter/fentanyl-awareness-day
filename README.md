@@ -1,166 +1,73 @@
-# National Fentanyl Awareness Day 
+# Welcome to your Lovable project
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/cebd883e-3b27-4bb2-8f15-8524db91bba6
 
-## Facing Fentanyl Web App Project Plan
+## How can I edit this code?
 
-### 🗓️ Phase 1 Launch: June 30, 2025
+There are several ways of editing your application.
 
-**Goal:**
+**Use Lovable**
 
-- Launch a live site with a reminder signup feature for National Fentanyl Awareness Day on August 21
-- Encourage early engagement and email list growth while tribute and post tools are still in development
-    
-    ![Example Landing page - rebrand to FacingFentanyl blue](attachment:2530c314-ee81-4211-b8c9-4f5f8a878e3c:image.png)
-    
-    Example Landing page - rebrand to FacingFentanyl blue
-    
-    ### ✅ Week 1 (June 18–23): Rapid Build – Phase 1
-    
-    - Build & deploy **landing page**
-        - Hero message, mission, Facing Fentanyl Now branding
-        - CTA: "Remind me to post on Awareness Day"
-    - Set up reminder system:
-        - Email signup form (Firebase / Mailchimp / ConvertKit)
-        - Google & Apple Calendar "add to calendar" links (Aug 21 prefilled)
-    - Add early invite/share tools: "Invite others to sign up and help us launch"
-    - Optional: Add countdown to August 21
-    
-    **Deliverables:**
-    
-    - Live landing page on Netlify/Vercel
-    - Email collection working
-    - Calendar links active
-    - Social share buttons (Facebook, X, Instagram)
-    
-    ### 🚀 Phase 1 Launch: June 30
-    
-    - Promote via social, email, and Facing Fentanyl Now channels
+Simply visit the [Lovable Project](https://lovable.dev/projects/cebd883e-3b27-4bb2-8f15-8524db91bba6) and start prompting.
 
----
+Changes made via Lovable will be committed automatically to this repo.
 
-## 🗓️ Phase 2: Full Feature Launch by August 19, 2025
+**Use your preferred IDE**
 
-**Goals:**
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-- Build a mobile-friendly web app with:
-    1. **Awareness Post Generator**
-    2. **Tribute Post Generator**
-- Enable easy downloads/sharing of custom content
-- Drive traffic to facingfentanylnow.org
-- Support viral growth via reminders and peer sharing
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
----
+Follow these steps:
 
-### 📍 Week 2 (July 1–5): Planning & Design Finalization
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
 
-- Finalize feature list
-- Wireframes + visual direction
-- Confirm tech stack (React, Firebase/Netlify, html2canvas)
-- Define hosting & domain strategy
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
 
-**Deliverables:**
+# Step 3: Install the necessary dependencies.
+npm i
 
-- UI mockups
-- Finalized feature spec
-- Tribute poster design templates
+# Step 4: Start the development server with auto-reloading and an instant preview.
+npm run dev
+```
 
----
+**Edit a file directly in GitHub**
 
-### 📍 Week 3–4 (July 8–19): Development Phase I — Awareness Tool
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-- Build routing & navigation
-- Create awareness generator form (audience/tone/platform)
-- Generate captions + hashtag suggestions
-- Enable download/share/copy-to-clipboard
+**Use GitHub Codespaces**
 
-**Deliverables:**
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-- Awareness post path working end-to-end
-- Caption/hashtag bank finalized
+## What technologies are used for this project?
 
----
+This project is built with:
 
-### 📍 Week 5–6 (July 22–Aug 2): Development Phase II — Tribute Tool
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-- Upload photo UI + guided cropping
-- Tribute form (name, dates, memory, CTA)
-- Canvas-based image generator using templates
-- Preview, branding, and footer links
+## How can I deploy this project?
 
-**Deliverables:**
+Simply open [Lovable](https://lovable.dev/projects/cebd883e-3b27-4bb2-8f15-8524db91bba6) and click on Share -> Publish.
 
-- Tribute generator working
-- Mobile-responsiveness complete
+## Can I connect a custom domain to my Lovable project?
 
-![Example user flow](attachment:73a541e3-b6be-404b-a078-29c00f2eeea8:image.png)
+Yes, you can!
 
-Example user flow
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
----
-
-### 📍 Week 7 (Aug 5–9): Final Polish
-
-- Add reminders + calendar share
-- Add "invite others" function
-- Accessibility & performance review
-- End-to-end testing across devices
-
-**Deliverables:**
-
-- Full flow QA'd
-- Final UI review
-
----
-
-### 📍 Week 8 (Aug 12–16): Pre-Launch Marketing & Analytics
-
-- Load analytics (Plausible or Google)
-- Prepare social, email & press messaging
-- Redirects & backups
-- Internal signoff
-
----
-
-### 🚀 Full Public Launch: August 19
-
-- Launch with full functionality
-- Promote across Facing Fentanyl Now channels
-- Encourage mass sharing ahead of Times Square event
-
----
-
-### 🔔 Sample Reminder Text for Sign-Up System
-
-**Email Subject:**
-
-🕯 Don’t forget — post for Fentanyl Awareness Day (Aug 21)
-
-**Preview Text:**
-
-You signed up to raise awareness and remember loved ones. The post generator and tribute tool will be live soon. Mark your calendar, and thank you for making a difference.
-
-**Calendar Reminder Text:**
-
-> Fentanyl Awareness Day – Post your story, share a tribute, and help save lives. Visit facingfentanylnow.org/post
-> 
-
----
-
-## 📦 Tech Stack Overview
-
-| Component | Tool |
-| --- | --- |
-| Frontend | React or HTML/CSS/JS |
-| Hosting | Netlify or Vercel |
-| Image Generation | html2canvas / Fabric.js |
-| Forms & Reminders | Firebase, Mailchimp, Calendar links |
-| Analytics | Plausible / Google Analytics |
-| Sharing | Web Share API or standard social links |
-| Design | Figma or Canva templates |
-
-[💜 **Facing Fentanyl Awareness Day Web App — Final User Flow**](https://www.notion.so/Facing-Fentanyl-Awareness-Day-Web-App-Final-User-Flow-216c5b0828468000b4f1e86bebe9f564?pvs=21)
-
-[**Traffic Resilience Plan**](https://www.notion.so/Traffic-Resilience-Plan-216c5b0828468073a327da58f39fae38?pvs=21)
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
