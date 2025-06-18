@@ -1,6 +1,5 @@
 
 import HeroSection from "@/components/HeroSection";
-import EmailSignup from "@/components/EmailSignup";
 import CTASection from "@/components/CTASection";
 
 const Index = () => {
@@ -8,7 +7,6 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
         <HeroSection />
-        <EmailSignup />
         <CTASection />
         
         {/* Footer */}
