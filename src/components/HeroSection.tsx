@@ -1,9 +1,9 @@
-
 import { Heart, Clock, Bell } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -17,22 +17,7 @@ const HeroSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    const targetDate = new Date("2025-08-21T00:00:00").getTime();
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor(difference % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)),
-          minutes: Math.floor(difference % (1000 * 60 * 60) / (1000 * 60)),
-          seconds: Math.floor(difference % (1000 * 60) / 1000)
-        });
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  // ... keep existing code (useEffect for countdown timer)
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,16 +32,39 @@ const HeroSection = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Success!",
-      description: "We'll remind you to post on Fentanyl Awareness Day (August 21).",
-    });
-    
-    setEmail("");
-    setIsSubmitting(false);
+    try {
+      const { error } = await supabase
+        .from('email_signups')
+        .insert([{ email }]);
+
+      if (error) {
+        // Handle duplicate email case
+        if (error.code === '23505') {
+          toast({
+            title: "Already signed up!",
+            description: "This email is already registered for reminders.",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: "Success!",
+          description: "We'll remind you to post on Fentanyl Awareness Day (August 21).",
+        });
+      }
+      
+      setEmail("");
+    } catch (error) {
+      console.error('Error signing up:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
