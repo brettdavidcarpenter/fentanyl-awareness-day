@@ -93,17 +93,17 @@ const HeroSection = () => {
         {/* Call to action */}
         <div className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-2xl p-8 md:p-12 max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Spread awareness.<br />
-            <span className="text-blue-200">Save lives.</span>
+            Make a post.<br />
+            <span className="text-blue-200">Make an impact.</span>
           </h2>
           
           <p className="text-xl text-gray-200 mb-8 leading-relaxed">
-            Join the movement. Help raise awareness about fentanyl.
+            Spreading awareness can save lives
           </p>
           
           <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6">
             <p className="text-white font-semibold text-lg">
-              Together we can save lives
+              Remind me to post on Awareness Day
             </p>
           </div>
         </div>
