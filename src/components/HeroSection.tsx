@@ -1,46 +1,34 @@
-
 import { Heart, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
-
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
-    seconds: 0,
+    seconds: 0
   });
-
   useEffect(() => {
     const targetDate = new Date("2025-08-21T00:00:00").getTime();
-
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const difference = targetDate - now;
-
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+          hours: Math.floor(difference % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)),
+          minutes: Math.floor(difference % (1000 * 60 * 60) / (1000 * 60)),
+          seconds: Math.floor(difference % (1000 * 60) / 1000)
         });
       }
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
-
-  return (
-    <section className="text-center py-12 md:py-20">
+  return <section className="text-center py-12 md:py-20">
       <div className="max-w-6xl mx-auto">
         {/* Main branding */}
         <div className="mb-12">
           <div className="mb-8">
-            <img 
-              src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" 
-              alt="Facing Fentanyl Logo" 
-              className="mx-auto h-32 md:h-40 object-contain"
-            />
+            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-32 md:h-40 object-contain" />
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
@@ -55,11 +43,7 @@ const HeroSection = () => {
 
         {/* Black and white photo collage */}
         <div className="mb-12 opacity-60">
-          <img 
-            src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" 
-            alt="Facing Fentanyl NYC Event Photos" 
-            className="mx-auto max-w-full h-auto rounded-lg"
-          />
+          <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
         </div>
 
         {/* Countdown */}
@@ -94,16 +78,8 @@ const HeroSection = () => {
         </div>
 
         {/* Call to action */}
-        <div className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-2xl p-8 md:p-12 max-w-3xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6">
-            <p className="text-white font-semibold text-lg">
-              Remind me to post on Awareness Day
-            </p>
-          </div>
-        </div>
+        
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
