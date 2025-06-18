@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import EmailSignup from "@/components/EmailSignup";
 import CalendarSection from "@/components/CalendarSection";
 import ShareSection from "@/components/ShareSection";
+import PhotoSection from "@/components/PhotoSection";
 
 const Index = () => {
   return (
@@ -10,6 +11,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8">
         <HeroSection />
         <EmailSignup />
+        <PhotoSection />
         <CalendarSection />
         <ShareSection />
         

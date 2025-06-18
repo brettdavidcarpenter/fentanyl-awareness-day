@@ -49,18 +49,9 @@ const HeroSection = () => {
             <span className="text-blue-300">Awareness Day</span>
           </h1>
           
-          <div className="text-2xl md:text-3xl text-blue-200 font-semibold mb-4">
+          <div className="text-2xl md:text-3xl text-blue-200 font-semibold mb-8">
             AUGUST 21, 2025
           </div>
-        </div>
-
-        {/* Black and white photo collage */}
-        <div className="mb-12 opacity-60">
-          <img 
-            src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" 
-            alt="Facing Fentanyl NYC Event Photos" 
-            className="mx-auto max-w-full h-auto rounded-lg"
-          />
         </div>
 
         {/* Countdown */}
