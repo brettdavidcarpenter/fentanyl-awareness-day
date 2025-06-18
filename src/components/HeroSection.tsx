@@ -35,8 +35,12 @@ const HeroSection = () => {
       <div className="max-w-6xl mx-auto">
         {/* Main branding */}
         <div className="mb-12">
-          <div className="inline-block bg-white text-black px-6 py-3 text-xl font-bold mb-8 rounded">
-            FACING FENTANYL
+          <div className="mb-8">
+            <img 
+              src="/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png" 
+              alt="Facing Fentanyl Logo" 
+              className="mx-auto h-24 md:h-32 object-contain"
+            />
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">

@@ -15,8 +15,12 @@ const Index = () => {
         
         {/* Footer */}
         <footer className="text-center py-12 border-t border-white/10 mt-16">
-          <div className="inline-block bg-white text-black px-4 py-2 text-sm font-bold mb-4 rounded">
-            FACING FENTANYL
+          <div className="mb-4">
+            <img 
+              src="/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png" 
+              alt="Facing Fentanyl Logo" 
+              className="mx-auto h-16 object-contain"
+            />
           </div>
           <p className="text-gray-400 text-sm">
             Together we can save lives
