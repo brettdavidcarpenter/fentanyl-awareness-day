@@ -136,8 +136,8 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Black and white photo collage */}
-        <div className="mb-8 opacity-60">
+        {/* Black and white photo collage - Reduced bottom margin */}
+        <div className="mb-4 opacity-60">
           <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
         </div>
       </div>
