@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import EmailSignup from "@/components/EmailSignup";
 import CalendarSection from "@/components/CalendarSection";
 import ShareSection from "@/components/ShareSection";
+import CredibilityBadge from "@/components/CredibilityBadge";
 
 const Index = () => {
   return (
@@ -13,9 +14,10 @@ const Index = () => {
         <CalendarSection />
         <ShareSection />
         
-        {/* Footer */}
+        {/* Footer with credibility badge */}
         <footer className="text-center py-12 border-t border-white/10 mt-16">
-          <div className="mb-4">
+          <CredibilityBadge />
+          <div className="mb-4 mt-8">
             <img 
               src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" 
               alt="Facing Fentanyl Logo" 
