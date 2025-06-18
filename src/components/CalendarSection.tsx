@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus } from "lucide-react";
@@ -54,38 +53,38 @@ END:VCALENDAR`;
 
   return (
     <section className="py-16">
-      <Card className="max-w-2xl mx-auto bg-white/5 backdrop-blur-sm border-white/10 p-8">
-        <div className="text-center mb-8">
-          <Calendar className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-          <h3 className="text-2xl font-semibold text-white mb-2">
+      <Card className="max-w-2xl mx-auto bg-white/5 backdrop-blur-sm border-white/10 p-10 shadow-2xl">
+        <div className="text-center mb-10">
+          <Calendar className="w-16 h-16 text-blue-400 mx-auto mb-6" />
+          <h3 className="text-3xl font-semibold text-white mb-4">
             Add to Calendar
           </h3>
-          <p className="text-gray-300">
+          <p className="text-gray-300 text-lg">
             Set a reminder for National Fentanyl Awareness Day
           </p>
         </div>
 
-        <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-6">
-          <h4 className="text-white font-semibold mb-2">{eventDetails.title}</h4>
-          <p className="text-blue-200 text-sm mb-1">📅 August 21, 2025</p>
-          <p className="text-gray-300 text-sm">{eventDetails.description}</p>
+        <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-8">
+          <h4 className="text-white font-semibold mb-2 text-lg">{eventDetails.title}</h4>
+          <p className="text-blue-200 text-base mb-1">📅 August 21, 2025</p>
+          <p className="text-gray-300 text-base">{eventDetails.description}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-6">
           <Button
             onClick={handleGoogleCalendar}
             variant="outline"
-            className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-3 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-5 h-5" />
             Google Calendar
           </Button>
           <Button
             onClick={handleAppleCalendar}
             variant="outline"
-            className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-3 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-5 h-5" />
             Apple Calendar
           </Button>
         </div>
