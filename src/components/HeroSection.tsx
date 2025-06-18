@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -47,16 +48,35 @@ const HeroSection = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Success!",
-      description: "We'll remind you to post on Fentanyl Awareness Day (August 21).",
-    });
-    
-    setEmail("");
-    setIsSubmitting(false);
+    try {
+      const { data, error } = await supabase.functions.invoke('email-signup', {
+        body: { email }
+      });
+
+      if (error) {
+        console.error('Email signup error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to sign up for reminders. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success!",
+          description: "We'll remind you to post on Fentanyl Awareness Day (August 21).",
+        });
+        setEmail("");
+      }
+    } catch (error) {
+      console.error('Email signup error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sign up for reminders. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
