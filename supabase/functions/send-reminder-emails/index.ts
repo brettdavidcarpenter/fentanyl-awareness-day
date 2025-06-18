@@ -61,7 +61,7 @@ serve(async (req) => {
           
           try {
             await resend.emails.send({
-              from: "Facing Fentanyl <noreply@facingfentanylnow.org>",
+              from: "Facing Fentanyl <noreply@facingfentanylnow.aware-share.com>",
               to: [signup.email],
               subject: "🕯 Test Reminder: Fentanyl Awareness Day (Aug 21)",
               html: `
@@ -130,7 +130,7 @@ serve(async (req) => {
         for (const signup of weekBeforeEmails) {
           try {
             await resend.emails.send({
-              from: "Facing Fentanyl <noreply@facingfentanylnow.org>",
+              from: "Facing Fentanyl <noreply@facingfentanylnow.aware-share.com>",
               to: [signup.email],
               subject: "🕯 One Week Until Fentanyl Awareness Day",
               html: `

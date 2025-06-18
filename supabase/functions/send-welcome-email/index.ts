@@ -62,7 +62,7 @@ serve(async (req) => {
 
     // Send welcome email
     const emailResponse = await resend.emails.send({
-      from: "Facing Fentanyl <noreply@facingfentanylnow.org>",
+      from: "Facing Fentanyl <noreply@facingfentanylnow.aware-share.com>",
       to: [email],
       subject: "Thank you for joining Fentanyl Awareness Day 2025",
       html: `
