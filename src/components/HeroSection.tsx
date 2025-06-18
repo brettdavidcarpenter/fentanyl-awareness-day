@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -42,8 +43,6 @@ const HeroSection = () => {
       return;
     }
     setIsSubmitting(true);
-
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     toast({
       title: "Success!",
@@ -57,7 +56,11 @@ const HeroSection = () => {
         {/* Main branding */}
         <div className="mb-12">
           <div className="mb-8">
-            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-32 md:h-40 object-contain" />
+            <img 
+              src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" 
+              alt="Facing Fentanyl Logo" 
+              className="mx-auto h-32 md:h-40 object-contain" 
+            />
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
@@ -65,7 +68,9 @@ const HeroSection = () => {
             <span className="text-blue-300">Make an impact.</span>
           </h1>
           
-          
+          <p className="text-xl md:text-2xl text-gray-300 mb-4">
+            Spreading awareness can save lives
+          </p>
 
           {/* Floating countdown timer beneath subtitle */}
           <div className="mb-8">
@@ -103,8 +108,19 @@ const HeroSection = () => {
             </div>
             
             <form onSubmit={handleEmailSubmit} className="space-y-3">
-              <Input type="email" placeholder="Your email address" value={email} onChange={e => setEmail(e.target.value)} className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" required />
-              <Button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+              <Input
+                type="email"
+                placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                required
+              />
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+              >
                 {isSubmitting ? "Signing up..." : "Remind Me"}
               </Button>
             </form>
@@ -112,8 +128,12 @@ const HeroSection = () => {
         </div>
 
         {/* Black and white photo collage - Reduced bottom margin */}
-        <div className="mb-4 opacity-60">
-          <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
+        <div className="mb-2 opacity-60">
+          <img 
+            src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" 
+            alt="Facing Fentanyl NYC Event Photos" 
+            className="mx-auto max-w-full h-auto rounded-lg" 
+          />
         </div>
       </div>
     </section>;
