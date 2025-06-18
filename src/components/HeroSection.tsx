@@ -1,10 +1,8 @@
-
 import { Heart, Clock, Bell } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -12,11 +10,11 @@ const HeroSection = () => {
     minutes: 0,
     seconds: 0
   });
-  
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   useEffect(() => {
     const targetDate = new Date("2025-08-21T00:00:00").getTime();
     const timer = setInterval(() => {
@@ -33,34 +31,28 @@ const HeroSection = () => {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
-
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
       toast({
         title: "Invalid email",
         description: "Please enter a valid email address.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
     toast({
       title: "Success!",
-      description: "We'll remind you to post on Fentanyl Awareness Day (August 21).",
+      description: "We'll remind you to post on Fentanyl Awareness Day (August 21)."
     });
-    
     setEmail("");
     setIsSubmitting(false);
   };
-
-  return (
-    <section className="text-center py-12 md:py-20">
+  return <section className="text-center py-12 md:py-20">
       <div className="max-w-6xl mx-auto">
         {/* Main branding */}
         <div className="mb-12">
@@ -73,9 +65,7 @@ const HeroSection = () => {
             <span className="text-blue-300">Make an impact.</span>
           </h1>
           
-          <p className="text-2xl md:text-3xl text-blue-200 font-semibold mb-6">
-            Spreading awareness can save lives
-          </p>
+          
 
           {/* Floating countdown timer beneath subtitle */}
           <div className="mb-8">
@@ -108,28 +98,13 @@ const HeroSection = () => {
         <div className="max-w-md mx-auto mb-12">
           <div className="bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
             <div className="mb-4">
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
-                Get Reminded
-              </h2>
-              <p className="text-gray-300 text-sm">
-                We'll remind you to post on Awareness Day
-              </p>
+              <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Remind Me</h2>
+              <p className="text-gray-300 text-sm">Spreading awareness saves lives. We'll remind you to post on National Fentanyl Awareness Day.</p>
             </div>
             
             <form onSubmit={handleEmailSubmit} className="space-y-3">
-              <Input
-                type="email"
-                placeholder="Your email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                required
-              />
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-              >
+              <Input type="email" placeholder="Your email address" value={email} onChange={e => setEmail(e.target.value)} className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" required />
+              <Button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
                 {isSubmitting ? "Signing up..." : "Remind Me"}
               </Button>
             </form>
@@ -141,8 +116,6 @@ const HeroSection = () => {
           <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
