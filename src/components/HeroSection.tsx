@@ -73,47 +73,41 @@ const HeroSection = () => {
             <span className="text-blue-300">Make an impact.</span>
           </h1>
           
-          <p className="text-2xl md:text-3xl text-blue-200 font-semibold mb-4">
+          <p className="text-2xl md:text-3xl text-blue-200 font-semibold mb-6">
             Spreading awareness can save lives
           </p>
-        </div>
 
-        {/* Countdown and Email Signup Cards - Above Photo */}
-        <div className="grid md:grid-cols-5 gap-4 mb-12 max-w-5xl mx-auto">
-          {/* Countdown Card - Takes 3/5 of the width on desktop */}
-          <div className="md:col-span-3 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Clock className="w-5 h-5 text-blue-300" />
-              <h2 className="text-lg font-semibold text-white">Countdown to Awareness Day</h2>
-            </div>
-            
-            <div className="grid grid-cols-4 gap-2 md:gap-4">
+          {/* Floating countdown timer beneath subtitle */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center gap-4 md:gap-6 mb-2">
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.days}</div>
-                <div className="text-gray-300 text-xs md:text-sm">DAYS</div>
+                <div className="text-lg md:text-2xl font-bold text-blue-300">{timeLeft.days}</div>
+                <div className="text-gray-300 text-xs">DAYS</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.hours}</div>
-                <div className="text-gray-300 text-xs md:text-sm">HOURS</div>
+                <div className="text-lg md:text-2xl font-bold text-blue-300">{timeLeft.hours}</div>
+                <div className="text-gray-300 text-xs">HOURS</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.minutes}</div>
-                <div className="text-gray-300 text-xs md:text-sm">MINUTES</div>
+                <div className="text-lg md:text-2xl font-bold text-blue-300">{timeLeft.minutes}</div>
+                <div className="text-gray-300 text-xs">MINUTES</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.seconds}</div>
-                <div className="text-gray-300 text-xs md:text-sm">SECONDS</div>
+                <div className="text-lg md:text-2xl font-bold text-blue-300">{timeLeft.seconds}</div>
+                <div className="text-gray-300 text-xs">SECONDS</div>
               </div>
             </div>
             
-            <div className="text-lg md:text-xl text-blue-200 font-semibold mt-3">
+            <div className="text-sm md:text-base text-blue-200 font-medium">
               AUGUST 21, 2025
             </div>
           </div>
+        </div>
 
-          {/* Email Signup Card - Takes 2/5 of the width on desktop */}
-          <div className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
-            <div className="mb-3">
+        {/* Email Signup Card - Now full width */}
+        <div className="max-w-md mx-auto mb-12">
+          <div className="bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+            <div className="mb-4">
               <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
                 Get Reminded
               </h2>
@@ -142,7 +136,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Black and white photo collage - Now positioned below the cards */}
+        {/* Black and white photo collage */}
         <div className="mb-8 opacity-60">
           <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
         </div>
