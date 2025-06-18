@@ -1,4 +1,3 @@
-
 import { Heart, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -37,7 +36,7 @@ const HeroSection = () => {
         <div className="mb-12">
           <div className="mb-8">
             <img 
-              src="/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png" 
+              src="/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png" 
               alt="Facing Fentanyl Logo" 
               className="mx-auto h-24 md:h-32 object-contain"
             />

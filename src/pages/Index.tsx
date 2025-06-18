@@ -17,7 +17,7 @@ const Index = () => {
         <footer className="text-center py-12 border-t border-white/10 mt-16">
           <div className="mb-4">
             <img 
-              src="/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png" 
+              src="/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png" 
               alt="Facing Fentanyl Logo" 
               className="mx-auto h-16 object-contain"
             />
