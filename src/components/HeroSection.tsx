@@ -1,3 +1,4 @@
+
 import { Heart, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -36,58 +37,67 @@ const HeroSection = () => {
         <div className="mb-12">
           <div className="mb-8">
             <img 
-              src="/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png" 
+              src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" 
               alt="Facing Fentanyl Logo" 
-              className="mx-auto h-24 md:h-32 object-contain"
+              className="mx-auto h-32 md:h-40 object-contain"
             />
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
             National Fentanyl<br />
             Prevention &<br />
-            <span className="text-blue-400">Awareness Day</span>
+            <span className="text-blue-300">Awareness Day</span>
           </h1>
           
-          <div className="text-2xl md:text-3xl text-blue-300 font-semibold mb-4">
+          <div className="text-2xl md:text-3xl text-blue-200 font-semibold mb-4">
             AUGUST 21, 2025
           </div>
         </div>
 
+        {/* Black and white photo collage */}
+        <div className="mb-12 opacity-60">
+          <img 
+            src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" 
+            alt="Facing Fentanyl NYC Event Photos" 
+            className="mx-auto max-w-full h-auto rounded-lg"
+          />
+        </div>
+
         {/* Countdown */}
-        <div className="bg-black/40 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
+        <div className="bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-8 mb-12 max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-2 mb-6">
-            <Clock className="w-6 h-6 text-blue-400" />
+            <Clock className="w-6 h-6 text-blue-300" />
             <h2 className="text-xl font-semibold text-white">Countdown to Awareness Day</h2>
           </div>
           
           <div className="grid grid-cols-4 gap-4 md:gap-8">
             <div className="text-center">
-              <div className="text-3xl md:text-5xl font-bold text-blue-400">{timeLeft.days}</div>
+              <div className="text-3xl md:text-5xl font-bold text-blue-300">{timeLeft.days}</div>
               <div className="text-gray-300 text-sm md:text-base">DAYS</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-5xl font-bold text-blue-400">{timeLeft.hours}</div>
+              <div className="text-3xl md:text-5xl font-bold text-blue-300">{timeLeft.hours}</div>
               <div className="text-gray-300 text-sm md:text-base">HOURS</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-5xl font-bold text-blue-400">{timeLeft.minutes}</div>
+              <div className="text-3xl md:text-5xl font-bold text-blue-300">{timeLeft.minutes}</div>
               <div className="text-gray-300 text-sm md:text-base">MINUTES</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-5xl font-bold text-blue-400">{timeLeft.seconds}</div>
+              <div className="text-3xl md:text-5xl font-bold text-blue-300">{timeLeft.seconds}</div>
               <div className="text-gray-300 text-sm md:text-base">SECONDS</div>
             </div>
           </div>
         </div>
 
         {/* Call to action */}
-        <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-2xl p-8 md:p-12 max-w-3xl mx-auto">
+        <div className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-2xl p-8 md:p-12 max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Spread awareness.<br />
-            <span className="text-blue-400">Save lives.</span>
+            <span className="text-blue-200">Save lives.</span>
           </h2>
           
-          <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+          <p className="text-xl text-gray-200 mb-8 leading-relaxed">
             Join the movement. Help raise awareness about fentanyl.
           </p>
           
