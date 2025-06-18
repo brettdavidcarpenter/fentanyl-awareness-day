@@ -9,7 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      email_signups: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          reminder_sent_3_days_before: boolean | null
+          reminder_sent_day_of: boolean | null
+          reminder_sent_week_before: boolean | null
+          source: string | null
+          timezone: string | null
+          unsubscribed: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          reminder_sent_3_days_before?: boolean | null
+          reminder_sent_day_of?: boolean | null
+          reminder_sent_week_before?: boolean | null
+          source?: string | null
+          timezone?: string | null
+          unsubscribed?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          reminder_sent_3_days_before?: boolean | null
+          reminder_sent_day_of?: boolean | null
+          reminder_sent_week_before?: boolean | null
+          source?: string | null
+          timezone?: string | null
+          unsubscribed?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
