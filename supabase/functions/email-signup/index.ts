@@ -8,6 +8,8 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log('Email signup function called with method:', req.method);
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -15,8 +17,10 @@ serve(async (req) => {
 
   try {
     const { email } = await req.json();
+    console.log('Received email signup request for:', email);
 
     if (!email) {
+      console.error('No email provided');
       return new Response(
         JSON.stringify({ error: 'Email is required' }),
         { 
@@ -27,8 +31,23 @@ serve(async (req) => {
     }
 
     // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    console.log('Supabase URL:', supabaseUrl ? 'Set' : 'Not set');
+    console.log('Service key:', supabaseServiceKey ? 'Set' : 'Not set');
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      console.error('Missing Supabase environment variables');
+      return new Response(
+        JSON.stringify({ error: 'Server configuration error' }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Validate email using the database function
@@ -47,6 +66,7 @@ serve(async (req) => {
     }
 
     if (!isValidData) {
+      console.log('Invalid email format:', email);
       return new Response(
         JSON.stringify({ error: 'Invalid email format' }),
         { 
@@ -60,7 +80,7 @@ serve(async (req) => {
     const { data: existingEmail, error: checkError } = await supabase
       .from('email_signups')
       .select('id')
-      .eq('email', email)
+      .eq('email', email.toLowerCase().trim())
       .maybeSingle();
 
     if (checkError) {
@@ -75,6 +95,7 @@ serve(async (req) => {
     }
 
     if (existingEmail) {
+      console.log('Email already exists:', email);
       return new Response(
         JSON.stringify({ message: 'Email already registered for reminders' }),
         { 
