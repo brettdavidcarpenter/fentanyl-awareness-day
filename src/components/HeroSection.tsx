@@ -36,7 +36,7 @@ const HeroSection = () => {
         {/* New comprehensive event poster */}
         <div className="mb-12">
           <img 
-            src="/lovable-uploads/5c694cf5-3f3a-4dab-b1cf-8db6206ebe8a.png" 
+            src="/lovable-uploads/7345c889-26f4-4523-8705-749f496e4bcf.png" 
             alt="National Fentanyl Prevention & Awareness Day - Times Square Event" 
             className="mx-auto max-w-full h-auto rounded-lg shadow-2xl"
           />
