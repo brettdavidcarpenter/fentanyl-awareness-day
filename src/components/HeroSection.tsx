@@ -18,7 +18,7 @@ const HeroSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testMode, setTestMode] = useState(false);
   const [showTestSettings, setShowTestSettings] = useState(false);
-  const [reminderOffset, setReminderOffset] = useState(10); // Default 10 minutes for testing
+  const [testDateOffset, setTestDateOffset] = useState(1); // Default 1 day for testing
   const { toast } = useToast();
 
   useEffect(() => {
@@ -52,11 +52,18 @@ const HeroSection = () => {
     setIsSubmitting(true);
     
     try {
+      // Calculate test target date if in test mode
+      let testTargetDate = null;
+      if (testMode) {
+        const now = new Date();
+        testTargetDate = new Date(now.getTime() + (testDateOffset * 24 * 60 * 60 * 1000));
+      }
+
       const { data, error } = await supabase.functions.invoke('email-signup', {
         body: { 
           email,
           testMode,
-          reminderOffsetMinutes: testMode ? reminderOffset : null
+          testTargetDate: testTargetDate?.toISOString()
         }
       });
 
@@ -71,7 +78,7 @@ const HeroSection = () => {
         toast({
           title: "Success!",
           description: testMode 
-            ? `Test mode enabled! You'll receive a reminder in ${reminderOffset} minutes, plus a welcome email.`
+            ? `Test mode enabled! Target date set to ${testTargetDate?.toLocaleDateString()}. The cron job will check for reminders every 5 minutes.`
             : "We'll remind you to post on Fentanyl Awareness Day (August 21). Check your email for a welcome message!",
         });
         setEmail("");
@@ -174,22 +181,25 @@ const HeroSection = () => {
                     className="rounded"
                   />
                   <label htmlFor="testMode" className="text-sm text-white">
-                    Test Mode
+                    Test Mode (Cron-based)
                   </label>
                 </div>
                 {testMode && (
                   <div className="mt-2">
                     <label className="block text-xs text-gray-300 mb-1">
-                      Reminder in (minutes):
+                      Target date in (days):
                     </label>
                     <Input
                       type="number"
                       min="1"
-                      max="60"
-                      value={reminderOffset}
-                      onChange={(e) => setReminderOffset(parseInt(e.target.value) || 10)}
+                      max="7"
+                      value={testDateOffset}
+                      onChange={(e) => setTestDateOffset(parseInt(e.target.value) || 1)}
                       className="bg-white/10 border-white/20 text-white text-sm h-8"
                     />
+                    <p className="text-xs text-gray-400 mt-1">
+                      Cron job runs every 5 minutes
+                    </p>
                   </div>
                 )}
               </div>

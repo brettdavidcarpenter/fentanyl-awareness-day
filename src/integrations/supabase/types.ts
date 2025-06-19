@@ -21,6 +21,7 @@ export type Database = {
           reminder_sent_week_before: boolean | null
           source: string | null
           test_mode: boolean | null
+          test_target_date: string | null
           timezone: string | null
           unsubscribe_token: string | null
           unsubscribed: boolean | null
@@ -37,6 +38,7 @@ export type Database = {
           reminder_sent_week_before?: boolean | null
           source?: string | null
           test_mode?: boolean | null
+          test_target_date?: string | null
           timezone?: string | null
           unsubscribe_token?: string | null
           unsubscribed?: boolean | null
@@ -53,6 +55,7 @@ export type Database = {
           reminder_sent_week_before?: boolean | null
           source?: string | null
           test_mode?: boolean | null
+          test_target_date?: string | null
           timezone?: string | null
           unsubscribe_token?: string | null
           unsubscribed?: boolean | null
