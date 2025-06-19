@@ -1,6 +1,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
+import ShareSection from "@/components/ShareSection";
 
 const Index = () => {
   return (
@@ -8,6 +9,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8">
         <HeroSection />
         <CTASection />
+        <ShareSection />
         
         {/* Footer */}
         <footer className="text-center py-12 border-t border-white/10 mt-16">
