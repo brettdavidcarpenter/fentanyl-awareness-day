@@ -1,11 +1,19 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users } from "lucide-react";
+import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 
 const CTASection = () => {
   const [copied, setCopied] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [testMode, setTestMode] = useState(false);
+  const [showTestSettings, setShowTestSettings] = useState(false);
+  const [testDateOffset, setTestDateOffset] = useState(1);
   const { toast } = useToast();
 
   // Calendar functionality
@@ -16,45 +24,62 @@ const CTASection = () => {
     time: "1200", // 12:00 PM
   };
 
-  const generateGoogleCalendarUrl = () => {
-    const baseUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE";
-    const params = new URLSearchParams({
-      text: eventDetails.title,
-      dates: `${eventDetails.date}T${eventDetails.time}00Z/${eventDetails.date}T${eventDetails.time}00Z`,
-      details: eventDetails.description,
-      sf: "true",
-      output: "xml"
-    });
-    return `${baseUrl}&${params.toString()}`;
-  };
+  // Email signup functionality
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
 
-  const generateAppleCalendarUrl = () => {
-    const startDate = "2025-08-21T12:00:00";
-    const endDate = "2025-08-21T13:00:00";
+    setIsSubmitting(true);
     
-    const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Facing Fentanyl//EN
-BEGIN:VEVENT
-DTSTART:${startDate.replace(/[-:]/g, '').replace('T', 'T')}Z
-DTEND:${endDate.replace(/[-:]/g, '').replace('T', 'T')}Z
-SUMMARY:${eventDetails.title}
-DESCRIPTION:${eventDetails.description}
-END:VEVENT
-END:VCALENDAR`;
-    
-    return `data:text/calendar;charset=utf8,${encodeURIComponent(icsContent)}`;
-  };
+    try {
+      // Calculate test target date if in test mode
+      let testTargetDate = null;
+      if (testMode) {
+        const now = new Date();
+        testTargetDate = new Date(now.getTime() + (testDateOffset * 24 * 60 * 60 * 1000));
+      }
 
-  const handleGoogleCalendar = () => {
-    window.open(generateGoogleCalendarUrl(), '_blank');
-  };
+      const { data, error } = await supabase.functions.invoke('email-signup', {
+        body: { 
+          email,
+          testMode,
+          testTargetDate: testTargetDate?.toISOString()
+        }
+      });
 
-  const handleAppleCalendar = () => {
-    const link = document.createElement('a');
-    link.href = generateAppleCalendarUrl();
-    link.download = 'fentanyl-prevention-awareness-day.ics';
-    link.click();
+      if (error) {
+        console.error('Email signup error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to sign up for action reminders. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success!",
+          description: testMode 
+            ? `Test mode enabled! Target date set to ${testTargetDate?.toLocaleDateString()}. The cron job will check for reminders every 5 minutes.`
+            : "We'll remind you to take action on National Fentanyl Prevention & Awareness Day (August 21). Check your email for a welcome message!",
+        });
+        setEmail("");
+      }
+    } catch (error) {
+      console.error('Email signup error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sign up for action reminders. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Share functionality with updated templates and URL
@@ -162,7 +187,7 @@ Sign up for a reminder: ${shareUrl}
     <section className="py-16">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Enhanced Calendar CTA Card */}
+          {/* Enhanced Email Reminder CTA Card */}
           <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 h-full">
             <div className="text-center mb-8">
               <Target className="w-12 h-12 text-blue-400 mx-auto mb-4" />
@@ -195,24 +220,77 @@ Sign up for a reminder: ${shareUrl}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Button
-                onClick={handleGoogleCalendar}
-                variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                Google Calendar
-              </Button>
-              <Button
-                onClick={handleAppleCalendar}
-                variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                Apple Calendar
-              </Button>
+            <div className="mb-3">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-white font-semibold">Get Your Reminder</h4>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowTestSettings(!showTestSettings)}
+                  className="text-gray-400 hover:text-white p-1"
+                >
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </div>
+              <p className="text-gray-300 text-sm">
+                We'll remind you to take action on National Fentanyl Prevention & Awareness Day
+              </p>
             </div>
+
+            {/* Test Mode Settings */}
+            {showTestSettings && (
+              <div className="mb-4 p-3 bg-white/10 rounded-lg border border-white/20">
+                <div className="flex items-center gap-2 mb-2">
+                  <input
+                    type="checkbox"
+                    id="testMode"
+                    checked={testMode}
+                    onChange={(e) => setTestMode(e.target.checked)}
+                    className="rounded"
+                  />
+                  <label htmlFor="testMode" className="text-sm text-white">
+                    Test Mode (Cron-based)
+                  </label>
+                </div>
+                {testMode && (
+                  <div className="mt-2">
+                    <label className="block text-xs text-gray-300 mb-1">
+                      Target date in (days):
+                    </label>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="7"
+                      value={testDateOffset}
+                      onChange={(e) => setTestDateOffset(parseInt(e.target.value) || 1)}
+                      className="bg-white/10 border-white/20 text-white text-sm h-8"
+                    />
+                    <p className="text-xs text-gray-400 mt-1">
+                      Cron job runs every 5 minutes
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            <form onSubmit={handleEmailSubmit} className="space-y-3">
+              <Input
+                type="email"
+                placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                required
+              />
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+              >
+                {isSubmitting ? "Signing up..." : "Remind Me to Act"}
+              </Button>
+            </form>
           </Card>
 
           {/* Enhanced Action CTA Card */}
