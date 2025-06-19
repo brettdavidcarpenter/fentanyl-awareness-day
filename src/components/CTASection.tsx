@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus, Share2, Copy, CheckCircle } from "lucide-react";
@@ -203,27 +202,24 @@ We're planning a social media takeover on Aug 21 for #FentanylAwarenessDay. Let'
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              {/* Image Preview */}
-              <div className="flex justify-center">
-                <img 
-                  src={imageUrl}
-                  alt="Times Square Fentanyl Awareness Display" 
-                  className="rounded-lg shadow-lg max-w-full h-auto"
-                />
-              </div>
-
-              {/* Message Preview */}
-              <div className="bg-orange-900/30 border border-orange-500/30 rounded-xl p-4">
-                <h4 className="text-white font-semibold mb-2 text-sm">Facebook Preview:</h4>
-                <p className="text-gray-200 text-xs leading-relaxed">
-                  💔 I'm joining the movement to raise awareness about fentanyl...
-                  
-                  August 21 is National Fentanyl Awareness Day...
-                  
-                  #FacingFentanyl #FentanylAwarenessDay
+            <div className="mb-6">
+              {/* Message Preview - now full width and blue themed */}
+              <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6">
+                <h4 className="text-white font-semibold mb-3">Facebook Preview:</h4>
+                <p className="text-blue-100 text-sm leading-relaxed mb-3">
+                  💔 I'm joining the movement to raise awareness about fentanyl and honor those we've lost.
+                  <br /><br />
+                  August 21 is National Fentanyl Awareness Day — let's flood social media with stories, tributes, and life-saving facts.
+                  <br /><br />
+                  We're planning a nationwide social media takeover — and you can be part of it.
+                  <br /><br />
+                  👉 Sign up for a reminder to post:
+                  <br />
+                  🔗 {shareUrl}
+                  <br /><br />
+                  #FacingFentanyl #FentanylAwarenessDay #DrugAwareness #EndOverdose #OnePillCanKill
                 </p>
-                <p className="text-yellow-300 text-xs mt-2 font-medium">
+                <p className="text-blue-200 text-sm mt-3 font-medium">
                   📋 Text will be copied automatically when you share!
                 </p>
               </div>
@@ -240,7 +236,7 @@ We're planning a social media takeover on Aug 21 for #FentanylAwarenessDay. Let'
                 onClick={handleFacebookShare}
                 className="bg-blue-700 hover:bg-blue-800 text-white"
               >
-                Copy & Share FB
+                Copy & Paste to FB
               </Button>
               <Button
                 onClick={navigator.share ? handleNativeShare : handleCopyLink}
