@@ -71,7 +71,7 @@ const HeroSection = () => {
         console.error('Email signup error:', error);
         toast({
           title: "Error",
-          description: "Failed to sign up for reminders. Please try again.",
+          description: "Failed to sign up for action reminders. Please try again.",
           variant: "destructive",
         });
       } else {
@@ -79,7 +79,7 @@ const HeroSection = () => {
           title: "Success!",
           description: testMode 
             ? `Test mode enabled! Target date set to ${testTargetDate?.toLocaleDateString()}. The cron job will check for reminders every 5 minutes.`
-            : "We'll remind you to post on Fentanyl Awareness Day (August 21). Check your email for a welcome message!",
+            : "We'll remind you to take action on National Fentanyl Prevention & Awareness Day (August 21). Check your email for a welcome message!",
         });
         setEmail("");
       }
@@ -87,7 +87,7 @@ const HeroSection = () => {
       console.error('Email signup error:', error);
       toast({
         title: "Error",
-        description: "Failed to sign up for reminders. Please try again.",
+        description: "Failed to sign up for action reminders. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -110,7 +110,7 @@ const HeroSection = () => {
           </h1>
           
           <p className="text-2xl md:text-3xl text-blue-200 font-semibold mb-4">
-            Spreading awareness can save lives
+            Taking action together saves lives
           </p>
         </div>
 
@@ -120,7 +120,7 @@ const HeroSection = () => {
           <div className="md:col-span-3 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Clock className="w-5 h-5 text-blue-300" />
-              <h2 className="text-lg font-semibold text-white">Countdown to Awareness Day</h2>
+              <h2 className="text-lg font-semibold text-white">Countdown to Prevention & Awareness Day</h2>
             </div>
             
             <div className="grid grid-cols-4 gap-2 md:gap-4">
@@ -152,7 +152,7 @@ const HeroSection = () => {
             <div className="mb-3">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-xl md:text-2xl font-bold text-white">
-                  Get Reminded
+                  Get Ready to Act
                 </h2>
                 <Button
                   type="button"
@@ -165,7 +165,7 @@ const HeroSection = () => {
                 </Button>
               </div>
               <p className="text-gray-300 text-sm">
-                We'll remind you to post on Awareness Day
+                We'll remind you to take action on Prevention & Awareness Day
               </p>
             </div>
 
@@ -219,7 +219,7 @@ const HeroSection = () => {
                 disabled={isSubmitting}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
               >
-                {isSubmitting ? "Signing up..." : "Remind Me"}
+                {isSubmitting ? "Signing up..." : "Remind Me to Act"}
               </Button>
             </form>
           </div>
