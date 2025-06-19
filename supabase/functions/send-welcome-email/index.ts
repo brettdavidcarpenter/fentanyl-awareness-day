@@ -60,7 +60,7 @@ serve(async (req) => {
     const resend = new Resend(resendApiKey);
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Send welcome email
+    // Send welcome email with unified professional template
     const emailResponse = await resend.emails.send({
       from: "Facing Fentanyl <noreply@facingfentanylnow.aware-share.com>",
       to: [email],
