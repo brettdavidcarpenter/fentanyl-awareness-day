@@ -85,9 +85,34 @@ We're planning a social media takeover on Aug 21 for #FentanylAwarenessDay. Let'
     window.open(twitterUrl, '_blank');
   };
 
-  const handleFacebookShare = () => {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(facebookText)}`;
-    window.open(facebookUrl, '_blank');
+  const handleFacebookShare = async () => {
+    try {
+      // First, copy the Facebook text to clipboard
+      await navigator.clipboard.writeText(facebookText);
+      
+      // Show success toast with instructions
+      toast({
+        title: "Text copied to clipboard!",
+        description: "Opening Facebook - paste the copied message in your post.",
+        duration: 5000,
+      });
+      
+      // Then open Facebook sharer with just the URL
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+      window.open(facebookUrl, '_blank');
+      
+    } catch (err) {
+      // Fallback if clipboard fails
+      toast({
+        title: "Facebook sharing",
+        description: "Opening Facebook - please copy and paste the message from the preview below.",
+        variant: "destructive",
+        duration: 5000,
+      });
+      
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+      window.open(facebookUrl, '_blank');
+    }
   };
 
   const handleCopyLink = async () => {
@@ -198,6 +223,9 @@ We're planning a social media takeover on Aug 21 for #FentanylAwarenessDay. Let'
                   
                   #FacingFentanyl #FentanylAwarenessDay
                 </p>
+                <p className="text-yellow-300 text-xs mt-2 font-medium">
+                  📋 Text will be copied automatically when you share!
+                </p>
               </div>
             </div>
 
@@ -212,7 +240,7 @@ We're planning a social media takeover on Aug 21 for #FentanylAwarenessDay. Let'
                 onClick={handleFacebookShare}
                 className="bg-blue-700 hover:bg-blue-800 text-white"
               >
-                Share on Facebook
+                Copy & Share FB
               </Button>
               <Button
                 onClick={navigator.share ? handleNativeShare : handleCopyLink}
