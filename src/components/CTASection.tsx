@@ -85,7 +85,7 @@ Join thousands taking action to save lives:
 • Spread prevention facts
 • Make your voice heard
 
-Together we can end this crisis. Sign up for a reminder: ${shareUrl}
+Sign up for a reminder: ${shareUrl}
 
 #FacingFentanyl #FentanylPreventionDay`;
 
@@ -244,7 +244,7 @@ Together we can end this crisis. Sign up for a reminder: ${shareUrl}
                   <br /><br />
                   Join thousands taking action nationwide. Together we can end this crisis.
                   <br /><br />
-                  👉 Sign up for a reminder: ${shareUrl}
+                  👉 Sign up for a reminder: {shareUrl}
                   <br /><br />
                   #FacingFentanyl #FentanylPreventionDay #FentanylAwarenessDay #SaveLives
                 </p>
@@ -254,7 +254,7 @@ Together we can end this crisis. Sign up for a reminder: ${shareUrl}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <Button
                 onClick={handleTwitterShare}
                 className="bg-blue-500 hover:bg-blue-600 text-white"
@@ -270,7 +270,7 @@ Together we can end this crisis. Sign up for a reminder: ${shareUrl}
               <Button
                 onClick={navigator.share ? handleNativeShare : handleCopyLink}
                 variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2 sm:col-span-2"
               >
                 {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {navigator.share ? "Share Message" : (copied ? "Copied!" : "Copy Message")}
