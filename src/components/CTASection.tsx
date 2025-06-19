@@ -58,27 +58,45 @@ END:VCALENDAR`;
     link.click();
   };
 
-  // Share functionality
-  const shareUrl = window.location.href;
-  const shareText = "Join me in spreading awareness about fentanyl. Together, we can save lives. 💙";
+  // Share functionality with updated templates and URL
+  const shareUrl = "https://facingfentanylnow.aware-share.com/";
+  const imageUrl = "/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png";
+  
+  const facebookText = `💔 I'm joining the movement to raise awareness about fentanyl and honor those we've lost.
+
+August 21 is National Fentanyl Awareness Day — let's flood social media with stories, tributes, and life-saving facts.
+
+We're planning a nationwide social media takeover — and you can be part of it.
+
+👉 Sign up for a reminder to post:
+🔗 ${shareUrl}
+
+#FacingFentanyl #FentanylAwarenessDay #DrugAwareness #EndOverdose #OnePillCanKill`;
+
+  const twitterText = `💔 Join the movement to honor lives lost and raise awareness.
+
+We're planning a social media takeover on Aug 21 for #FentanylAwarenessDay. Let's flood every feed with truth and remembrance.
+
+👉 Sign up for a reminder: ${shareUrl}
+#FacingFentanyl #EndOverdose #OnePillCanKill`;
 
   const handleTwitterShare = () => {
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     window.open(twitterUrl, '_blank');
   };
 
   const handleFacebookShare = () => {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(facebookText)}`;
     window.open(facebookUrl, '_blank');
   };
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(`${facebookText}\n\n${shareUrl}`);
       setCopied(true);
       toast({
-        title: "Link copied!",
-        description: "Share this link with others to help spread awareness.",
+        title: "Message copied!",
+        description: "The awareness message and link have been copied to your clipboard.",
       });
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -94,12 +112,11 @@ END:VCALENDAR`;
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Facing Fentanyl - Spread Awareness. Save Lives.",
-          text: shareText,
+          title: "Facing Fentanyl - National Fentanyl Awareness Day",
+          text: twitterText,
           url: shareUrl,
         });
       } catch (err) {
-        // User cancelled or share failed
         console.log("Share cancelled");
       }
     } else {
@@ -149,7 +166,7 @@ END:VCALENDAR`;
             </div>
           </Card>
 
-          {/* Share CTA Card */}
+          {/* Enhanced Share CTA Card */}
           <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 h-full">
             <div className="text-center mb-8">
               <Share2 className="w-12 h-12 text-blue-400 mx-auto mb-4" />
@@ -161,10 +178,27 @@ END:VCALENDAR`;
               </p>
             </div>
 
-            <div className="bg-orange-900/30 border border-orange-500/30 rounded-xl p-6 mb-6">
-              <p className="text-white font-medium text-center">
-                "{shareText}"
-              </p>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              {/* Image Preview */}
+              <div className="flex justify-center">
+                <img 
+                  src={imageUrl}
+                  alt="Times Square Fentanyl Awareness Display" 
+                  className="rounded-lg shadow-lg max-w-full h-auto"
+                />
+              </div>
+
+              {/* Message Preview */}
+              <div className="bg-orange-900/30 border border-orange-500/30 rounded-xl p-4">
+                <h4 className="text-white font-semibold mb-2 text-sm">Facebook Preview:</h4>
+                <p className="text-gray-200 text-xs leading-relaxed">
+                  💔 I'm joining the movement to raise awareness about fentanyl...
+                  
+                  August 21 is National Fentanyl Awareness Day...
+                  
+                  #FacingFentanyl #FentanylAwarenessDay
+                </p>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -186,13 +220,13 @@ END:VCALENDAR`;
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
               >
                 {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {navigator.share ? "Share Link" : (copied ? "Copied!" : "Copy Link")}
+                {navigator.share ? "Share Link" : (copied ? "Copied!" : "Copy Message")}
               </Button>
             </div>
 
             <div className="text-center">
               <p className="text-gray-400 text-sm">
-                Help us reach more people. Share this page with your network.
+                Together we can save lives. Every share brings us closer to ending the fentanyl crisis.
               </p>
             </div>
           </Card>
