@@ -9,6 +9,7 @@ const corsHeaders = {
 
 serve(async (req) => {
   console.log('Email signup function called with method:', req.method);
+  // Force redeployment - 2025-06-19 22:00 - Fixing test target date calculation
   
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
