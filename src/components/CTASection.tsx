@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users } from "lucide-react";
@@ -74,9 +73,9 @@ Here's how YOU can participate:
 
 Join thousands taking action nationwide. Together we can end this crisis.
 
-👉 Get involved: ${shareUrl}
+👉 Sign up for a reminder: ${shareUrl}
 
-#FacingFentanyl #FentanylPreventionDay #FentanylAwarenessDay #EndOverdose #OnePillCanKill #SaveLives`;
+#FacingFentanyl #FentanylPreventionDay #FentanylAwarenessDay #SaveLives`;
 
   const twitterText = `💔 August 21: National Fentanyl Prevention & Awareness Day
 
@@ -86,9 +85,9 @@ Join thousands taking action to save lives:
 • Spread prevention facts
 • Make your voice heard
 
-Together we can end this crisis. Get involved: ${shareUrl}
+Together we can end this crisis. Sign up for a reminder: ${shareUrl}
 
-#FacingFentanyl #FentanylPreventionDay #EndOverdose #OnePillCanKill`;
+#FacingFentanyl #FentanylPreventionDay`;
 
   const handleTwitterShare = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
@@ -245,9 +244,9 @@ Together we can end this crisis. Get involved: ${shareUrl}
                   <br /><br />
                   Join thousands taking action nationwide. Together we can end this crisis.
                   <br /><br />
-                  👉 Get involved: {shareUrl}
+                  👉 Sign up for a reminder: ${shareUrl}
                   <br /><br />
-                  #FacingFentanyl #FentanylPreventionDay #EndOverdose #OnePillCanKill #SaveLives
+                  #FacingFentanyl #FentanylPreventionDay #FentanylAwarenessDay #SaveLives
                 </p>
                 <p className="text-blue-200 text-sm mt-3 font-medium">
                   📋 Message will be copied automatically when you share!
