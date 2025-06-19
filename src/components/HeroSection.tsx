@@ -1,5 +1,4 @@
-
-import { Heart, Clock, Bell, Settings } from "lucide-react";
+import { Heart, Clock, Bell, Settings, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,9 +117,20 @@ const HeroSection = () => {
         <div className="grid md:grid-cols-5 gap-4 mb-12 max-w-5xl mx-auto">
           {/* Countdown Card - Takes 3/5 of the width on desktop */}
           <div className="md:col-span-3 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Clock className="w-5 h-5 text-blue-300" />
-              <h2 className="text-lg font-semibold text-white">Countdown to National Fentanyl Prevention & Awareness Day</h2>
+            <div className="text-center mb-4">
+              <h2 className="text-lg font-semibold text-white mb-2">National Fentanyl Prevention & Awareness Day</h2>
+              
+              {/* Senate Resolution Badge */}
+              <a 
+                href="https://www.congress.gov/bill/118th-congress/senate-resolution/323/text"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-gray-300 hover:text-blue-300 transition-colors bg-white/10 px-2 py-1 rounded-full border border-white/20"
+                aria-label="View Senate Resolution 323 on Congress.gov"
+              >
+                <Shield className="w-3 h-3" />
+                Senate Resolution 323
+              </a>
             </div>
             
             <div className="grid grid-cols-4 gap-2 md:gap-4">
