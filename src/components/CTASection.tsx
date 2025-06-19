@@ -62,10 +62,11 @@ const CTASection = () => {
           variant: "destructive",
         });
       } else {
+        const targetDateText = testDateOffset === 0 ? "today" : testTargetDate?.toLocaleDateString();
         toast({
           title: "Success!",
           description: testMode 
-            ? `Test mode enabled! Target date set to ${testTargetDate?.toLocaleDateString()}. The cron job will check for reminders every 5 minutes.`
+            ? `Test mode enabled! Target date set to ${targetDateText}. The cron job will check for reminders every 5 minutes.`
             : "We'll remind you to take action on National Fentanyl Prevention & Awareness Day (August 21). Check your email for a welcome message!",
         });
         setEmail("");
@@ -256,14 +257,14 @@ Sign up for a reminder: ${shareUrl}
                 {testMode && (
                   <div className="mt-2">
                     <label className="block text-xs text-gray-300 mb-1">
-                      Target date in (days):
+                      Target date in (days - 0 = same day):
                     </label>
                     <Input
                       type="number"
-                      min="1"
+                      min="0"
                       max="7"
                       value={testDateOffset}
-                      onChange={(e) => setTestDateOffset(parseInt(e.target.value) || 1)}
+                      onChange={(e) => setTestDateOffset(parseInt(e.target.value) || 0)}
                       className="bg-white/10 border-white/20 text-white text-sm h-8"
                     />
                     <p className="text-xs text-gray-400 mt-1">
