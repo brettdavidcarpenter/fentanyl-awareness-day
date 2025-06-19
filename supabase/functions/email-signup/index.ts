@@ -16,8 +16,8 @@ serve(async (req) => {
   }
 
   try {
-    const { email, testMode = false, reminderOffsetMinutes = null } = await req.json();
-    console.log('Received email signup request for:', email, 'testMode:', testMode, 'reminderOffset:', reminderOffsetMinutes);
+    const { email, testMode = false, testTargetDate, testDateOffsetDays } = await req.json();
+    console.log('Received email signup request for:', email, 'testMode:', testMode, 'testDateOffsetDays:', testDateOffsetDays);
 
     if (!email) {
       console.error('No email provided');
@@ -105,6 +105,19 @@ serve(async (req) => {
       );
     }
 
+    // Calculate test target date if in test mode
+    let calculatedTestTargetDate = null;
+    let reminderOffsetMinutes = null;
+    
+    if (testMode) {
+      const now = new Date();
+      const offsetDays = testDateOffsetDays !== undefined ? testDateOffsetDays : 1;
+      calculatedTestTargetDate = new Date(now.getTime() + (offsetDays * 24 * 60 * 60 * 1000));
+      reminderOffsetMinutes = 10; // Keep for backwards compatibility
+      
+      console.log('Test mode calculated target date:', calculatedTestTargetDate.toISOString(), 'for offset days:', offsetDays);
+    }
+
     // Insert new email signup with test mode settings
     const { data, error } = await supabase
       .from('email_signups')
@@ -112,7 +125,8 @@ serve(async (req) => {
         email: email.toLowerCase().trim(),
         source: 'website',
         test_mode: testMode,
-        reminder_offset_minutes: testMode ? (reminderOffsetMinutes || 10) : null
+        reminder_offset_minutes: reminderOffsetMinutes,
+        test_target_date: calculatedTestTargetDate?.toISOString()
       }])
       .select()
       .single();
@@ -157,6 +171,7 @@ serve(async (req) => {
           id: data.id, 
           email: data.email,
           testMode: data.test_mode,
+          testTargetDate: data.test_target_date,
           reminderOffset: data.reminder_offset_minutes
         }
       }),

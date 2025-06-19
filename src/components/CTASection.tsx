@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings } from "lucide-react";
@@ -50,7 +49,7 @@ const CTASection = () => {
         body: { 
           email,
           testMode,
-          testTargetDate: testTargetDate?.toISOString()
+          testDateOffsetDays: testDateOffset
         }
       });
 
@@ -62,7 +61,7 @@ const CTASection = () => {
           variant: "destructive",
         });
       } else {
-        const targetDateText = testDateOffset === 0 ? "today" : testTargetDate?.toLocaleDateString();
+        const targetDateText = testDateOffset === 0 ? "today" : new Date(Date.now() + (testDateOffset * 24 * 60 * 60 * 1000)).toLocaleDateString();
         toast({
           title: "Success!",
           description: testMode 

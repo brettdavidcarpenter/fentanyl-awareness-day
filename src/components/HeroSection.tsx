@@ -1,4 +1,3 @@
-
 import { Heart, Clock, Bell, Settings, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -52,18 +51,11 @@ const HeroSection = () => {
     setIsSubmitting(true);
     
     try {
-      // Calculate test target date if in test mode
-      let testTargetDate = null;
-      if (testMode) {
-        const now = new Date();
-        testTargetDate = new Date(now.getTime() + (testDateOffset * 24 * 60 * 60 * 1000));
-      }
-
       const { data, error } = await supabase.functions.invoke('email-signup', {
         body: { 
           email,
           testMode,
-          testTargetDate: testTargetDate?.toISOString()
+          testDateOffsetDays: testDateOffset
         }
       });
 
@@ -75,7 +67,7 @@ const HeroSection = () => {
           variant: "destructive",
         });
       } else {
-        const targetDateText = testDateOffset === 0 ? "today" : testTargetDate?.toLocaleDateString();
+        const targetDateText = testDateOffset === 0 ? "today" : new Date(Date.now() + (testDateOffset * 24 * 60 * 60 * 1000)).toLocaleDateString();
         toast({
           title: "Success!",
           description: testMode 
