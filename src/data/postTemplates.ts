@@ -1,0 +1,93 @@
+
+export interface PostTemplate {
+  id: string;
+  title: string;
+  message: string;
+  imagePath: string;
+  customizable: boolean;
+}
+
+export const familyTemplates: PostTemplate[] = [
+  {
+    id: 'family-1',
+    title: 'Honor & Remember',
+    message: 'Today I honor [Name]. Your light continues to inspire change. #FacingFentanyl #FentanylAwarenessDay',
+    imagePath: '/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png',
+    customizable: true
+  },
+  {
+    id: 'family-2',
+    title: 'Loving Memory',
+    message: 'In loving memory of my [relationship] [Name]. Together we prevent other families from this heartbreak. #FacingFentanyl #PreventFentanyl',
+    imagePath: '/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png',
+    customizable: true
+  },
+  {
+    id: 'family-3',
+    title: 'Share Their Story',
+    message: 'Sharing [Name]\'s story to save lives. Every conversation matters. #FentanylPrevention #SaveLives',
+    imagePath: '/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png',
+    customizable: true
+  }
+];
+
+export const lawEnforcementTemplates: PostTemplate[] = [
+  {
+    id: 'law-1',
+    title: 'United We Stand',
+    message: 'Our department stands with families affected by fentanyl. Education saves lives. #FacingFentanyl #CommunitySupport',
+    imagePath: '/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png',
+    customizable: false
+  },
+  {
+    id: 'law-2',
+    title: 'Deadly Dose Warning',
+    message: '2 milligrams can be lethal. Knowledge protects our communities. #FentanylAwareness #PublicSafety',
+    imagePath: '/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png',
+    customizable: false
+  },
+  {
+    id: 'law-3',
+    title: 'Protect & Serve',
+    message: 'United against fentanyl - protecting those we serve. #LawEnforcement #FentanylPrevention',
+    imagePath: '/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png',
+    customizable: false
+  }
+];
+
+export const recoveryTemplates: PostTemplate[] = [
+  {
+    id: 'recovery-1',
+    title: 'Hope & Recovery',
+    message: 'Recovery is possible. Hope is real. Resources are available today. #Recovery #Hope #FacingFentanyl',
+    imagePath: '/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png',
+    customizable: false
+  },
+  {
+    id: 'recovery-2',
+    title: 'Breaking Stigma',
+    message: 'Breaking stigma, building support. We\'re here to help. #RecoverySupport #BreakTheStigma',
+    imagePath: '/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png',
+    customizable: false
+  },
+  {
+    id: 'recovery-3',
+    title: 'Healing Journey',
+    message: 'From crisis to healing - your journey matters. #RecoveryJourney #YouMatter',
+    imagePath: '/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png',
+    customizable: false
+  }
+];
+
+export const getTemplatesByPersona = (persona: string): PostTemplate[] => {
+  switch (persona) {
+    case 'family':
+      return familyTemplates;
+    case 'law_enforcement':
+      return lawEnforcementTemplates;
+    case 'recovery':
+      return recoveryTemplates;
+    default:
+      return [];
+  }
+};

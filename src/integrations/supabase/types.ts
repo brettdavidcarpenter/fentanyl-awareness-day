@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      day_of_experience_posts: {
+        Row: {
+          created_at: string | null
+          id: string
+          persona_type: string | null
+          post_type: string | null
+          template_used: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          persona_type?: string | null
+          post_type?: string | null
+          template_used?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          persona_type?: string | null
+          post_type?: string | null
+          template_used?: string | null
+        }
+        Relationships: []
+      }
       email_signups: {
         Row: {
           created_at: string
