@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Settings } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import { isEventWindowActive, getDaysUntilEvent, getDaysUntilAwarenessDay } from '@/utils/eventWindow';
+import { isEventWindowActive, getDaysUntilEvent, getDaysUntilAwarenessDay, isDemoMode } from '@/utils/eventWindow';
 import PersonaSelection from '@/components/PersonaSelection';
 import TemplateSelector from '@/components/TemplateSelector';
 import CustomPostCreator from '@/components/CustomPostCreator';
@@ -22,11 +22,15 @@ const DayOfExperience = () => {
   const { createPost, isGenerating } = usePostGeneration();
 
   const [eventActive, setEventActive] = useState(false);
+  const [demoActive, setDemoActive] = useState(false);
   const [daysUntilEvent, setDaysUntilEvent] = useState(0);
   const [daysUntilAwareness, setDaysUntilAwareness] = useState(0);
 
   useEffect(() => {
-    setEventActive(isEventWindowActive());
+    const demo = isDemoMode();
+    const event = isEventWindowActive();
+    setDemoActive(demo);
+    setEventActive(event);
     setDaysUntilEvent(getDaysUntilEvent());
     setDaysUntilAwareness(getDaysUntilAwarenessDay());
   }, []);
@@ -82,8 +86,8 @@ const DayOfExperience = () => {
     setGeneratedImageUrl('');
   };
 
-  // Event window check
-  if (!eventActive) {
+  // Event window check - only restrict if not in demo mode
+  if (!eventActive && !demoActive) {
     return (
       <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
         <div className="container mx-auto px-4 py-8">
@@ -157,11 +161,20 @@ const DayOfExperience = () => {
             Back to Home
           </Button>
           
-          {currentStep !== 'persona' && (
-            <Button variant="outline" onClick={resetToStart} className="text-white border-white hover:bg-white hover:text-black">
-              Start Over
-            </Button>
-          )}
+          <div className="flex items-center gap-4">
+            {demoActive && (
+              <div className="flex items-center gap-2 bg-orange-500/20 border border-orange-500/30 text-orange-300 px-3 py-1 rounded-full text-sm">
+                <Settings className="w-3 h-3" />
+                Demo Mode
+              </div>
+            )}
+            
+            {currentStep !== 'persona' && (
+              <Button variant="outline" onClick={resetToStart} className="text-white border-white hover:bg-white hover:text-black">
+                Start Over
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Title */}
