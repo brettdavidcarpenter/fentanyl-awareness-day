@@ -4,15 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Upload } from "lucide-react";
 import { PostTemplate, getTemplatesByPersona } from '@/data/postTemplates';
 
 interface TemplateSelectorProps {
   persona: string;
   onTemplateSelect: (template: PostTemplate, personalization?: any) => void;
+  onCreateCustom: () => void;
   onBack: () => void;
 }
 
-const TemplateSelector = ({ persona, onTemplateSelect, onBack }: TemplateSelectorProps) => {
+const TemplateSelector = ({ persona, onTemplateSelect, onCreateCustom, onBack }: TemplateSelectorProps) => {
   const [selectedTemplate, setSelectedTemplate] = useState<PostTemplate | null>(null);
   const [personalization, setPersonalization] = useState({
     name: '',
@@ -20,8 +22,8 @@ const TemplateSelector = ({ persona, onTemplateSelect, onBack }: TemplateSelecto
   });
 
   const templates = getTemplatesByPersona(persona);
-  const personaTitle = persona === 'family' ? 'Family Posts' : 
-                     persona === 'law_enforcement' ? 'Law Enforcement Posts' : 
+  const personaTitle = persona === 'family' ? 'Families & Friends Posts' : 
+                     persona === 'law_enforcement' ? 'Law Enforcement & Government Posts' : 
                      'Recovery Organization Posts';
 
   const handleTemplateClick = (template: PostTemplate) => {
@@ -105,7 +107,8 @@ const TemplateSelector = ({ persona, onTemplateSelect, onBack }: TemplateSelecto
       
       <h2 className="text-2xl font-bold text-center mb-8 text-white">{personaTitle}</h2>
       
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* First two template cards */}
         {templates.map((template) => (
           <Card key={template.id} className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader>
@@ -129,6 +132,28 @@ const TemplateSelector = ({ persona, onTemplateSelect, onBack }: TemplateSelecto
             </CardContent>
           </Card>
         ))}
+        
+        {/* Create Your Own card */}
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <CardHeader>
+            <div className="w-full h-48 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg mb-4 flex items-center justify-center">
+              <Upload className="w-12 h-12 text-blue-500" />
+            </div>
+            <CardTitle className="text-lg">Create Your Own</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-600 mb-4">
+              Upload your own image and write a custom message
+            </p>
+            <Button 
+              onClick={onCreateCustom}
+              className="w-full"
+              variant="outline"
+            >
+              Start Creating
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

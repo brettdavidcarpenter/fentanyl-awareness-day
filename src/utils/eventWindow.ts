@@ -1,5 +1,5 @@
 
-// Utility functions for managing the event window
+// Simplified utility functions - always allow access to tools
 export const EVENT_START_DATE = new Date('2025-08-14T00:00:00Z');
 export const EVENT_END_DATE = new Date('2025-08-28T23:59:59Z');
 export const FENTANYL_AWARENESS_DAY = new Date('2025-08-21T00:00:00Z');
@@ -10,10 +10,9 @@ export const isDemoMode = (): boolean => {
   return urlParams.get('demo') === 'true';
 };
 
+// Always return true since we're removing event window restrictions
 export const isEventWindowActive = (): boolean => {
-  if (isDemoMode()) return true;
-  const now = new Date();
-  return now >= EVENT_START_DATE && now <= EVENT_END_DATE;
+  return true;
 };
 
 export const getDaysUntilEvent = (): number => {

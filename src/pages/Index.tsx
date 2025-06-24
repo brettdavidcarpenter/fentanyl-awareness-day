@@ -1,21 +1,11 @@
 
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
-import { Shield, Calendar, Clock } from "lucide-react";
+import { Shield, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { isEventWindowActive, getDaysUntilEvent } from "@/utils/eventWindow";
-import { useEffect, useState } from "react";
 
 const Index = () => {
-  const [eventActive, setEventActive] = useState(false);
-  const [daysUntil, setDaysUntil] = useState(0);
-
-  useEffect(() => {
-    setEventActive(isEventWindowActive());
-    setDaysUntil(getDaysUntilEvent());
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
@@ -24,42 +14,18 @@ const Index = () => {
         {/* Day of Experience Section - Always Visible */}
         <div className="text-center py-16 border-t border-white/10">
           <div className="max-w-2xl mx-auto">
-            {eventActive ? (
-              <>
-                <Calendar className="w-16 h-16 mx-auto mb-6 text-green-400" />
-                <h2 className="text-3xl font-bold text-white mb-4">
-                  Fentanyl Awareness Day Experience
-                </h2>
-                <p className="text-xl text-blue-100 mb-8">
-                  Create and share powerful posts to amplify awareness and save lives
-                </p>
-                <Link to="/day-of-experience">
-                  <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
-                    Create Your Post Now
-                  </Button>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Clock className="w-16 h-16 mx-auto mb-6 text-blue-300" />
-                <h2 className="text-3xl font-bold text-white mb-4">
-                  Fentanyl Awareness Day Experience
-                </h2>
-                <p className="text-xl text-blue-100 mb-4">
-                  Preview the experience that will be available during Fentanyl Prevention Week
-                </p>
-                {daysUntil > 0 && (
-                  <p className="text-lg text-white/80 mb-6">
-                    Full experience opens in {daysUntil} days (August 14-28, 2025)
-                  </p>
-                )}
-                <Link to="/day-of-experience">
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-                    Preview Experience
-                  </Button>
-                </Link>
-              </>
-            )}
+            <Calendar className="w-16 h-16 mx-auto mb-6 text-blue-300" />
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Fentanyl Awareness Day Experience
+            </h2>
+            <p className="text-xl text-blue-100 mb-8">
+              Create and share powerful posts to amplify awareness and save lives
+            </p>
+            <Link to="/day-of-experience">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                Create Your Post
+              </Button>
+            </Link>
           </div>
         </div>
         

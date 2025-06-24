@@ -21,13 +21,6 @@ export const familyTemplates: PostTemplate[] = [
     message: 'In loving memory of my [relationship] [Name]. Together we prevent other families from this heartbreak. #FacingFentanyl #PreventFentanyl',
     imagePath: '/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png',
     customizable: true
-  },
-  {
-    id: 'family-3',
-    title: 'Share Their Story',
-    message: 'Sharing [Name]\'s story to save lives. Every conversation matters. #FentanylPrevention #SaveLives',
-    imagePath: '/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png',
-    customizable: true
   }
 ];
 
@@ -45,13 +38,6 @@ export const lawEnforcementTemplates: PostTemplate[] = [
     message: '2 milligrams can be lethal. Knowledge protects our communities. #FentanylAwareness #PublicSafety',
     imagePath: '/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png',
     customizable: false
-  },
-  {
-    id: 'law-3',
-    title: 'Protect & Serve',
-    message: 'United against fentanyl - protecting those we serve. #LawEnforcement #FentanylPrevention',
-    imagePath: '/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png',
-    customizable: false
   }
 ];
 
@@ -68,13 +54,6 @@ export const recoveryTemplates: PostTemplate[] = [
     title: 'Breaking Stigma',
     message: 'Breaking stigma, building support. We\'re here to help. #RecoverySupport #BreakTheStigma',
     imagePath: '/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png',
-    customizable: false
-  },
-  {
-    id: 'recovery-3',
-    title: 'Healing Journey',
-    message: 'From crisis to healing - your journey matters. #RecoveryJourney #YouMatter',
-    imagePath: '/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png',
     customizable: false
   }
 ];

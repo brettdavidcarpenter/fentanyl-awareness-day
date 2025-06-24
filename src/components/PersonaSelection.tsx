@@ -11,21 +11,21 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
   const personas = [
     {
       id: 'family',
-      title: 'Families Affected by Fentanyl',
+      title: 'Families & Friends',
       description: 'Honor loved ones and share stories that save lives',
       icon: Heart,
       color: 'text-red-500'
     },
     {
       id: 'law_enforcement',
-      title: 'Law Enforcement/Government',
+      title: 'Law Enforcement & Government',
       description: 'Educate communities and protect those you serve',
       icon: Shield,
       color: 'text-blue-500'
     },
     {
       id: 'recovery',
-      title: 'Recovery Organizations',
+      title: 'Recovery Orgs',
       description: 'Share hope and resources for healing',
       icon: Users,
       color: 'text-green-500'
