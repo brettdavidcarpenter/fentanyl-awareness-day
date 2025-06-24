@@ -1,3 +1,4 @@
+
 import { Heart, Clock, Bell, Settings, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -229,9 +230,31 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Black and white photo collage - Now positioned below the cards */}
-        <div className="mb-8 opacity-60">
-          <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
+        {/* NYC Collage with Text Overlay */}
+        <div className="relative mb-8 rounded-lg overflow-hidden">
+          <img 
+            src="/lovable-uploads/368a9f37-ca7b-4d54-825e-c306882400ff.png" 
+            alt="Facing Fentanyl NYC Event Photos" 
+            className="w-full h-auto"
+          />
+          
+          {/* Text Overlay */}
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+            <div className="text-center text-white p-6">
+              <h2 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+                Facing Fentanyl:
+              </h2>
+              <h3 className="text-2xl md:text-4xl font-semibold mb-6 leading-tight">
+                National Fentanyl<br />
+                Prevention &<br />
+                Awareness Day NYC
+              </h3>
+              <p className="text-lg md:text-xl font-medium text-blue-200">
+                Facing Fentanyl National Fentanyl Prevention & Awareness<br />
+                Day - NYC Event | August 21
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
