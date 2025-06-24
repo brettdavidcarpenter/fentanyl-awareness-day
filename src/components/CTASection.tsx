@@ -299,7 +299,7 @@ August 21 is our day to make our voices heard and save lives through action...`;
             </form>
           </Card>
 
-          {/* Enhanced Pre-Event Sharing CTA Card */}
+          {/* Enhanced Pre-Event Sharing CTA Card - Restructured Layout */}
           <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 flex flex-col">
             <div className="text-center mb-8">
               <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
@@ -311,54 +311,58 @@ August 21 is our day to make our voices heard and save lives through action...`;
               </p>
             </div>
 
-            <div className="mb-6 flex-grow">
-              {/* Action Message Preview */}
-              <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-white font-semibold">Share This Message:</h4>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsMessageExpanded(!isMessageExpanded)}
-                    className="text-blue-300 hover:text-white p-1"
-                  >
-                    {isMessageExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  </Button>
-                </div>
-                
-                <p className="text-blue-100 text-sm leading-relaxed mb-4">
-                  {isMessageExpanded ? facebookText : condensedMessage}
-                </p>
-                
-                {!isMessageExpanded && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsMessageExpanded(true)}
-                    className="text-blue-300 hover:text-white text-xs p-0"
-                  >
-                    Show full message...
-                  </Button>
-                )}
-                
-                <p className="text-blue-200 text-sm mt-3 font-medium">
-                  📋 Message will be copied automatically when you share!
-                </p>
+            <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-6 flex-grow">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-white font-semibold">Share This Message:</h4>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsMessageExpanded(!isMessageExpanded)}
+                  className="text-blue-300 hover:text-white p-1"
+                >
+                  {isMessageExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </Button>
               </div>
+              
+              <p className="text-blue-100 text-sm leading-relaxed mb-4">
+                {isMessageExpanded ? facebookText : condensedMessage}
+              </p>
+              
+              {!isMessageExpanded && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsMessageExpanded(true)}
+                  className="text-blue-300 hover:text-white text-xs p-0"
+                >
+                  Show full message...
+                </Button>
+              )}
+              
+              <p className="text-blue-200 text-sm font-medium">
+                Build awareness now. Every invitation helps grow the movement before August 21st.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 mt-auto">
+            <div className="mb-3">
+              <h4 className="text-white font-semibold mb-2">Share with Your Network</h4>
+              <p className="text-gray-300 text-sm">
+                Message will be copied automatically when you share
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
               <Button
                 onClick={handleTwitterShare}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
               >
                 Share on X
               </Button>
               <Button
                 onClick={handleFacebookShare}
-                className="bg-blue-700 hover:bg-blue-800 text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
               >
                 Copy & Post to FB
               </Button>
@@ -370,12 +374,6 @@ August 21 is our day to make our voices heard and save lives through action...`;
                 {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {navigator.share ? "Share Message" : (copied ? "Copied!" : "Copy Message")}
               </Button>
-            </div>
-
-            <div className="text-center">
-              <p className="text-gray-400 text-sm">
-                Build awareness now. Every invitation helps grow the movement before August 21st.
-              </p>
             </div>
           </Card>
         </div>
