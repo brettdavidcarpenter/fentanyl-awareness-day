@@ -1,7 +1,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
-import { Shield, Calendar } from "lucide-react";
+import { Shield, Calendar, Target, Users, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -10,6 +10,25 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
         <HeroSection />
+        
+        {/* What You Can Do Bridging Section */}
+        <section className="py-12 text-center">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-6">
+              <Heart className="w-10 h-10 text-blue-400 mx-auto mb-4" />
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                What you can do
+              </h2>
+              <p className="text-lg text-blue-200 mb-2">
+                Join thousands taking action nationwide
+              </p>
+              <p className="text-gray-300">
+                Every voice matters. Every story saves lives. Choose how you want to make a difference.
+              </p>
+            </div>
+          </div>
+        </section>
+        
         <CTASection />
         
         {/* Low-key Day of Experience Preview Section - Moved to Bottom */}
