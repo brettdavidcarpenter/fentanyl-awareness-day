@@ -1,15 +1,38 @@
 
 import HeroSection from "@/components/HeroSection";
-import { Shield } from "lucide-react";
+import CTASection from "@/components/CTASection";
+import { Shield, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
-      <HeroSection />
-      
-      {/* Footer */}
-      <footer className="relative z-10 text-center py-12 border-t border-white/10">
-        <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-8">
+        <HeroSection />
+        
+        {/* Day of Experience Section - Always Visible */}
+        <div className="text-center py-16 border-t border-white/10">
+          <div className="max-w-2xl mx-auto">
+            <Calendar className="w-16 h-16 mx-auto mb-6 text-blue-300" />
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Fentanyl Awareness Day Experience
+            </h2>
+            <p className="text-xl text-blue-100 mb-8">
+              Create and share powerful posts to amplify awareness and save lives
+            </p>
+            <Link to="/day-of-experience">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                Create Your Post
+              </Button>
+            </Link>
+          </div>
+        </div>
+        
+        <CTASection />
+        
+        {/* Footer */}
+        <footer className="text-center py-12 border-t border-white/10 mt-16">
           <div className="mb-4">
             <img 
               src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" 
@@ -35,8 +58,8 @@ const Index = () => {
           <p className="text-gray-300 text-sm">
             Together we can save lives
           </p>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 };
