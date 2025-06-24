@@ -1,9 +1,10 @@
-import { Heart, Clock, Bell, Settings, Shield } from "lucide-react";
+import { Heart, Clock, Bell, Settings, Shield, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -17,7 +18,7 @@ const HeroSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testMode, setTestMode] = useState(false);
   const [showTestSettings, setShowTestSettings] = useState(false);
-  const [testDateOffset, setTestDateOffset] = useState(1); // Default 1 day for testing
+  const [testDateOffset, setTestDateOffset] = useState(1);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -89,12 +90,27 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="text-center py-12 md:py-20">
-      <div className="max-w-6xl mx-auto">
-        {/* Main branding */}
-        <div className="mb-12">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" 
+          alt="Facing Fentanyl NYC Event Photos" 
+          className="w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-blue-900/70 to-blue-700/80"></div>
+      </div>
+
+      {/* Content Overlay */}
+      <div className="relative z-10 container mx-auto px-4 py-12">
+        {/* Logo and Main Headline */}
+        <div className="text-center mb-16">
           <div className="mb-8">
-            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-32 md:h-40 object-contain" />
+            <img 
+              src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" 
+              alt="Facing Fentanyl Logo" 
+              className="mx-auto h-32 md:h-40 object-contain"
+            />
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
@@ -107,14 +123,13 @@ const HeroSection = () => {
           </p>
         </div>
 
-        {/* Countdown and Email Signup Cards - Above Photo */}
-        <div className="grid md:grid-cols-5 gap-4 mb-12 max-w-5xl mx-auto">
-          {/* Countdown Card - Takes 3/5 of the width on desktop */}
-          <div className="md:col-span-3 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
+        {/* CTA Cards Grid */}
+        <div className="grid lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {/* Countdown Card */}
+          <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-6">
             <div className="text-center mb-4">
-              <h2 className="text-lg font-semibold text-white mb-2">National Fentanyl Prevention & Awareness Day</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">National Fentanyl Prevention & Awareness Day</h2>
               
-              {/* Senate Resolution Badge */}
               <a 
                 href="https://www.congress.gov/bill/118th-congress/senate-resolution/323/text"
                 target="_blank"
@@ -127,35 +142,35 @@ const HeroSection = () => {
               </a>
             </div>
             
-            <div className="grid grid-cols-4 gap-2 md:gap-4">
+            <div className="grid grid-cols-4 gap-3 mb-4">
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.days}</div>
-                <div className="text-gray-300 text-xs md:text-sm">DAYS</div>
+                <div className="text-3xl font-bold text-blue-300">{timeLeft.days}</div>
+                <div className="text-gray-300 text-sm">DAYS</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.hours}</div>
-                <div className="text-gray-300 text-xs md:text-sm">HOURS</div>
+                <div className="text-3xl font-bold text-blue-300">{timeLeft.hours}</div>
+                <div className="text-gray-300 text-sm">HOURS</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.minutes}</div>
-                <div className="text-gray-300 text-xs md:text-sm">MINUTES</div>
+                <div className="text-3xl font-bold text-blue-300">{timeLeft.minutes}</div>
+                <div className="text-gray-300 text-sm">MINUTES</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.seconds}</div>
-                <div className="text-gray-300 text-xs md:text-sm">SECONDS</div>
+                <div className="text-3xl font-bold text-blue-300">{timeLeft.seconds}</div>
+                <div className="text-gray-300 text-sm">SECONDS</div>
               </div>
             </div>
             
-            <div className="text-lg md:text-xl text-blue-200 font-semibold mt-3">
+            <div className="text-xl text-blue-200 font-semibold text-center">
               AUGUST 21, 2025
             </div>
           </div>
 
-          {/* Email Signup Card - Takes 2/5 of the width on desktop */}
-          <div className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
-            <div className="mb-3">
+          {/* Email Signup Card */}
+          <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-6">
+            <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-xl md:text-2xl font-bold text-white">
+                <h2 className="text-xl font-bold text-white">
                   Get Ready to Act
                 </h2>
                 <Button
@@ -227,11 +242,24 @@ const HeroSection = () => {
               </Button>
             </form>
           </div>
-        </div>
 
-        {/* Black and white photo collage - Now positioned below the cards */}
-        <div className="mb-8 opacity-60">
-          <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
+          {/* Day of Experience CTA Card */}
+          <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex flex-col justify-center">
+            <div className="text-center">
+              <Calendar className="w-16 h-16 mx-auto mb-4 text-blue-300" />
+              <h2 className="text-2xl font-bold text-white mb-3">
+                Create Your Post
+              </h2>
+              <p className="text-blue-100 mb-6">
+                Generate powerful posts to amplify awareness and save lives
+              </p>
+              <Link to="/day-of-experience">
+                <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+                  Start Creating
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>
