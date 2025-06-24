@@ -350,7 +350,7 @@ August 21 is our day to make our voices heard and save lives through action...`;
             <div className="mb-3">
               <h4 className="text-white font-semibold mb-2">Share with Your Network</h4>
               <p className="text-gray-300 text-sm">
-                Message will be copied automatically when you share
+                Every post helps create momentum
               </p>
             </div>
 
