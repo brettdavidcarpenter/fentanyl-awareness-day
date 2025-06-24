@@ -1,3 +1,4 @@
+
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
 import HandDrawnArrow from "@/components/HandDrawnArrow";
@@ -27,14 +28,14 @@ const Index = () => {
               </p>
             </div>
           </div>
-          
-          {/* Hand-drawn L-shaped arrow pointing to the left card */}
-          <div className="absolute bottom-0 left-0">
-            <HandDrawnArrow />
-          </div>
         </section>
         
-        <CTASection />
+        {/* CTA Section with Circular Arrow Overlay */}
+        <div className="relative">
+          <CTASection />
+          {/* Circular hand-drawn arrows connecting the flow */}
+          <HandDrawnArrow />
+        </div>
         
         {/* Low-key Day of Experience Preview Section - Moved to Bottom */}
         <div className="text-center py-12 border-t border-white/10 mt-8">
