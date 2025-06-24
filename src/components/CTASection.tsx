@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings } from "lucide-react";
+import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ const CTASection = () => {
   const [testMode, setTestMode] = useState(false);
   const [showTestSettings, setShowTestSettings] = useState(false);
   const [testDateOffset, setTestDateOffset] = useState(1);
+  const [isMessageExpanded, setIsMessageExpanded] = useState(false);
   const { toast } = useToast();
 
   // Calendar functionality
@@ -114,6 +115,11 @@ Sign up for a reminder: ${shareUrl}
 
 #FacingFentanyl #FentanylPreventionDay`;
 
+  // Condensed message for collapsed state
+  const condensedMessage = `💔 I'm joining the movement for National Fentanyl Prevention and Awareness Day.
+
+August 21 is our day to make our voices heard and save lives through action...`;
+
   const handleTwitterShare = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     window.open(twitterUrl, '_blank');
@@ -188,7 +194,7 @@ Sign up for a reminder: ${shareUrl}
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-6">
           {/* Enhanced Email Reminder CTA Card */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 h-full">
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 flex flex-col">
             <div className="text-center mb-8">
               <Target className="w-12 h-12 text-blue-400 mx-auto mb-4" />
               <h3 className="text-2xl font-semibold text-white mb-2">
@@ -199,7 +205,7 @@ Sign up for a reminder: ${shareUrl}
               </p>
             </div>
 
-            <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-6">
+            <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-6 flex-grow">
               <h4 className="text-white font-semibold mb-3">{eventDetails.title}</h4>
               <p className="text-blue-200 text-sm mb-3">📅 August 21, 2025</p>
               
@@ -274,7 +280,7 @@ Sign up for a reminder: ${shareUrl}
               </div>
             )}
             
-            <form onSubmit={handleEmailSubmit} className="space-y-3">
+            <form onSubmit={handleEmailSubmit} className="space-y-3 mt-auto">
               <Input
                 type="email"
                 placeholder="Your email address"
@@ -293,46 +299,57 @@ Sign up for a reminder: ${shareUrl}
             </form>
           </Card>
 
-          {/* Enhanced Action CTA Card */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 h-full">
+          {/* Enhanced Pre-Event Sharing CTA Card */}
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 flex flex-col">
             <div className="text-center mb-8">
               <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
               <h3 className="text-2xl font-semibold text-white mb-2">
-                Take Action Together
+                Spread the Word About the Upcoming Event
               </h3>
               <p className="text-gray-300">
-                Join thousands nationwide making their voices heard to save lives
+                Help build momentum by inviting your friends and network to join the movement
               </p>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-6 flex-grow">
               {/* Action Message Preview */}
               <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6">
-                <h4 className="text-white font-semibold mb-3">Share This Message:</h4>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-white font-semibold">Share This Message:</h4>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsMessageExpanded(!isMessageExpanded)}
+                    className="text-blue-300 hover:text-white p-1"
+                  >
+                    {isMessageExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </Button>
+                </div>
+                
                 <p className="text-blue-100 text-sm leading-relaxed mb-4">
-                  💔 I'm joining the movement for National Fentanyl Prevention and Awareness Day.
-                  <br /><br />
-                  August 21 is our day to make our voices heard and save lives through action.
-                  <br /><br />
-                  Here's how YOU can participate:
-                  <br />• Share your story or tribute
-                  <br />• Post life-saving prevention facts  
-                  <br />• Honor someone you've lost
-                  <br />• Spread the word to save others
-                  <br /><br />
-                  Join thousands taking action nationwide. Together we can end this crisis.
-                  <br /><br />
-                  👉 Sign up for a reminder: {shareUrl}
-                  <br /><br />
-                  #FacingFentanyl #FentanylPreventionDay #FentanylAwarenessDay #SaveLives
+                  {isMessageExpanded ? facebookText : condensedMessage}
                 </p>
+                
+                {!isMessageExpanded && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsMessageExpanded(true)}
+                    className="text-blue-300 hover:text-white text-xs p-0"
+                  >
+                    Show full message...
+                  </Button>
+                )}
+                
                 <p className="text-blue-200 text-sm mt-3 font-medium">
                   📋 Message will be copied automatically when you share!
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 mt-auto">
               <Button
                 onClick={handleTwitterShare}
                 className="bg-blue-500 hover:bg-blue-600 text-white"
@@ -357,7 +374,7 @@ Sign up for a reminder: ${shareUrl}
 
             <div className="text-center">
               <p className="text-gray-400 text-sm">
-                Every action matters. Every voice counts. Together we can save lives and end this crisis.
+                Build awareness now. Every invitation helps grow the movement before August 21st.
               </p>
             </div>
           </Card>

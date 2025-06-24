@@ -10,29 +10,31 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
         <HeroSection />
+        <CTASection />
         
-        {/* Day of Experience Section - Always Visible */}
-        <div className="text-center py-16 border-t border-white/10">
-          <div className="max-w-2xl mx-auto">
-            <Calendar className="w-16 h-16 mx-auto mb-6 text-blue-300" />
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Fentanyl Awareness Day Experience
-            </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Create and share powerful posts to amplify awareness and save lives
+        {/* Low-key Day of Experience Preview Section - Moved to Bottom */}
+        <div className="text-center py-12 border-t border-white/10 mt-8">
+          <div className="max-w-xl mx-auto">
+            <Calendar className="w-8 h-8 mx-auto mb-4 text-gray-400" />
+            <h3 className="text-lg font-medium text-gray-300 mb-2">
+              Preview the Day of Experience
+            </h3>
+            <p className="text-sm text-gray-400 mb-6">
+              Get a sneak peek at the post creation tool that will become available the week of August 21st
             </p>
             <Link to="/day-of-experience">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-                Create Your Post
+              <Button 
+                variant="outline" 
+                className="bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white"
+              >
+                Preview Tool
               </Button>
             </Link>
           </div>
         </div>
         
-        <CTASection />
-        
         {/* Footer */}
-        <footer className="text-center py-12 border-t border-white/10 mt-16">
+        <footer className="text-center py-12 border-t border-white/10 mt-8">
           <div className="mb-4">
             <img 
               src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" 
