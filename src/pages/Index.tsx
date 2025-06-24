@@ -1,6 +1,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
+import HandDrawnArrow from "@/components/HandDrawnArrow";
 import { Shield, Calendar, Target, Users, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -12,7 +13,7 @@ const Index = () => {
         <HeroSection />
         
         {/* What You Can Do Bridging Section */}
-        <section className="py-12 text-center">
+        <section className="py-12 text-center relative">
           <div className="max-w-4xl mx-auto">
             <div className="mb-6">
               <Heart className="w-10 h-10 text-blue-400 mx-auto mb-4" />
@@ -26,6 +27,11 @@ const Index = () => {
                 Every voice matters. Every story saves lives. Choose how you want to make a difference.
               </p>
             </div>
+          </div>
+          
+          {/* Hand-drawn arrow pointing to the left card */}
+          <div className="absolute bottom-0 left-1/4 transform -translate-x-1/2">
+            <HandDrawnArrow />
           </div>
         </section>
         
