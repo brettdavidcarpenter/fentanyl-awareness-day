@@ -1,11 +1,9 @@
-
-import { Heart, Clock, Bell, Settings, Shield, Calendar, Users, Share2, Copy, CheckCircle } from "lucide-react";
+import { Heart, Clock, Bell, Settings, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -19,8 +17,7 @@ const HeroSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testMode, setTestMode] = useState(false);
   const [showTestSettings, setShowTestSettings] = useState(false);
-  const [testDateOffset, setTestDateOffset] = useState(1);
-  const [copied, setCopied] = useState(false);
+  const [testDateOffset, setTestDateOffset] = useState(1); // Default 1 day for testing
   const { toast } = useToast();
 
   useEffect(() => {
@@ -88,59 +85,6 @@ const HeroSection = () => {
       });
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  // Share functionality
-  const shareUrl = "https://facingfentanylnow.aware-share.com/";
-  const shareText = `💔 Join me for National Fentanyl Prevention & Awareness Day - August 21, 2025
-
-Help save lives by taking action:
-• Share your story or tribute
-• Post prevention facts
-• Honor loved ones lost
-• Spread awareness
-
-Sign up for a reminder: ${shareUrl}
-
-#FacingFentanyl #FentanylPreventionDay`;
-
-  const handleTwitterShare = () => {
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-    window.open(twitterUrl, '_blank');
-  };
-
-  const handleFacebookShare = async () => {
-    try {
-      await navigator.clipboard.writeText(shareText);
-      toast({
-        title: "Message copied!",
-        description: "Opening Facebook - paste the copied message in your post.",
-        duration: 5000,
-      });
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-      window.open(facebookUrl, '_blank');
-    } catch (err) {
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-      window.open(facebookUrl, '_blank');
-    }
-  };
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
-      setCopied(true);
-      toast({
-        title: "Message copied!",
-        description: "Share this message to spread awareness about the upcoming event.",
-      });
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      toast({
-        title: "Copy failed",
-        description: "Please copy the link manually.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -285,98 +229,9 @@ Sign up for a reminder: ${shareUrl}
           </div>
         </div>
 
-        {/* NYC Image with Blue Overlay and Bottom-Left Text */}
-        <div className="relative mb-8 rounded-lg overflow-hidden">
-          <img 
-            src="/lovable-uploads/368a9f37-ca7b-4d54-825e-c306882400ff.png" 
-            alt="Facing Fentanyl NYC Event Photos" 
-            className="w-full h-auto"
-          />
-          
-          {/* Blue Overlay with Text in Bottom-Left */}
-          <div className="absolute inset-0 bg-blue-900/40">
-            <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 text-left text-white">
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                Facing Fentanyl:<br />
-                National Fentanyl<br />
-                Prevention &<br />
-                Awareness Day NYC
-              </h2>
-            </div>
-          </div>
-        </div>
-
-        {/* Condensed CTA Cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12 max-w-4xl mx-auto">
-          {/* Plan to Take Action - Condensed */}
-          <div className="bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Calendar className="w-8 h-8 text-blue-400" />
-              <div className="text-left">
-                <h3 className="text-xl font-semibold text-white">Plan to Take Action</h3>
-                <p className="text-gray-300 text-sm">Mark your calendar for August 21</p>
-              </div>
-            </div>
-            <div className="text-left space-y-2 text-sm text-gray-300">
-              <div className="flex items-center gap-2">
-                <span className="text-blue-300">•</span> Share your story or tribute
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-300">•</span> Honor someone you've lost
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-300">•</span> Spread life-saving facts
-              </div>
-            </div>
-          </div>
-
-          {/* Take Action Together - Condensed */}
-          <div className="bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Users className="w-8 h-8 text-blue-400" />
-              <div className="text-left">
-                <h3 className="text-xl font-semibold text-white">Take Action Together</h3>
-                <p className="text-gray-300 text-sm">Spread awareness about the upcoming event</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                onClick={handleTwitterShare}
-                size="sm"
-                className="bg-blue-500 hover:bg-blue-600 text-white text-xs"
-              >
-                Share on X
-              </Button>
-              <Button
-                onClick={handleFacebookShare}
-                size="sm"
-                className="bg-blue-700 hover:bg-blue-800 text-white text-xs"
-              >
-                Share on FB
-              </Button>
-              <Button
-                onClick={handleCopyLink}
-                variant="outline"
-                size="sm"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-1 col-span-2 text-xs"
-              >
-                {copied ? <CheckCircle className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                {copied ? "Copied!" : "Copy Message"}
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Preview Day of Experience Link */}
-        <div className="text-center">
-          <Link to="/day-of-experience">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 text-lg">
-              Preview the Day of Experience
-            </Button>
-          </Link>
-          <p className="text-blue-200 text-sm mt-3">
-            Explore tools to create powerful posts and tributes
-          </p>
+        {/* Black and white photo collage - Now positioned below the cards */}
+        <div className="mb-8 opacity-60">
+          <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
         </div>
       </div>
     </section>
