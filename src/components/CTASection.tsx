@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings, ChevronDown, ChevronUp } from "lucide-react";
@@ -353,27 +354,29 @@ August 21 is our day to make our voices heard and save lives through action...`;
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
-              <Button
-                onClick={handleTwitterShare}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-              >
-                Share on X
-              </Button>
-              <Button
-                onClick={handleFacebookShare}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-              >
-                Copy & Post to FB
-              </Button>
+            <div className="space-y-3 mt-auto">
               <Button
                 onClick={navigator.share ? handleNativeShare : handleCopyLink}
                 variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2 sm:col-span-2"
+                className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
               >
                 {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {navigator.share ? "Share Message" : (copied ? "Copied!" : "Copy Message")}
               </Button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Button
+                  onClick={handleTwitterShare}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                >
+                  Share on X
+                </Button>
+                <Button
+                  onClick={handleFacebookShare}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                >
+                  Copy & Post to FB
+                </Button>
+              </div>
             </div>
           </Card>
         </div>
