@@ -1,4 +1,3 @@
-
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
 import HandDrawnArrow from "@/components/HandDrawnArrow";
@@ -29,8 +28,8 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Hand-drawn arrow pointing to the left card */}
-          <div className="absolute bottom-0 left-1/4 transform -translate-x-1/2">
+          {/* Hand-drawn L-shaped arrow pointing to the left card */}
+          <div className="absolute bottom-0 left-0">
             <HandDrawnArrow />
           </div>
         </section>
