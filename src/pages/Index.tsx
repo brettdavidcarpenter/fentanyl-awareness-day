@@ -1,7 +1,6 @@
 
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
-import HandDrawnArrow from "@/components/HandDrawnArrow";
 import { Shield, Calendar, Target, Users, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -30,12 +29,8 @@ const Index = () => {
           </div>
         </section>
         
-        {/* CTA Section with Circular Arrow Overlay */}
-        <div className="relative">
-          <CTASection />
-          {/* Circular hand-drawn arrows connecting the flow */}
-          <HandDrawnArrow />
-        </div>
+        {/* CTA Section */}
+        <CTASection />
         
         {/* Low-key Day of Experience Preview Section - Moved to Bottom */}
         <div className="text-center py-12 border-t border-white/10 mt-8">
