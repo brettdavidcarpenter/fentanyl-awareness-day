@@ -17,6 +17,9 @@ export function getEligibleReminders(signupDate: Date, targetDate: Date): Remind
   if (daysBetween >= 60) {
     eligible.push('two-month');
   }
+  if (daysBetween >= 45) {
+    eligible.push('45-day');
+  }
   if (daysBetween >= 7) {
     eligible.push('one-week');
   }
@@ -35,12 +38,21 @@ export function shouldSendReminder(
 ): boolean {
   if (alreadySent) return false;
   
+  // Convert current time to ET for 9am check
+  const nowET = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+  const currentHourET = nowET.getHours();
+  
+  // Only send emails at 9am ET (allow 9:00-9:59am window)
+  if (currentHourET !== 9) return false;
+  
   const timeDiff = targetDate.getTime() - now.getTime();
   const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
   
   switch (reminderType) {
     case 'two-month':
-      return daysDiff <= 60 && daysDiff > 0;
+      return daysDiff <= 60 && daysDiff > 45;
+    case '45-day':
+      return daysDiff <= 45 && daysDiff > 7;
     case 'one-week':
       return daysDiff <= 7 && daysDiff > 0;
     case 'day-of':

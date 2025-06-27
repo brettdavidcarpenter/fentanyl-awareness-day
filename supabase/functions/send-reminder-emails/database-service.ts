@@ -46,6 +46,7 @@ export class DatabaseService {
   async markReminderSent(signupId: string, reminderType: ReminderType): Promise<void> {
     const columnMap = {
       'two-month': 'reminder_sent_2_months_before',
+      '45-day': 'reminder_sent_45_days_before',
       'one-week': 'reminder_sent_week_before',
       'day-of': 'reminder_sent_day_of'
     };

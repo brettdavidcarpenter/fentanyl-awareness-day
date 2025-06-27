@@ -41,6 +41,7 @@ export type Database = {
           reminder_offset_minutes: number | null
           reminder_sent_2_months_before: boolean | null
           reminder_sent_3_days_before: boolean | null
+          reminder_sent_45_days_before: boolean | null
           reminder_sent_day_of: boolean | null
           reminder_sent_week_before: boolean | null
           source: string | null
@@ -58,6 +59,7 @@ export type Database = {
           reminder_offset_minutes?: number | null
           reminder_sent_2_months_before?: boolean | null
           reminder_sent_3_days_before?: boolean | null
+          reminder_sent_45_days_before?: boolean | null
           reminder_sent_day_of?: boolean | null
           reminder_sent_week_before?: boolean | null
           source?: string | null
@@ -75,6 +77,7 @@ export type Database = {
           reminder_offset_minutes?: number | null
           reminder_sent_2_months_before?: boolean | null
           reminder_sent_3_days_before?: boolean | null
+          reminder_sent_45_days_before?: boolean | null
           reminder_sent_day_of?: boolean | null
           reminder_sent_week_before?: boolean | null
           source?: string | null

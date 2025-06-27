@@ -2,6 +2,7 @@
 import { Resend } from "npm:resend@2.0.0";
 import { ReminderType, EmailSignup } from './types.ts';
 import { getTwoMonthReminderTemplate } from './templates/two-month-reminder.ts';
+import { get45DayReminderTemplate } from './templates/45-day-reminder.ts';
 import { getOneWeekReminderTemplate } from './templates/one-week-reminder.ts';
 import { getDayOfReminderTemplate } from './templates/day-of-reminder.ts';
 
@@ -41,6 +42,11 @@ export class EmailService {
         return {
           subject: "🕯 2 Months Until Fentanyl Awareness Day",
           html: getTwoMonthReminderTemplate(unsubscribeToken)
+        };
+      case '45-day':
+        return {
+          subject: "🕯 45 Days Until Fentanyl Awareness Day",
+          html: get45DayReminderTemplate(unsubscribeToken)
         };
       case 'one-week':
         return {

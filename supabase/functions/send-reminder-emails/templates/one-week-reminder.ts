@@ -6,6 +6,10 @@ export const getOneWeekReminderTemplate = (unsubscribeToken: string) => `
       <p style="margin: 10px 0 0 0; font-size: 18px;">Fentanyl Awareness Day - August 21, 2025</p>
     </div>
     
+    <div style="text-align: center; padding: 20px;">
+      <img src="https://jexczwnpirrgvywdmjeg.supabase.co/storage/v1/object/public/uploads/facing-fentanyl-email-banner.png" alt="Facing Fentanyl Awareness" style="max-width: 100%; height: auto; border-radius: 8px;" />
+    </div>
+    
     <div style="padding: 30px 20px;">
       <p style="font-size: 18px; margin-bottom: 20px;">Hello,</p>
       

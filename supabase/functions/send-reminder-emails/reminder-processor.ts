@@ -116,6 +116,8 @@ export class ReminderProcessor {
     switch (reminderType) {
       case 'two-month':
         return signup.reminder_sent_2_months_before || false;
+      case '45-day':
+        return signup.reminder_sent_45_days_before || false;
       case 'one-week':
         return signup.reminder_sent_week_before || false;
       case 'day-of':
