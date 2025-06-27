@@ -37,8 +37,8 @@ const Index = () => {
         <section className="py-12 text-center border-t border-white/10 mt-8">
           <div className="max-w-4xl mx-auto">
             <img 
-              src="/lovable-uploads/09bc5e77-1190-40cc-8fc0-00e534e06522.png" 
-              alt="Facing Fentanyl Awareness Message" 
+              src="/lovable-uploads/dc4d37af-f28d-4f94-8ecc-3b78573ab25b.png" 
+              alt="Facing Fentanyl Awareness - Be the Change" 
               className="mx-auto max-w-full h-auto rounded-lg shadow-lg"
             />
           </div>
