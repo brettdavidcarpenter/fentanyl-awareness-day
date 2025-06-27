@@ -1,3 +1,4 @@
+
 import { Heart, Clock, Bell, Settings, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -107,7 +108,7 @@ const HeroSection = () => {
           </p>
         </div>
 
-        {/* Countdown and Email Signup Cards - Above Photo */}
+        {/* Countdown and Email Signup Cards */}
         <div className="grid md:grid-cols-5 gap-4 mb-12 max-w-5xl mx-auto">
           {/* Countdown Card - Takes 3/5 of the width on desktop */}
           <div className="md:col-span-3 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
@@ -228,14 +229,10 @@ const HeroSection = () => {
             </form>
           </div>
         </div>
-
-        {/* Black and white photo collage - Now positioned below the cards */}
-        <div className="mb-8 opacity-60">
-          <img src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png" alt="Facing Fentanyl NYC Event Photos" className="mx-auto max-w-full h-auto rounded-lg" />
-        </div>
       </div>
     </section>
   );
 };
 
 export default HeroSection;
+

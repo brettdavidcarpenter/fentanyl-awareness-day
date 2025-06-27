@@ -1,4 +1,5 @@
 
+
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
 import { Shield, Calendar, Target, Users, Heart } from "lucide-react";
@@ -31,6 +32,17 @@ const Index = () => {
         
         {/* CTA Section */}
         <CTASection />
+        
+        {/* Facing Fentanyl Awareness Image Section */}
+        <section className="py-12 text-center border-t border-white/10 mt-8">
+          <div className="max-w-4xl mx-auto">
+            <img 
+              src="/lovable-uploads/09bc5e77-1190-40cc-8fc0-00e534e06522.png" 
+              alt="Facing Fentanyl Awareness Message" 
+              className="mx-auto max-w-full h-auto rounded-lg shadow-lg"
+            />
+          </div>
+        </section>
         
         {/* Low-key Day of Experience Preview Section - Moved to Bottom */}
         <div className="text-center py-12 border-t border-white/10 mt-8">
@@ -87,3 +99,4 @@ const Index = () => {
 };
 
 export default Index;
+
