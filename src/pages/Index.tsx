@@ -1,10 +1,7 @@
 
-
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
-import { Shield, Calendar, Target, Users, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Shield, Heart } from "lucide-react";
 
 const Index = () => {
   return (
@@ -44,27 +41,6 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Low-key Day of Experience Preview Section - Moved to Bottom */}
-        <div className="text-center py-12 border-t border-white/10 mt-8">
-          <div className="max-w-xl mx-auto">
-            <Calendar className="w-8 h-8 mx-auto mb-4 text-gray-400" />
-            <h3 className="text-lg font-medium text-gray-300 mb-2">
-              Preview the Day of Experience
-            </h3>
-            <p className="text-sm text-gray-400 mb-6">
-              Get a sneak peek at the post creation tool that will become available the week of August 21st
-            </p>
-            <Link to="/day-of-experience">
-              <Button 
-                variant="outline" 
-                className="bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white"
-              >
-                Preview Tool
-              </Button>
-            </Link>
-          </div>
-        </div>
-        
         {/* Footer */}
         <footer className="text-center py-12 border-t border-white/10 mt-8">
           <div className="mb-4">
@@ -99,4 +75,3 @@ const Index = () => {
 };
 
 export default Index;
-
