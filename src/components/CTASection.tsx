@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
+import EnhancedFacebookShare from "./EnhancedFacebookShare";
 
 const CTASection = () => {
   const [copied, setCopied] = useState(false);
@@ -119,36 +120,6 @@ August 21 is our day to make our voices heard and save lives through action...`;
   const handleTwitterShare = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}`;
     window.open(twitterUrl, '_blank');
-  };
-
-  const handleFacebookShare = async () => {
-    try {
-      // First, copy the Facebook text to clipboard
-      await navigator.clipboard.writeText(facebookText);
-      
-      // Show success toast with instructions
-      toast({
-        title: "Message copied to clipboard!",
-        description: "Opening Facebook - paste the copied message in your post.",
-        duration: 5000,
-      });
-      
-      // Then open Facebook sharer with just the URL
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-      window.open(facebookUrl, '_blank');
-      
-    } catch (err) {
-      // Fallback if clipboard fails
-      toast({
-        title: "Facebook sharing",
-        description: "Opening Facebook - please copy and paste the message from the preview below.",
-        variant: "destructive",
-        duration: 5000,
-      });
-      
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-      window.open(facebookUrl, '_blank');
-    }
   };
 
   const handleCopyLink = async () => {
@@ -365,12 +336,11 @@ August 21 is our day to make our voices heard and save lives through action...`;
                 >
                   Share on X
                 </Button>
-                <Button
-                  onClick={handleFacebookShare}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                >
-                  Copy & Post to FB
-                </Button>
+                <EnhancedFacebookShare
+                  url={shareUrl}
+                  message={facebookText}
+                  onFallbackCopy={() => setCopied(true)}
+                />
               </div>
             </div>
           </Card>
