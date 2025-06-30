@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Facebook, Copy, CheckCircle } from 'lucide-react';
@@ -65,13 +64,16 @@ const EnhancedFacebookShare = ({ url, message, onFallbackCopy }: EnhancedFaceboo
 
     setIsSharing(true);
     
+    // Use Feed Dialog instead of Share Dialog for better content control
     window.FB.ui({
-      method: 'share',
-      href: url,
-      quote: message,
+      method: 'feed',
+      link: url,
+      name: 'National Fentanyl Prevention and Awareness Day',
+      caption: 'Join the movement to save lives',
+      description: message,
     }, (response: any) => {
       setIsSharing(false);
-      if (response && !response.error_message) {
+      if (response && !response.error_message && response.post_id) {
         toast({
           title: "Success!",
           description: "Your post has been shared to Facebook!",
