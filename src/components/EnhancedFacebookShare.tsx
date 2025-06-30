@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Facebook, Copy, CheckCircle } from 'lucide-react';
+import { Copy, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface EnhancedFacebookShareProps {
@@ -55,9 +55,9 @@ const EnhancedFacebookShare = ({ url, message, onFallbackCopy }: EnhancedFaceboo
       {copied ? (
         <CheckCircle className="w-4 h-4" />
       ) : (
-        <Facebook className="w-4 h-4" />
+        <Copy className="w-4 h-4" />
       )}
-      {copied ? "Copied!" : "Copy & Post to Facebook"}
+      {copied ? "Copied!" : "Share on FB"}
     </Button>
   );
 };
