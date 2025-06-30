@@ -103,17 +103,13 @@ Join thousands taking action nationwide. Together we can end this crisis.
 
 #FacingFentanyl #FentanylPreventionDay #FentanylAwarenessDay #SaveLives`;
 
-  const twitterText = `💔 August 21: National Fentanyl Prevention & Awareness Day
+  const twitterText = `💔 I'm joining the movement for National Fentanyl Prevention and Awareness Day.
 
-Join thousands taking action to save lives:
-• Share your story
-• Honor loved ones lost  
-• Spread prevention facts
-• Make your voice heard
+August 21 is our day to raise awareness & post life-saving prevention facts. 
 
-Sign up for a reminder: ${shareUrl}
+👉 Sign up for a reminder: https://facingfentanylnow.aware-share.com/
 
-#FacingFentanyl #FentanylPreventionDay`;
+#FacingFentanyl #NationalFentanylPreventionandAwarenessDay`;
 
   // Condensed message for collapsed state
   const condensedMessage = `💔 I'm joining the movement for National Fentanyl Prevention and Awareness Day.
