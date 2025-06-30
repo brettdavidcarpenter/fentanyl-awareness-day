@@ -33,7 +33,7 @@ const EnhancedFacebookShare = ({ url, message, onFallbackCopy }: EnhancedFaceboo
     // Initialize Facebook SDK
     window.fbAsyncInit = function() {
       window.FB.init({
-        appId: '1234567890123456', // Placeholder - user will need to replace with real App ID
+        appId: '1100454738614513', // Your Facebook App ID
         cookie: true,
         xfbml: true,
         version: 'v18.0'
