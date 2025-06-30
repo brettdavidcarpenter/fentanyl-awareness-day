@@ -2,6 +2,7 @@
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
 import { Shield, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -63,6 +64,16 @@ const Index = () => {
               <Shield className="w-4 h-4" />
               Recognized by U.S. Senate Resolution 323
             </a>
+          </div>
+          
+          {/* Privacy Policy Link */}
+          <div className="mb-4">
+            <Link 
+              to="/privacy-policy"
+              className="text-gray-400 hover:text-blue-300 transition-colors text-sm underline"
+            >
+              Privacy Policy
+            </Link>
           </div>
           
           <p className="text-gray-300 text-sm">

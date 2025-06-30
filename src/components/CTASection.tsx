@@ -263,6 +263,18 @@ August 21 is our day to make our voices heard and save lives through action...`;
               >
                 {isSubmitting ? "Signing up..." : "Remind Me to Act"}
               </Button>
+              {/* Privacy Policy Notice */}
+              <p className="text-xs text-gray-400 text-center">
+                By signing up, you agree to our{" "}
+                <a 
+                  href="/privacy-policy" 
+                  className="text-blue-300 hover:text-blue-200 underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacy Policy
+                </a>
+              </p>
             </form>
           </Card>
 
