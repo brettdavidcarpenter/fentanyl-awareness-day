@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Facebook, Copy, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -9,83 +10,11 @@ interface EnhancedFacebookShareProps {
   onFallbackCopy?: () => void;
 }
 
-declare global {
-  interface Window {
-    FB: any;
-    fbAsyncInit: () => void;
-  }
-}
-
 const EnhancedFacebookShare = ({ url, message, onFallbackCopy }: EnhancedFacebookShareProps) => {
-  const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-  const [isSharing, setIsSharing] = useState(false);
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    // Check if we're on mobile or if SDK is already loaded
-    if (window.FB) {
-      setIsSDKLoaded(true);
-      return;
-    }
-
-    // Initialize Facebook SDK
-    window.fbAsyncInit = function() {
-      window.FB.init({
-        appId: '1100454738614513', // Your Facebook App ID
-        cookie: true,
-        xfbml: true,
-        version: 'v18.0'
-      });
-      setIsSDKLoaded(true);
-    };
-
-    // Load Facebook SDK script
-    const script = document.createElement('script');
-    script.async = true;
-    script.defer = true;
-    script.crossOrigin = 'anonymous';
-    script.src = 'https://connect.facebook.net/en_US/sdk.js';
-    document.head.appendChild(script);
-
-    return () => {
-      // Cleanup if needed
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, []);
-
-  const handleFacebookSDKShare = () => {
-    if (!window.FB) {
-      handleFallbackShare();
-      return;
-    }
-
-    setIsSharing(true);
-    
-    // Use Feed Dialog instead of Share Dialog for better content control
-    window.FB.ui({
-      method: 'feed',
-      link: url,
-      name: 'National Fentanyl Prevention and Awareness Day',
-      caption: 'Join the movement to save lives',
-      description: message,
-    }, (response: any) => {
-      setIsSharing(false);
-      if (response && !response.error_message && response.post_id) {
-        toast({
-          title: "Success!",
-          description: "Your post has been shared to Facebook!",
-        });
-      } else if (response?.error_message) {
-        console.log('Facebook share error:', response.error_message);
-        handleFallbackShare();
-      }
-    });
-  };
-
-  const handleFallbackShare = async () => {
+  const handleFacebookShare = async () => {
     try {
       await navigator.clipboard.writeText(message);
       setCopied(true);
@@ -118,40 +47,17 @@ const EnhancedFacebookShare = ({ url, message, onFallbackCopy }: EnhancedFaceboo
     }
   };
 
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  
-  // On mobile or if SDK fails to load, use fallback method
-  const shouldUseFallback = isMobile || !isSDKLoaded;
-
-  const handleShare = () => {
-    if (shouldUseFallback) {
-      handleFallbackShare();
-    } else {
-      handleFacebookSDKShare();
-    }
-  };
-
   return (
     <Button
-      onClick={handleShare}
-      disabled={isSharing}
+      onClick={handleFacebookShare}
       className="bg-blue-600 hover:bg-blue-700 text-white font-semibold flex items-center gap-2"
     >
       {copied ? (
         <CheckCircle className="w-4 h-4" />
-      ) : shouldUseFallback ? (
-        <Copy className="w-4 h-4" />
       ) : (
         <Facebook className="w-4 h-4" />
       )}
-      {isSharing 
-        ? "Sharing..." 
-        : copied 
-          ? "Copied!" 
-          : shouldUseFallback 
-            ? "Copy & Post to FB" 
-            : "Share to Facebook"
-      }
+      {copied ? "Copied!" : "Copy & Post to Facebook"}
     </Button>
   );
 };
