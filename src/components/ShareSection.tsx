@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Share2, Copy, CheckCircle } from "lucide-react";
@@ -23,12 +22,13 @@ We're planning a nationwide social media takeover — and you can be part of it.
 
 #FacingFentanyl #FentanylAwarenessDay #DrugAwareness #EndOverdose #OnePillCanKill`;
 
-  const twitterText = `💔 Join the movement to honor lives lost and raise awareness.
+  const twitterText = `💔 I'm joining the movement for National Fentanyl Prevention and Awareness Day.
 
-We're planning a social media takeover on Aug 21 for #FentanylAwarenessDay. Let's flood every feed with truth and remembrance.
+August 21 is our day to raise awareness & post life-saving prevention facts. 
 
-👉 Sign up for a reminder: ${shareUrl}
-#FacingFentanyl #EndOverdose #OnePillCanKill`;
+👉 Sign up for a reminder: https://facingfentanylnow.aware-share.com/
+
+#FacingFentanyl #NationalFentanylPreventionandAwarenessDay`;
 
   const handleTwitterShare = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(twitterText)}&url=${encodeURIComponent(imageUrl)}`;
