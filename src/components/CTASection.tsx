@@ -99,9 +99,9 @@ Here's how YOU can participate:
 
 Join thousands taking action nationwide. Together we can end this crisis.
 
-👉 Sign up for a reminder: ${shareUrl}
+👉 Sign up for a reminder: https://facingfentanylnow.aware-share.com/
 
-#FacingFentanyl #FentanylPreventionDay #FentanylAwarenessDay #SaveLives`;
+#FacingFentanyl #NationalFentanylPreventionandAwarenessDay`;
 
   const twitterText = `💔 I'm joining the movement for National Fentanyl Prevention and Awareness Day.
 
