@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings, ChevronDown, ChevronUp } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import EnhancedFacebookShare from "./EnhancedFacebookShare";
+import { isAdminMode } from "@/utils/adminMode";
 
 const CTASection = () => {
   const [copied, setCopied] = useState(false);
@@ -15,7 +16,12 @@ const CTASection = () => {
   const [showTestSettings, setShowTestSettings] = useState(false);
   const [testDateOffset, setTestDateOffset] = useState(1);
   const [isMessageExpanded, setIsMessageExpanded] = useState(false);
+  const [showAdminControls, setShowAdminControls] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setShowAdminControls(isAdminMode());
+  }, []);
 
   // Calendar functionality
   const eventDetails = {
@@ -196,15 +202,17 @@ August 21 is our day to make our voices heard and save lives through action...`;
             <div className="mb-3">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-white font-semibold">Get Your Reminder</h4>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowTestSettings(!showTestSettings)}
-                  className="text-gray-400 hover:text-white p-1"
-                >
-                  <Settings className="w-4 h-4" />
-                </Button>
+                {showAdminControls && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowTestSettings(!showTestSettings)}
+                    className="text-gray-400 hover:text-white p-1"
+                  >
+                    <Settings className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
               <p className="text-gray-300 text-sm">
                 We'll remind you to take action on National Fentanyl Prevention & Awareness Day

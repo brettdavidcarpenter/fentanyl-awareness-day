@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { isAdminMode } from "@/utils/adminMode";
 
 const HeroSection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -18,7 +19,8 @@ const HeroSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testMode, setTestMode] = useState(false);
   const [showTestSettings, setShowTestSettings] = useState(false);
-  const [testDateOffset, setTestDateOffset] = useState(1); // Default 1 day for testing
+  const [testDateOffset, setTestDateOffset] = useState(1);
+  const [showAdminControls, setShowAdminControls] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -36,6 +38,10 @@ const HeroSection = () => {
       }
     }, 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    setShowAdminControls(isAdminMode());
   }, []);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -159,15 +165,17 @@ const HeroSection = () => {
                 <h2 className="text-xl md:text-2xl font-bold text-white">
                   Get Ready to Act
                 </h2>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowTestSettings(!showTestSettings)}
-                  className="text-gray-400 hover:text-white p-1"
-                >
-                  <Settings className="w-4 h-4" />
-                </Button>
+                {showAdminControls && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowTestSettings(!showTestSettings)}
+                    className="text-gray-400 hover:text-white p-1"
+                  >
+                    <Settings className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
               <p className="text-gray-300 text-sm">
                 We'll remind you to take action on National Fentanyl Prevention & Awareness Day
@@ -235,4 +243,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
