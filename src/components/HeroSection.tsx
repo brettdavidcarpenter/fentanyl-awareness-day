@@ -101,15 +101,15 @@ const HeroSection = () => {
         {/* Main branding */}
         <div className="mb-16 md:mb-20">
           <div className="mb-12">
-            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-40 md:h-48 lg:h-56 object-contain" />
+            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-24 md:h-32 lg:h-36 object-contain" />
           </div>
           
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-12 leading-tight tracking-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-12 leading-tight tracking-tight">
             Make a post.<br />
             <span className="text-blue-300">Make an impact.</span>
           </h1>
           
-          <p className="text-3xl md:text-4xl lg:text-5xl text-blue-200 font-semibold mb-6 leading-tight">
+          <p className="text-xl md:text-2xl lg:text-3xl text-blue-200 font-semibold mb-6 leading-tight">
             Taking action together saves lives
           </p>
         </div>
@@ -119,7 +119,7 @@ const HeroSection = () => {
           {/* Countdown Card - Takes 3/5 of the width on desktop */}
           <div className="md:col-span-3 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8 lg:p-10">
             <div className="text-center mb-6">
-              <h2 className="text-xl md:text-2xl font-semibold text-white mb-3">National Fentanyl Prevention & Awareness Day</h2>
+              <h2 className="text-lg md:text-xl font-semibold text-white mb-3">National Fentanyl Prevention & Awareness Day</h2>
               
               {/* Senate Resolution Badge */}
               <a 
@@ -136,24 +136,24 @@ const HeroSection = () => {
             
             <div className="grid grid-cols-4 gap-3 md:gap-6">
               <div className="text-center">
-                <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-blue-300">{timeLeft.days}</div>
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-300">{timeLeft.days}</div>
                 <div className="text-gray-300 text-sm md:text-base">DAYS</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-blue-300">{timeLeft.hours}</div>
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-300">{timeLeft.hours}</div>
                 <div className="text-gray-300 text-sm md:text-base">HOURS</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-blue-300">{timeLeft.minutes}</div>
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-300">{timeLeft.minutes}</div>
                 <div className="text-gray-300 text-sm md:text-base">MINUTES</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-blue-300">{timeLeft.seconds}</div>
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-300">{timeLeft.seconds}</div>
                 <div className="text-gray-300 text-sm md:text-base">SECONDS</div>
               </div>
             </div>
             
-            <div className="text-xl md:text-2xl lg:text-3xl text-blue-200 font-semibold mt-4">
+            <div className="text-lg md:text-xl lg:text-2xl text-blue-200 font-semibold mt-4">
               AUGUST 21, 2025
             </div>
           </div>
@@ -162,7 +162,7 @@ const HeroSection = () => {
           <div className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8 lg:p-10">
             <div className="mb-4">
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
+                <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-white">
                   Get Ready to Act
                 </h2>
                 {showAdminControls && (

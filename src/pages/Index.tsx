@@ -14,13 +14,13 @@ const Index = () => {
           <div className="max-w-7xl mx-auto">
             <div className="mb-8">
               <Heart className="w-12 h-12 text-blue-400 mx-auto mb-6" />
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
                 What you can do
               </h2>
-              <p className="text-xl md:text-2xl text-blue-200 mb-3 font-medium">
+              <p className="text-lg md:text-xl text-blue-200 mb-3 font-medium">
                 Join thousands taking action nationwide
               </p>
-              <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+              <p className="text-base md:text-lg text-gray-300 leading-relaxed">
                 Every voice matters. Every story saves lives. Choose how you want to make a difference.
               </p>
             </div>

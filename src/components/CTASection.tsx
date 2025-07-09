@@ -1,3 +1,4 @@
+
 import { TrackedButton } from "@/components/TrackedButton";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings, ChevronDown, ChevronUp } from "lucide-react";
@@ -166,38 +167,38 @@ August 21 is our day to make our voices heard and save lives through action...`;
           <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 md:p-10 lg:p-12 flex flex-col">
             <div className="text-center mb-10">
               <Target className="w-14 h-14 text-blue-400 mx-auto mb-6" />
-              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">
+              <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">
                 Plan to Take Action
               </h3>
-              <p className="text-lg md:text-xl text-gray-300">
+              <p className="text-base md:text-lg text-gray-300">
                 Mark your calendar for National Fentanyl Prevention & Awareness Day
               </p>
             </div>
 
             <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 md:p-8 mb-8 flex-grow">
-              <h4 className="text-white font-semibold mb-4 text-lg md:text-xl">{eventDetails.title}</h4>
-              <p className="text-blue-200 text-base md:text-lg mb-4">📅 August 21, 2025</p>
+              <h4 className="text-white font-semibold mb-4 text-base md:text-lg">{eventDetails.title}</h4>
+              <p className="text-blue-200 text-sm md:text-base mb-4">📅 August 21, 2025</p>
               
               <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-3 text-gray-300 text-base md:text-lg">
+                <div className="flex items-center gap-3 text-gray-300 text-sm md:text-base">
                   <span className="text-blue-300 text-xl">•</span> Share your story or tribute
                 </div>
-                <div className="flex items-center gap-3 text-gray-300 text-base md:text-lg">
+                <div className="flex items-center gap-3 text-gray-300 text-sm md:text-base">
                   <span className="text-blue-300 text-xl">•</span> Honor someone you've lost
                 </div>
-                <div className="flex items-center gap-3 text-gray-300 text-base md:text-lg">
+                <div className="flex items-center gap-3 text-gray-300 text-sm md:text-base">
                   <span className="text-blue-300 text-xl">•</span> Spread life-saving facts
                 </div>
               </div>
               
-              <p className="text-blue-200 text-base md:text-lg font-medium">
+              <p className="text-blue-200 text-sm md:text-base font-medium">
                 Make your voice heard. Save lives through action.
               </p>
             </div>
 
             <div className="mb-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-white font-semibold text-lg md:text-xl">Get Your Reminder</h4>
+                <h4 className="text-white font-semibold text-base md:text-lg">Get Your Reminder</h4>
                 {showAdminControls && (
                   <TrackedButton
                     type="button"
@@ -213,7 +214,7 @@ August 21 is our day to make our voices heard and save lives through action...`;
                   </TrackedButton>
                 )}
               </div>
-              <p className="text-gray-300 text-base">
+              <p className="text-gray-300 text-sm md:text-base">
                 We'll remind you to take action on National Fentanyl Prevention & Awareness Day
               </p>
             </div>
@@ -292,17 +293,17 @@ August 21 is our day to make our voices heard and save lives through action...`;
           <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 md:p-10 lg:p-12 flex flex-col">
             <div className="text-center mb-10">
               <Users className="w-14 h-14 text-blue-400 mx-auto mb-6" />
-              <h3 className="text-3xl md:text-4xl font-semibold text-white mb-4">
+              <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">
                 Spread the Word About the Upcoming Event
               </h3>
-              <p className="text-lg md:text-xl text-gray-300">
+              <p className="text-base md:text-lg text-gray-300">
                 Help build momentum by inviting your friends and network to join the movement
               </p>
             </div>
 
             <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 md:p-8 mb-8 flex-grow">
               <div className="flex items-center justify-between mb-4">
-                <h4 className="text-white font-semibold text-lg md:text-xl">Share This Message:</h4>
+                <h4 className="text-white font-semibold text-base md:text-lg">Share This Message:</h4>
                 <TrackedButton
                   type="button"
                   variant="ghost"
@@ -317,7 +318,7 @@ August 21 is our day to make our voices heard and save lives through action...`;
                 </TrackedButton>
               </div>
               
-              <p className="text-blue-100 text-sm md:text-base leading-relaxed mb-6">
+              <p className="text-blue-100 text-sm leading-relaxed mb-6">
                 {isMessageExpanded ? facebookText : condensedMessage}
               </p>
               
@@ -336,14 +337,14 @@ August 21 is our day to make our voices heard and save lives through action...`;
                 </TrackedButton>
               )}
               
-              <p className="text-blue-200 text-base md:text-lg font-medium">
+              <p className="text-blue-200 text-sm md:text-base font-medium">
                 Build awareness now. Every invitation helps grow the movement before August 21st.
               </p>
             </div>
 
             <div className="mb-4">
-              <h4 className="text-white font-semibold mb-3 text-lg md:text-xl">Share with Your Network</h4>
-              <p className="text-gray-300 text-base">
+              <h4 className="text-white font-semibold mb-3 text-base md:text-lg">Share with Your Network</h4>
+              <p className="text-gray-300 text-sm md:text-base">
                 Every post helps create momentum
               </p>
             </div>
