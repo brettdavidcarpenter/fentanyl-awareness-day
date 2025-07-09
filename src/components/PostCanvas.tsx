@@ -29,34 +29,39 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
     return (
       <div 
         id="post-canvas" 
-        className="relative w-[540px] h-[540px] mx-auto shadow-lg overflow-hidden bg-gradient-to-b from-black to-blue-900"
+        className="relative w-[540px] h-[540px] mx-auto shadow-lg overflow-hidden bg-gradient-to-r from-black to-blue-900"
         style={{ fontSize: '16px' }}
       >
-        {/* Top Section - Photo with dynamic black frame (60% height) */}
-        <div className="w-full h-[324px] flex items-center justify-center p-8">
-          <div className="bg-black p-3 shadow-xl">
-            <img 
-              src={getImageSrc()}
-              alt="Memorial photo"
-              className="max-w-[260px] max-h-[260px] w-auto h-auto object-cover"
-            />
+        {/* Central Black Frame containing all content */}
+        <div className="w-full h-full flex items-center justify-center p-12">
+          <div className="bg-black p-8 shadow-2xl flex flex-col items-center justify-between min-h-[420px]">
+            
+            {/* Photo Section */}
+            <div className="flex items-center justify-center mb-6">
+              <img 
+                src={getImageSrc()}
+                alt="Memorial photo"
+                className="max-w-[280px] max-h-[280px] w-auto h-auto object-cover"
+              />
+            </div>
+            
+            {/* Text Section */}
+            <div className="flex items-center justify-center px-4 mb-6 flex-1">
+              <p className="text-white font-kalam text-2xl italic text-center leading-relaxed">
+                {getMessage()}
+              </p>
+            </div>
+            
+            {/* Logo Section */}
+            <div className="flex items-center justify-end w-full">
+              <img 
+                src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
+                alt="Facing Fentanyl Logo"
+                className="h-12 w-auto"
+              />
+            </div>
+            
           </div>
-        </div>
-        
-        {/* Middle Section - Cursive text (30% height) */}
-        <div className="w-full h-[162px] flex items-center justify-center px-8">
-          <p className="text-white font-kalam text-2xl italic text-center leading-relaxed">
-            {getMessage()}
-          </p>
-        </div>
-        
-        {/* Bottom Section - Logo (10% height) */}
-        <div className="w-full h-[54px] flex items-center justify-end px-6">
-          <img 
-            src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
-            alt="Facing Fentanyl Logo"
-            className="h-12 w-auto"
-          />
         </div>
       </div>
     );
