@@ -84,24 +84,11 @@ const DayOfExperience = () => {
     <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <TrackedButton 
-            variant="outline" 
-            onClick={() => navigate('/')} 
-            className="text-white border-white hover:bg-white hover:text-black"
-            trackingName="navigation_back_home"
-            trackingCategory="navigation"
-            trackingPage="day_of_experience"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </TrackedButton>
-          
+        <div className="flex items-center justify-end mb-8">
           {currentStep !== 'persona' && (
             <TrackedButton 
-              variant="outline" 
               onClick={resetToStart} 
-              className="text-white border-white hover:bg-white hover:text-black"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
               trackingName="navigation_start_over"
               trackingCategory="navigation"
               trackingPage="day_of_experience"
