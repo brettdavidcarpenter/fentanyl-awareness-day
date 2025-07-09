@@ -55,7 +55,7 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
           <img 
             src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
             alt="Facing Fentanyl Logo"
-            className="h-8 w-auto"
+            className="h-12 w-auto"
           />
         </div>
       </div>
