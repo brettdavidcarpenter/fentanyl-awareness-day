@@ -6,9 +6,10 @@ import { useToast } from "@/hooks/use-toast";
 interface SocialShareProps {
   imageUrl: string;
   message: string;
+  isGenerating?: boolean;
 }
 
-const SocialShare = ({ imageUrl, message }: SocialShareProps) => {
+const SocialShare = ({ imageUrl, message, isGenerating = false }: SocialShareProps) => {
   const { toast } = useToast();
 
   const shareText = `${message} #FacingFentanyl #FentanylAwarenessDay`;
@@ -65,12 +66,21 @@ const SocialShare = ({ imageUrl, message }: SocialShareProps) => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
-      <h3 className="text-lg font-semibold mb-4 text-center">Share Your Post</h3>
+      <h3 className="text-lg font-semibold mb-4 text-center">
+        {isGenerating ? "Preparing Your Post..." : "Share Your Post"}
+      </h3>
+      
+      {isGenerating && (
+        <div className="text-center mb-4">
+          <p className="text-sm text-gray-600">Your post will be ready to share in a moment!</p>
+        </div>
+      )}
       
       <div className="grid grid-cols-2 gap-3 mb-4">
         <TrackedButton 
           onClick={shareToTwitter} 
           className="flex items-center gap-2"
+          disabled={isGenerating || !imageUrl}
           trackingName="post_share_twitter"
           trackingCategory="post_sharing"
           trackingPage="day_of_experience"
@@ -83,6 +93,7 @@ const SocialShare = ({ imageUrl, message }: SocialShareProps) => {
         <TrackedButton 
           onClick={shareToFacebook} 
           className="flex items-center gap-2"
+          disabled={isGenerating || !imageUrl}
           trackingName="post_share_facebook"
           trackingCategory="post_sharing"
           trackingPage="day_of_experience"
@@ -96,6 +107,7 @@ const SocialShare = ({ imageUrl, message }: SocialShareProps) => {
           onClick={downloadImage} 
           variant="outline" 
           className="flex items-center gap-2"
+          disabled={isGenerating || !imageUrl}
           trackingName="post_download_image"
           trackingCategory="post_sharing"
           trackingPage="day_of_experience"
@@ -109,6 +121,7 @@ const SocialShare = ({ imageUrl, message }: SocialShareProps) => {
           onClick={shareNative} 
           variant="outline" 
           className="flex items-center gap-2"
+          disabled={isGenerating}
           trackingName="post_native_share"
           trackingCategory="post_sharing"
           trackingPage="day_of_experience"
@@ -119,8 +132,10 @@ const SocialShare = ({ imageUrl, message }: SocialShareProps) => {
         </TrackedButton>
       </div>
       
-      <div className="text-xs text-gray-500 text-center">
-        <p>Instagram: Save image and post manually</p>
+      <div className="text-xs text-gray-500 text-center space-y-1">
+        <p><strong>Instagram:</strong> Save image and post manually</p>
+        <p><strong>WhatsApp:</strong> Download and share the image directly</p>
+        {imageUrl && <p className="text-green-600">✓ Your post is ready to share!</p>}
       </div>
     </div>
   );
