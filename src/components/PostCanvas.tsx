@@ -1,3 +1,5 @@
+import { QRCodeSVG } from 'qrcode.react';
+
 interface PostCanvasProps {
   template: any;
   personalization?: any;
@@ -24,6 +26,7 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
   };
 
   const isFamilyPost = template?.postType === 'family-template' || template?.postType === 'family-custom';
+  const qrCodeUrl = window.location.origin + '/day-of-experience';
 
   if (isFamilyPost) {
     return (
@@ -33,7 +36,12 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
         style={{ fontSize: '16px' }}
       >
         {/* Central Black Frame containing all content */}
-        <div className="w-full h-full flex items-center justify-center p-12">
+        <div className="w-full h-full flex items-center justify-center p-12 relative">
+          {/* QR Code - Top Right */}
+          <div className="absolute top-4 right-4 bg-white p-2 rounded">
+            <QRCodeSVG value={qrCodeUrl} size={48} />
+          </div>
+          
           <div className="bg-black p-8 shadow-2xl flex flex-col items-center justify-between min-h-[420px]">
             
             {/* Photo Section */}
@@ -76,6 +84,11 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
       className="relative w-[540px] h-[540px] mx-auto bg-black shadow-lg overflow-hidden"
       style={{ fontSize: '16px' }}
     >
+      {/* QR Code - Top Right */}
+      <div className="absolute top-4 right-4 bg-white p-2 rounded z-10">
+        <QRCodeSVG value={qrCodeUrl} size={48} />
+      </div>
+      
       {/* Top Section - User Photo (65% height) */}
       <div className="relative w-full h-[351px] overflow-hidden">
         <img 
