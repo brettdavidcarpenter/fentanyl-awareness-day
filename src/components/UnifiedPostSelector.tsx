@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -61,12 +62,7 @@ const UnifiedPostSelector = ({ persona, onTemplateSelect, onCustomPost, onBack }
 
   const handleQuickPost = () => {
     if (primaryTemplate) {
-      // For family persona, we might need personalization
-      if (persona === 'family') {
-        onTemplateSelect(primaryTemplate, { type: 'quick' });
-      } else {
-        onTemplateSelect(primaryTemplate, { type: 'quick' });
-      }
+      onTemplateSelect(primaryTemplate, { type: 'quick' });
     }
   };
 
@@ -108,6 +104,17 @@ const UnifiedPostSelector = ({ persona, onTemplateSelect, onCustomPost, onBack }
               <CardDescription>{config.quickDescription}</CardDescription>
             </CardHeader>
             <CardContent>
+              {/* Preview Image */}
+              {primaryTemplate?.imagePath && (
+                <div className="mb-4">
+                  <img 
+                    src={primaryTemplate.imagePath}
+                    alt="Template preview"
+                    className="w-full h-32 object-cover rounded border mb-2"
+                  />
+                  <p className="text-xs text-muted-foreground">Preview of template image</p>
+                </div>
+              )}
               <TrackedButton 
                 className="w-full"
                 trackingName={`quick_post_${persona}`}
@@ -130,6 +137,10 @@ const UnifiedPostSelector = ({ persona, onTemplateSelect, onCustomPost, onBack }
               <CardDescription>{config.uploadDescription}</CardDescription>
             </CardHeader>
             <CardContent>
+              <div className="mb-4 p-4 border-2 border-dashed border-gray-300 rounded text-center">
+                <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                <p className="text-sm text-gray-500">Click to upload your own image</p>
+              </div>
               <TrackedButton 
                 variant="secondary"
                 className="w-full"
@@ -165,13 +176,23 @@ const UnifiedPostSelector = ({ persona, onTemplateSelect, onCustomPost, onBack }
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Preview Message</CardTitle>
+            <CardTitle>Preview</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              This message will be provided as a caption you can copy:
-            </p>
+            {/* Image Preview */}
+            {primaryTemplate?.imagePath && (
+              <div className="mb-4">
+                <img 
+                  src={primaryTemplate.imagePath}
+                  alt="Post image"
+                  className="w-full max-w-md mx-auto rounded border"
+                />
+              </div>
+            )}
+            
+            {/* Message Preview */}
             <div className="bg-muted p-4 rounded border">
+              <p className="text-sm font-medium mb-2">Caption:</p>
               <p>{primaryTemplate?.message}</p>
             </div>
           </CardContent>
