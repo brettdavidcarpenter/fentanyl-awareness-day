@@ -32,35 +32,33 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
         className="relative w-[540px] h-[540px] mx-auto bg-black shadow-lg overflow-hidden"
         style={{ fontSize: '16px' }}
       >
-        {/* Main content area */}
-        <div className="w-full h-[486px] bg-black flex items-center justify-center p-8">
-          {/* Polaroid-style photo frame */}
-          <div className="bg-white p-4 pb-12 shadow-2xl transform rotate-1">
-            <div className="w-[300px] h-[300px] overflow-hidden">
-              <img 
-                src={getImageSrc()}
-                alt="Memorial photo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Text written below photo like on a polaroid */}
-            <div className="mt-4 text-center">
-              <p className="font-kalam text-lg text-gray-800 italic transform -rotate-1">
-                {getMessage()}
-              </p>
-            </div>
+        {/* Top Section - Photo with black frame (60% height) */}
+        <div className="w-full h-[324px] bg-black flex items-center justify-center p-6">
+          <div className="border-2 border-black bg-black p-2">
+            <img 
+              src={getImageSrc()}
+              alt="Memorial photo"
+              className="w-[280px] h-[280px] object-cover"
+            />
           </div>
         </div>
         
-        {/* Bottom Section - Blue gradient with branding (10% height) */}
-        <div className="w-full h-[54px] bg-gradient-to-b from-blue-900 to-blue-600 flex items-center justify-between px-6">
-          <div className="text-white text-xs font-medium">
-            facingfentanylnow.org
-          </div>
-          
-          {/* Logo */}
-          <div className="text-white text-xs font-bold tracking-wider border border-white/30 px-2 py-1">
-            FACING FENTANYL
+        {/* Middle Section - Cursive text on black background (30% height) */}
+        <div className="w-full h-[162px] bg-black flex items-center justify-center px-6">
+          <p className="text-white font-kalam text-2xl italic text-center leading-relaxed">
+            {getMessage()}
+          </p>
+        </div>
+        
+        {/* Bottom Section - Branding on black background (10% height) */}
+        <div className="w-full h-[54px] bg-black flex items-center justify-end px-6">
+          <div className="text-right">
+            <div className="text-white text-xs font-bold tracking-wider">
+              FACING FENTANYL
+            </div>
+            <div className="text-white text-xs font-medium">
+              facingfentanylnow.org
+            </div>
           </div>
         </div>
       </div>
