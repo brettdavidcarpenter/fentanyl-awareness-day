@@ -33,9 +33,9 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
     
     const template = {
       id: 'family-template',
-      title: 'In Memory Template',
+      title: 'Quick Post Template',
       message: `Today I honor ${name}. Your light continues to inspire change.`,
-      imagePath: '/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png',
+      imagePath: '/lovable-uploads/caecc2b0-cc0f-417e-97c2-3cf3c6c308c2.png',
       customizable: true,
       postType: 'family-template'
     };
@@ -71,7 +71,7 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Heart className="w-5 h-5" />
-              Honor with Our Image
+              Quick Post
             </CardTitle>
             <CardDescription>
               Create a memorial post using our provided image
@@ -81,7 +81,7 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
             {/* Preview of template */}
             <div className="relative w-full h-48 bg-gray-100 rounded-lg overflow-hidden">
               <img 
-                src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png"
+                src="/lovable-uploads/caecc2b0-cc0f-417e-97c2-3cf3c6c308c2.png"
                 alt="Template preview"
                 className="w-full h-full object-cover"
               />
@@ -210,7 +210,7 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Heart className="w-5 h-5" />
-              Honor with Our Image
+              Quick Post
             </CardTitle>
             <CardDescription>
               Use our provided image with personalized text
@@ -219,7 +219,7 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
           <CardContent>
             <div className="aspect-square bg-gray-100 rounded-lg mb-4 overflow-hidden">
               <img 
-                src="/lovable-uploads/c3845ee9-b4b7-4a9a-946b-adeb1c279481.png"
+                src="/lovable-uploads/caecc2b0-cc0f-417e-97c2-3cf3c6c308c2.png"
                 alt="Template option"
                 className="w-full h-full object-cover"
               />
