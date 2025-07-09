@@ -37,9 +37,13 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
       >
         {/* Central Black Frame containing all content */}
         <div className="w-full h-full flex items-center justify-center p-12 relative">
-          {/* QR Code - Top Right */}
-          <div className="absolute top-4 right-4 bg-white p-2 rounded">
-            <QRCodeSVG value={qrCodeUrl} size={48} />
+          {/* Logo - Bottom Right of entire post */}
+          <div className="absolute bottom-4 right-4">
+            <img 
+              src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
+              alt="Facing Fentanyl Logo"
+              className="h-12 w-auto"
+            />
           </div>
           
           <div className="bg-black p-8 shadow-2xl flex flex-col items-center justify-between min-h-[420px]">
@@ -53,7 +57,7 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
               />
             </div>
             
-            {/* Bottom Section - Text and Logo aligned */}
+            {/* Bottom Section - Text and QR Code aligned */}
             <div className="flex items-end justify-between w-full px-4">
               {/* Left side - Cursive text */}
               <div className="flex-1">
@@ -62,13 +66,11 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
                 </p>
               </div>
               
-              {/* Right side - Logo */}
+              {/* Right side - QR Code */}
               <div className="flex items-end">
-                <img 
-                  src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
-                  alt="Facing Fentanyl Logo"
-                  className="h-12 w-auto"
-                />
+                <div className="bg-white p-2 rounded">
+                  <QRCodeSVG value={qrCodeUrl} size={48} />
+                </div>
               </div>
             </div>
             
@@ -84,9 +86,13 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
       className="relative w-[540px] h-[540px] mx-auto bg-black shadow-lg overflow-hidden"
       style={{ fontSize: '16px' }}
     >
-      {/* QR Code - Top Right */}
-      <div className="absolute top-4 right-4 bg-white p-2 rounded z-10">
-        <QRCodeSVG value={qrCodeUrl} size={48} />
+      {/* Logo - Bottom Right of entire post */}
+      <div className="absolute bottom-4 right-4 z-10">
+        <img 
+          src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
+          alt="Facing Fentanyl Logo"
+          className="h-12 w-auto"
+        />
       </div>
       
       {/* Top Section - User Photo (65% height) */}
@@ -111,9 +117,9 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
           facingfentanylnow.org
         </div>
         
-        {/* Logo */}
-        <div className="text-white text-xs font-bold tracking-wider border border-white/30 px-2 py-1">
-          FACING FENTANYL
+        {/* QR Code where logo used to be */}
+        <div className="bg-white p-1 rounded">
+          <QRCodeSVG value={qrCodeUrl} size={36} />
         </div>
       </div>
     </div>
