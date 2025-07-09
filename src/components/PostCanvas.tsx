@@ -1,4 +1,3 @@
-
 interface PostCanvasProps {
   template: any;
   personalization?: any;
@@ -23,6 +22,50 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
     if (customImage) return customImage;
     return template.imagePath;
   };
+
+  const isFamilyPost = template?.postType === 'family-template' || template?.postType === 'family-custom';
+
+  if (isFamilyPost) {
+    return (
+      <div 
+        id="post-canvas" 
+        className="relative w-[540px] h-[540px] mx-auto bg-black shadow-lg overflow-hidden"
+        style={{ fontSize: '16px' }}
+      >
+        {/* Main content area */}
+        <div className="w-full h-[486px] bg-black flex items-center justify-center p-8">
+          {/* Polaroid-style photo frame */}
+          <div className="bg-white p-4 pb-12 shadow-2xl transform rotate-1">
+            <div className="w-[300px] h-[300px] overflow-hidden">
+              <img 
+                src={getImageSrc()}
+                alt="Memorial photo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* Text written below photo like on a polaroid */}
+            <div className="mt-4 text-center">
+              <p className="font-kalam text-lg text-gray-800 italic transform -rotate-1">
+                {getMessage()}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Bottom Section - Blue gradient with branding (10% height) */}
+        <div className="w-full h-[54px] bg-gradient-to-b from-blue-900 to-blue-600 flex items-center justify-between px-6">
+          <div className="text-white text-xs font-medium">
+            facingfentanylnow.org
+          </div>
+          
+          {/* Logo */}
+          <div className="text-white text-xs font-bold tracking-wider border border-white/30 px-2 py-1">
+            FACING FENTANYL
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 

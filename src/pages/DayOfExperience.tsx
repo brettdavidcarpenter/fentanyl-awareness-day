@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import PersonaSelection from '@/components/PersonaSelection';
 import TemplateSelector from '@/components/TemplateSelector';
 import CustomPostCreator from '@/components/CustomPostCreator';
+import FamilyPostSelector from '@/components/FamilyPostSelector';
 import PostCanvas from '@/components/PostCanvas';
 import SocialShare from '@/components/SocialShare';
 import { usePostGeneration } from '@/hooks/usePostGeneration';
@@ -39,13 +40,15 @@ const DayOfExperience = () => {
   const handleCustomPost = (customPostData: any) => {
     setCustomData(customPostData);
     setSelectedTemplate({
-      message: customPostData.text,
-      imagePath: customPostData.image
+      message: customPostData.customText || customPostData.text,
+      imagePath: customPostData.customImage || customPostData.image,
+      postType: customPostData.postType || 'custom'
     });
     setCurrentStep('preview');
     generatePost({
-      message: customPostData.text,
-      imagePath: customPostData.image
+      message: customPostData.customText || customPostData.text,
+      imagePath: customPostData.customImage || customPostData.image,
+      postType: customPostData.postType || 'custom'
     });
   };
 
@@ -123,7 +126,14 @@ const DayOfExperience = () => {
             <PersonaSelection onPersonaSelect={handlePersonaSelect} />
           )}
 
-          {currentStep === 'templates' && (
+          {currentStep === 'templates' && selectedPersona === 'family' && (
+            <FamilyPostSelector
+              onTemplateSelect={handleTemplateSelect}
+              onCustomPost={handleCustomPost}
+            />
+          )}
+
+          {currentStep === 'templates' && selectedPersona !== 'family' && (
             <TemplateSelector
               persona={selectedPersona}
               onTemplateSelect={handleTemplateSelect}
