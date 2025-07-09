@@ -47,8 +47,8 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
             
             {/* Text Section */}
             <div className="flex items-center justify-center px-4 mb-6 flex-1">
-              <p className="text-white font-kalam text-2xl italic text-center leading-relaxed">
-                {getMessage()}
+              <p className="text-white font-kalam text-2xl italic text-center leading-relaxed transform -rotate-12">
+                share the message<br />save a life
               </p>
             </div>
             
