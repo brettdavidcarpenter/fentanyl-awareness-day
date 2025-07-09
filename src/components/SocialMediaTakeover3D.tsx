@@ -1,7 +1,7 @@
 
 import { Canvas } from '@react-three/fiber';
 import { Text, Float, OrbitControls } from '@react-three/drei';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, Suspense } from 'react';
 import { Mesh, Group } from 'three';
 import { useFrame } from '@react-three/fiber';
 
@@ -78,7 +78,7 @@ function SocialCard({ platform, index }: SocialCardProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % platform.messages.length);
-    }, 3000 + index * 500); // Staggered timing
+    }, 3000 + index * 500);
 
     return () => clearInterval(interval);
   }, [platform.messages.length, index]);
@@ -103,19 +103,18 @@ function SocialCard({ platform, index }: SocialCardProps) {
           <meshStandardMaterial color={platform.color} />
         </mesh>
         
-        {/* Platform name */}
+        {/* Platform name - removed custom font */}
         <Text
           position={[0, 0.3, 0.06]}
           fontSize={0.15}
           color="white"
           anchorX="center"
           anchorY="middle"
-          font="/fonts/inter-bold.woff"
         >
           {platform.name}
         </Text>
         
-        {/* Awareness message */}
+        {/* Awareness message - removed custom font */}
         <Text
           position={[0, -0.1, 0.06]}
           fontSize={0.12}
@@ -124,12 +123,11 @@ function SocialCard({ platform, index }: SocialCardProps) {
           anchorY="middle"
           maxWidth={1.8}
           textAlign="center"
-          font="/fonts/inter-regular.woff"
         >
           {platform.messages[messageIndex]}
         </Text>
         
-        {/* Call to action */}
+        {/* Call to action - removed custom font */}
         <Text
           position={[0, -0.4, 0.06]}
           fontSize={0.08}
@@ -138,7 +136,6 @@ function SocialCard({ platform, index }: SocialCardProps) {
           anchorY="middle"
           maxWidth={1.8}
           textAlign="center"
-          font="/fonts/inter-regular.woff"
         >
           Join the movement • Aug 21
         </Text>
@@ -148,11 +145,14 @@ function SocialCard({ platform, index }: SocialCardProps) {
 }
 
 function Scene() {
+  console.log('3D Scene rendering...');
+  
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      <pointLight position={[0, 0, 5]} intensity={0.5} />
+      {/* Improved lighting setup */}
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[10, 10, 5]} intensity={1.2} />
+      <pointLight position={[0, 0, 5]} intensity={0.8} color="#ffffff" />
       
       {socialPlatforms.map((platform, index) => (
         <SocialCard key={platform.name} platform={platform} index={index} />
@@ -170,7 +170,58 @@ function Scene() {
   );
 }
 
+function LoadingFallback() {
+  return (
+    <div className="h-96 w-full flex items-center justify-center">
+      <div className="text-white text-lg">Loading 3D experience...</div>
+    </div>
+  );
+}
+
+function ErrorFallback() {
+  return (
+    <div className="h-96 w-full flex items-center justify-center">
+      <div className="text-center text-white">
+        <div className="text-lg mb-2">3D visualization unavailable</div>
+        <div className="text-sm text-gray-300">Your posts will still create powerful impact on August 21st</div>
+      </div>
+    </div>
+  );
+}
+
 const SocialMediaTakeover3D = () => {
+  const [hasError, setHasError] = useState(false);
+
+  console.log('SocialMediaTakeover3D component rendering...');
+
+  if (hasError) {
+    return (
+      <section className="py-16 bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              The Social Media Takeover
+            </h2>
+            <p className="text-lg text-blue-200 mb-2">
+              Thousands of voices, one powerful message
+            </p>
+            <p className="text-gray-300">
+              See how your posts will join a nationwide movement on August 21st
+            </p>
+          </div>
+          
+          <ErrorFallback />
+          
+          <div className="text-center mt-8">
+            <p className="text-blue-200 text-sm">
+              Your posts will create real impact across all social platforms
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-16 bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="max-w-6xl mx-auto px-4">
@@ -187,12 +238,19 @@ const SocialMediaTakeover3D = () => {
         </div>
         
         <div className="h-96 w-full">
-          <Canvas
-            camera={{ position: [0, 0, 8], fov: 50 }}
-            style={{ background: 'transparent' }}
-          >
-            <Scene />
-          </Canvas>
+          <Suspense fallback={<LoadingFallback />}>
+            <Canvas
+              camera={{ position: [0, 0, 10], fov: 60 }}
+              style={{ background: 'transparent' }}
+              onCreated={() => console.log('Canvas created successfully')}
+              onError={(error) => {
+                console.error('Canvas error:', error);
+                setHasError(true);
+              }}
+            >
+              <Scene />
+            </Canvas>
+          </Suspense>
         </div>
         
         <div className="text-center mt-8">
