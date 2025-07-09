@@ -1,6 +1,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
+import SocialMediaTakeover3D from "@/components/SocialMediaTakeover3D";
 import { Shield, Heart } from "lucide-react";
 
 const Index = () => {
@@ -29,6 +30,9 @@ const Index = () => {
         
         {/* CTA Section */}
         <CTASection />
+        
+        {/* 3D Social Media Takeover Animation */}
+        <SocialMediaTakeover3D />
         
         {/* Facing Fentanyl Awareness Image Section */}
         <section className="py-12 text-center border-t border-white/10 mt-8">
