@@ -11,14 +11,14 @@ export const familyTemplates: PostTemplate[] = [
   {
     id: 'family-1',
     title: 'Honor & Remember',
-    message: 'Today I honor [Name]. Your light continues to inspire change. #FacingFentanyl #FentanylAwarenessDay',
+    message: 'Today I honor [Name]. Your light continues to inspire change.',
     imagePath: '/lovable-uploads/1a0ca659-f08d-4edc-b523-0f49ea25567a.png',
     customizable: true
   },
   {
     id: 'family-2',
     title: 'Loving Memory',
-    message: 'In loving memory of my [relationship] [Name]. Together we prevent other families from this heartbreak. #FacingFentanyl #PreventFentanyl',
+    message: 'In loving memory of my [relationship] [Name]. Together we prevent other families from this heartbreak.',
     imagePath: '/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png',
     customizable: true
   }
