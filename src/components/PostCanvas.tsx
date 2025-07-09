@@ -29,29 +29,29 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
     return (
       <div 
         id="post-canvas" 
-        className="relative w-[540px] h-[540px] mx-auto bg-black shadow-lg overflow-hidden"
+        className="relative w-[540px] h-[540px] mx-auto shadow-lg overflow-hidden bg-gradient-to-b from-black to-blue-900"
         style={{ fontSize: '16px' }}
       >
-        {/* Top Section - Photo with black frame (60% height) */}
-        <div className="w-full h-[324px] bg-black flex items-center justify-center p-6">
-          <div className="border-2 border-black bg-black p-2">
+        {/* Top Section - Photo with dynamic black frame (60% height) */}
+        <div className="w-full h-[324px] flex items-center justify-center p-8">
+          <div className="bg-black p-3 shadow-xl">
             <img 
               src={getImageSrc()}
               alt="Memorial photo"
-              className="w-[280px] h-[280px] object-cover"
+              className="max-w-[260px] max-h-[260px] w-auto h-auto object-cover"
             />
           </div>
         </div>
         
-        {/* Middle Section - Cursive text on black background (30% height) */}
-        <div className="w-full h-[162px] bg-black flex items-center justify-center px-6">
+        {/* Middle Section - Cursive text (30% height) */}
+        <div className="w-full h-[162px] flex items-center justify-center px-8">
           <p className="text-white font-kalam text-2xl italic text-center leading-relaxed">
             {getMessage()}
           </p>
         </div>
         
-        {/* Bottom Section - Logo on black background (10% height) */}
-        <div className="w-full h-[54px] bg-black flex items-center justify-end px-6">
+        {/* Bottom Section - Logo (10% height) */}
+        <div className="w-full h-[54px] flex items-center justify-end px-6">
           <img 
             src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
             alt="Facing Fentanyl Logo"
