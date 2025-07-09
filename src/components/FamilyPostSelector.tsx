@@ -199,11 +199,6 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold mb-2">Create Your Memorial Post</h2>
-        <p className="text-gray-600">Choose how you'd like to honor your loved one</p>
-      </div>
-
       <div className="grid md:grid-cols-2 gap-6">
         {/* Option 1: Use Template */}
         <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setSelectedOption('template')}>
