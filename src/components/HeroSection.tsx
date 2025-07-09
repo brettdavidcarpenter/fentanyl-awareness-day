@@ -104,12 +104,12 @@ const HeroSection = () => {
             <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-32 md:h-40 object-contain" />
           </div>
           
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight tracking-tight">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
             Make a post.<br />
             <span className="text-blue-300">Make an impact.</span>
           </h1>
           
-          <p className="text-2xl md:text-3xl text-blue-200 font-semibold mb-4 leading-tight">
+          <p className="text-2xl md:text-3xl text-blue-200 font-semibold mb-4">
             Taking action together saves lives
           </p>
         </div>
