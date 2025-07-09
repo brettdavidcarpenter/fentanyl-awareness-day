@@ -62,7 +62,7 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
         <Button 
           variant="ghost" 
           onClick={() => setSelectedOption(null)}
-          className="mb-4"
+          className="mb-4 text-white hover:text-gray-300"
         >
           ← Back to options
         </Button>
@@ -121,7 +121,7 @@ const FamilyPostSelector = ({ onTemplateSelect, onCustomPost }: FamilyPostSelect
         <Button 
           variant="ghost" 
           onClick={() => setSelectedOption(null)}
-          className="mb-4"
+          className="mb-4 text-white hover:text-gray-300"
         >
           ← Back to options
         </Button>
