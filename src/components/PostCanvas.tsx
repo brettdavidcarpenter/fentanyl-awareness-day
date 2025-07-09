@@ -50,16 +50,13 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
           </p>
         </div>
         
-        {/* Bottom Section - Branding on black background (10% height) */}
+        {/* Bottom Section - Logo on black background (10% height) */}
         <div className="w-full h-[54px] bg-black flex items-center justify-end px-6">
-          <div className="text-right">
-            <div className="text-white text-xs font-bold tracking-wider">
-              FACING FENTANYL
-            </div>
-            <div className="text-white text-xs font-medium">
-              facingfentanylnow.org
-            </div>
-          </div>
+          <img 
+            src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
+            alt="Facing Fentanyl Logo"
+            className="h-8 w-auto"
+          />
         </div>
       </div>
     );
