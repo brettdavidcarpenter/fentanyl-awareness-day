@@ -156,19 +156,19 @@ August 21 is our day to make our voices heard and save lives through action...`;
   };
 
   return (
-    <section className="py-8">
+    <section className="py-6">
       <div className="max-w-6xl mx-auto px-4">
         
         {/* Compact horizontal action strips */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           
           {/* Add to Calendar Strip */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-4">
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Calendar className="w-8 h-8 text-blue-400" />
+              <div className="flex items-center gap-3">
+                <Calendar className="w-6 h-6 text-blue-400" />
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Add to Your Calendar</h3>
+                  <h3 className="text-base font-semibold text-white">Add to Your Calendar</h3>
                   <p className="text-gray-300 text-sm">Never miss the action day - August 21, 2025</p>
                 </div>
               </div>
@@ -201,8 +201,7 @@ END:VCALENDAR`;
                     element.setAttribute('download', 'fentanyl-awareness-day.ics');
                     element.click();
                   }}
-                  variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                   trackingName="add_apple_calendar"
                   trackingCategory="calendar"
                   trackingPage="home_cta"
@@ -213,21 +212,20 @@ END:VCALENDAR`;
             </div>
           </Card>
 
-          {/* Share the Word Strip */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Users className="w-8 h-8 text-blue-400" />
+          {/* Share the Word Strip with Message Preview */}
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-3">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <Users className="w-6 h-6 text-blue-400" />
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Spread the Word Now</h3>
+                  <h3 className="text-base font-semibold text-white">Spread the Word Now</h3>
                   <p className="text-gray-300 text-sm">Help build momentum by inviting your network</p>
                 </div>
               </div>
               <div className="flex gap-2">
                 <TrackedButton
                   onClick={handleNativeShare}
-                  variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                   trackingName="copy_message_cta"
                   trackingCategory="social_share"
                   trackingPage="home_cta"
@@ -251,15 +249,50 @@ END:VCALENDAR`;
                 />
               </div>
             </div>
+            
+            {/* Message Preview Section */}
+            <div className="mt-3 border-t border-white/10 pt-3">
+              <TrackedButton
+                onClick={() => setIsMessageExpanded(!isMessageExpanded)}
+                variant="ghost"
+                className="w-full text-left p-2 hover:bg-white/5 text-gray-300 hover:text-white transition-colors"
+                trackingName="message_preview_toggle"
+                trackingCategory="social_share"
+                trackingPage="home_cta"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Preview message</span>
+                  {isMessageExpanded ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                </div>
+              </TrackedButton>
+              
+              {isMessageExpanded ? (
+                <div className="mt-2 p-3 bg-white/5 rounded-lg border border-white/10">
+                  <pre className="text-sm text-gray-200 whitespace-pre-wrap font-sans leading-relaxed">
+                    {facebookText}
+                  </pre>
+                </div>
+              ) : (
+                <div className="mt-2 p-3 bg-white/5 rounded-lg border border-white/10">
+                  <p className="text-sm text-gray-300 italic">
+                    {condensedMessage}
+                  </p>
+                </div>
+              )}
+            </div>
           </Card>
 
           {/* Secondary Email Signup Strip */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-4">
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Bell className="w-8 h-8 text-blue-400" />
+              <div className="flex items-center gap-3">
+                <Bell className="w-6 h-6 text-blue-400" />
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Backup Reminder</h3>
+                  <h3 className="text-base font-semibold text-white">Backup Reminder</h3>
                   <p className="text-gray-300 text-sm">Add another email for extra security</p>
                 </div>
               </div>
@@ -304,7 +337,7 @@ END:VCALENDAR`;
             
             {/* Test Mode Settings */}
             {showTestSettings && (
-              <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
+              <div className="mt-3 p-3 bg-white/10 rounded-lg border border-white/20">
                 <div className="flex items-center gap-2 mb-2">
                   <input
                     type="checkbox"

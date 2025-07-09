@@ -96,70 +96,52 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="text-center py-6 md:py-10">
+    <section className="text-center py-6 md:py-8">
       <div className="max-w-6xl mx-auto">
-        {/* Compressed main branding */}
-        <div className="mb-8">
-          <div className="mb-4">
-            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-20 md:h-24 object-contain" />
+        {/* Logo and Main Messaging */}
+        <div className="mb-6">
+          <div className="mb-3">
+            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-16 md:h-20 object-contain" />
           </div>
           
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">
             Make a post.<br />
             <span className="text-blue-300">Make an impact.</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-blue-200 font-semibold mb-3">
-            Taking action together saves lives
-          </p>
-        </div>
-
-        {/* Optimized layout prioritizing email signup - 2:3 ratio */}
-        <div className="grid md:grid-cols-5 gap-3 mb-8 max-w-5xl mx-auto">
-          {/* Countdown Card - Takes 2/5 of the width on desktop */}
-          <div className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-3 md:p-4">
-            <div className="text-center mb-3">
-              <h2 className="text-base font-semibold text-white mb-1">National Fentanyl Prevention & Awareness Day</h2>
-              
-              {/* Senate Resolution Badge */}
-              <a 
-                href="https://www.congress.gov/bill/118th-congress/senate-resolution/323/text"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-gray-300 hover:text-blue-300 transition-colors bg-white/10 px-2 py-1 rounded-full border border-white/20"
-                aria-label="View Senate Resolution 323 on Congress.gov"
-              >
-                <Shield className="w-3 h-3" />
-                Senate Resolution 323
-              </a>
+          {/* Compact Countdown Timer */}
+          <div className="mb-3">
+            <div className="inline-flex items-center gap-2 text-sm text-blue-200 mb-2">
+              <Shield className="w-4 h-4" />
+              National Fentanyl Prevention & Awareness Day
             </div>
-            
-            <div className="grid grid-cols-4 gap-1 md:gap-2">
+            <div className="flex justify-center items-center gap-4 text-white">
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.days}</div>
-                <div className="text-gray-300 text-xs">DAYS</div>
+                <div className="text-lg md:text-xl font-bold text-blue-300">{timeLeft.days}</div>
+                <div className="text-xs text-gray-300">DAYS</div>
               </div>
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.hours}</div>
-                <div className="text-gray-300 text-xs">HOURS</div>
+                <div className="text-lg md:text-xl font-bold text-blue-300">{timeLeft.hours}</div>
+                <div className="text-xs text-gray-300">HRS</div>
               </div>
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.minutes}</div>
-                <div className="text-gray-300 text-xs">MINS</div>
+                <div className="text-lg md:text-xl font-bold text-blue-300">{timeLeft.minutes}</div>
+                <div className="text-xs text-gray-300">MIN</div>
               </div>
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.seconds}</div>
-                <div className="text-gray-300 text-xs">SECS</div>
+                <div className="text-lg md:text-xl font-bold text-blue-300">{timeLeft.seconds}</div>
+                <div className="text-xs text-gray-300">SEC</div>
               </div>
             </div>
-            
-            <div className="text-sm md:text-base text-blue-200 font-semibold mt-2">
+            <div className="text-sm text-blue-200 font-semibold mt-1">
               AUGUST 21, 2025
             </div>
           </div>
+        </div>
 
-          {/* Enhanced Email Signup Card - Takes 3/5 of the width on desktop */}
-          <div className="md:col-span-3 bg-gradient-to-br from-blue-900/40 to-blue-700/40 backdrop-blur-sm border-2 border-blue-400/50 rounded-2xl p-4 md:p-6 shadow-xl">
+        {/* Full Width Email Signup */}
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-gradient-to-br from-blue-900/40 to-blue-700/40 backdrop-blur-sm border-2 border-blue-400/50 rounded-2xl p-6 shadow-xl">
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
