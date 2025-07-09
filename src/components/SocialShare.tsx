@@ -1,5 +1,5 @@
 
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { Facebook, Twitter, Instagram, Download, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -68,25 +68,55 @@ const SocialShare = ({ imageUrl, message }: SocialShareProps) => {
       <h3 className="text-lg font-semibold mb-4 text-center">Share Your Post</h3>
       
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <Button onClick={shareToTwitter} className="flex items-center gap-2">
+        <TrackedButton 
+          onClick={shareToTwitter} 
+          className="flex items-center gap-2"
+          trackingName="post_share_twitter"
+          trackingCategory="post_sharing"
+          trackingPage="day_of_experience"
+          trackingData={{ postType: 'generated', shareMethod: 'twitter' }}
+        >
           <Twitter className="w-4 h-4" />
           Twitter/X
-        </Button>
+        </TrackedButton>
         
-        <Button onClick={shareToFacebook} className="flex items-center gap-2">
+        <TrackedButton 
+          onClick={shareToFacebook} 
+          className="flex items-center gap-2"
+          trackingName="post_share_facebook"
+          trackingCategory="post_sharing"
+          trackingPage="day_of_experience"
+          trackingData={{ postType: 'generated', shareMethod: 'facebook' }}
+        >
           <Facebook className="w-4 h-4" />
           Facebook
-        </Button>
+        </TrackedButton>
         
-        <Button onClick={downloadImage} variant="outline" className="flex items-center gap-2">
+        <TrackedButton 
+          onClick={downloadImage} 
+          variant="outline" 
+          className="flex items-center gap-2"
+          trackingName="post_download_image"
+          trackingCategory="post_sharing"
+          trackingPage="day_of_experience"
+          trackingData={{ postType: 'generated', shareMethod: 'download' }}
+        >
           <Download className="w-4 h-4" />
           Download
-        </Button>
+        </TrackedButton>
         
-        <Button onClick={shareNative} variant="outline" className="flex items-center gap-2">
+        <TrackedButton 
+          onClick={shareNative} 
+          variant="outline" 
+          className="flex items-center gap-2"
+          trackingName="post_native_share"
+          trackingCategory="post_sharing"
+          trackingPage="day_of_experience"
+          trackingData={{ postType: 'generated', shareMethod: 'native' }}
+        >
           <Share2 className="w-4 h-4" />
           Share
-        </Button>
+        </TrackedButton>
       </div>
       
       <div className="text-xs text-gray-500 text-center">

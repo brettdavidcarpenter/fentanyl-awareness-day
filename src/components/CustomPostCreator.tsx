@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -44,9 +44,15 @@ const CustomPostCreator = ({ onCreatePost, onBack }: CustomPostCreatorProps) => 
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-6">
-        <Button variant="outline" onClick={onBack}>
+        <TrackedButton 
+          variant="outline" 
+          onClick={onBack}
+          trackingName="custom_back_to_templates"
+          trackingCategory="navigation"
+          trackingPage="day_of_experience"
+        >
           ← Back
-        </Button>
+        </TrackedButton>
       </div>
 
       <Card>
@@ -130,9 +136,21 @@ const CustomPostCreator = ({ onCreatePost, onBack }: CustomPostCreatorProps) => 
             </div>
           )}
 
-          <Button onClick={handleSubmit} className="w-full">
+          <TrackedButton 
+            onClick={handleSubmit} 
+            className="w-full"
+            trackingName="custom_post_create"
+            trackingCategory="custom_creation"
+            trackingPage="day_of_experience"
+            trackingData={{ 
+              hasCustomText: !!customText,
+              hasUploadedImage: !!uploadedImage,
+              hasFallbackImage: !!selectedFallbackImage,
+              textLength: customText.length
+            }}
+          >
             Create Post
-          </Button>
+          </TrackedButton>
         </CardContent>
       </Card>
     </div>

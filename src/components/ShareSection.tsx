@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+
+import { TrackedButton } from "@/components/TrackedButton";
 import { Card } from "@/components/ui/card";
 import { Share2, Copy, CheckCircle } from "lucide-react";
 import { useState } from "react";
@@ -113,26 +114,35 @@ August 21 is our day to raise awareness & post life-saving prevention facts.
         </div>
 
         <div className="grid md:grid-cols-3 gap-4">
-          <Button
+          <TrackedButton
             onClick={handleTwitterShare}
             className="bg-blue-500 hover:bg-blue-600 text-white"
+            trackingName="share_twitter"
+            trackingCategory="social_share"
+            trackingPage="home_share"
           >
             Share on X/Twitter
-          </Button>
-          <Button
+          </TrackedButton>
+          <TrackedButton
             onClick={handleFacebookShare}
             className="bg-blue-700 hover:bg-blue-800 text-white"
+            trackingName="share_facebook"
+            trackingCategory="social_share"
+            trackingPage="home_share"
           >
             Share on Facebook
-          </Button>
-          <Button
+          </TrackedButton>
+          <TrackedButton
             onClick={navigator.share ? handleNativeShare : handleCopyLink}
             variant="outline"
             className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
+            trackingName={navigator.share ? "native_share" : "copy_message"}
+            trackingCategory="social_share"
+            trackingPage="home_share"
           >
             {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {navigator.share ? "Share Message" : (copied ? "Copied!" : "Copy Message")}
-          </Button>
+          </TrackedButton>
         </div>
 
         <div className="mt-8 text-center">

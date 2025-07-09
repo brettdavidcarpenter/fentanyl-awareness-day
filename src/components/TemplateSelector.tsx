@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
@@ -44,9 +44,16 @@ const TemplateSelector = ({ persona, onTemplateSelect, onCreateCustom, onBack }:
     return (
       <div className="max-w-2xl mx-auto">
         <div className="mb-6">
-          <Button variant="outline" onClick={() => setSelectedTemplate(null)}>
+          <TrackedButton 
+            variant="outline" 
+            onClick={() => setSelectedTemplate(null)}
+            trackingName="template_back_to_list"
+            trackingCategory="navigation"
+            trackingPage="day_of_experience"
+            trackingData={{ templateId: selectedTemplate.id, persona }}
+          >
             ← Back to Templates
-          </Button>
+          </TrackedButton>
         </div>
         
         <Card>
@@ -84,12 +91,31 @@ const TemplateSelector = ({ persona, onTemplateSelect, onCreateCustom, onBack }:
             </div>
 
             <div className="flex gap-2">
-              <Button onClick={handleCustomizeSubmit} disabled={!personalization.name}>
+              <TrackedButton 
+                onClick={handleCustomizeSubmit} 
+                disabled={!personalization.name}
+                trackingName={`template_customize_submit_${selectedTemplate.id}`}
+                trackingCategory="template_customization"
+                trackingPage="day_of_experience"
+                trackingData={{ 
+                  templateId: selectedTemplate.id, 
+                  persona, 
+                  hasName: !!personalization.name,
+                  hasRelationship: !!personalization.relationship
+                }}
+              >
                 Create Post
-              </Button>
-              <Button variant="outline" onClick={() => setSelectedTemplate(null)}>
+              </TrackedButton>
+              <TrackedButton 
+                variant="outline" 
+                onClick={() => setSelectedTemplate(null)}
+                trackingName="template_customize_cancel"
+                trackingCategory="template_customization"
+                trackingPage="day_of_experience"
+                trackingData={{ templateId: selectedTemplate.id, persona }}
+              >
                 Cancel
-              </Button>
+              </TrackedButton>
             </div>
           </CardContent>
         </Card>
@@ -100,15 +126,22 @@ const TemplateSelector = ({ persona, onTemplateSelect, onCreateCustom, onBack }:
   return (
     <div>
       <div className="mb-6">
-        <Button variant="outline" onClick={onBack}>
+        <TrackedButton 
+          variant="outline" 
+          onClick={onBack}
+          trackingName="template_back_to_persona"
+          trackingCategory="navigation"
+          trackingPage="day_of_experience"
+          trackingData={{ persona }}
+        >
           ← Back to Persona Selection
-        </Button>
+        </TrackedButton>
       </div>
       
       <h2 className="text-2xl font-bold text-center mb-8 text-white">{personaTitle}</h2>
       
       <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {/* First two template cards */}
+        {/* Template cards */}
         {templates.map((template) => (
           <Card key={template.id} className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader>
@@ -123,12 +156,21 @@ const TemplateSelector = ({ persona, onTemplateSelect, onCreateCustom, onBack }:
               <p className="text-sm text-gray-600 mb-4 line-clamp-3">
                 {template.message}
               </p>
-              <Button 
+              <TrackedButton 
                 onClick={() => handleTemplateClick(template)}
                 className="w-full"
+                trackingName={`template_select_${template.id}`}
+                trackingCategory="template_selection"
+                trackingPage="day_of_experience"
+                trackingData={{ 
+                  templateId: template.id, 
+                  persona, 
+                  customizable: template.customizable,
+                  templateTitle: template.title
+                }}
               >
                 {template.customizable ? 'Customize' : 'Use Template'}
-              </Button>
+              </TrackedButton>
             </CardContent>
           </Card>
         ))}
@@ -145,13 +187,17 @@ const TemplateSelector = ({ persona, onTemplateSelect, onCreateCustom, onBack }:
             <p className="text-sm text-gray-600 mb-4">
               Upload your own image and write a custom message
             </p>
-            <Button 
+            <TrackedButton 
               onClick={onCreateCustom}
               className="w-full"
               variant="outline"
+              trackingName="create_custom_post"
+              trackingCategory="custom_creation"
+              trackingPage="day_of_experience"
+              trackingData={{ persona }}
             >
               Start Creating
-            </Button>
+            </TrackedButton>
           </CardContent>
         </Card>
       </div>

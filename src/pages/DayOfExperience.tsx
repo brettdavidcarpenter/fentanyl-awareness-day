@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import PersonaSelection from '@/components/PersonaSelection';
@@ -80,15 +80,30 @@ const DayOfExperience = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Button variant="outline" onClick={() => navigate('/')} className="text-white border-white hover:bg-white hover:text-black">
+          <TrackedButton 
+            variant="outline" 
+            onClick={() => navigate('/')} 
+            className="text-white border-white hover:bg-white hover:text-black"
+            trackingName="navigation_back_home"
+            trackingCategory="navigation"
+            trackingPage="day_of_experience"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
-          </Button>
+          </TrackedButton>
           
           {currentStep !== 'persona' && (
-            <Button variant="outline" onClick={resetToStart} className="text-white border-white hover:bg-white hover:text-black">
+            <TrackedButton 
+              variant="outline" 
+              onClick={resetToStart} 
+              className="text-white border-white hover:bg-white hover:text-black"
+              trackingName="navigation_start_over"
+              trackingCategory="navigation"
+              trackingPage="day_of_experience"
+              trackingData={{ currentStep, selectedPersona }}
+            >
               Start Over
-            </Button>
+            </TrackedButton>
           )}
         </div>
 
