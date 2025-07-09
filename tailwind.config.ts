@@ -66,6 +66,7 @@ export default {
 			},
 			fontFamily: {
 				'kalam': ['Kalam', 'cursive'],
+				'dancing': ['Dancing Script', 'cursive'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

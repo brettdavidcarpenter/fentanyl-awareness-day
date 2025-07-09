@@ -37,7 +37,7 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
           <div className="bg-black p-8 shadow-2xl flex flex-col items-center justify-between min-h-[420px]">
             
             {/* Photo Section */}
-            <div className="flex items-center justify-center mb-6">
+            <div className="flex items-center justify-center mb-8">
               <img 
                 src={getImageSrc()}
                 alt="Memorial photo"
@@ -45,20 +45,23 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
               />
             </div>
             
-            {/* Text Section */}
-            <div className="flex items-center justify-center px-4 mb-6 flex-1">
-              <p className="text-white font-kalam text-2xl italic text-center leading-relaxed transform -rotate-12">
-                share the message<br />save a life
-              </p>
-            </div>
-            
-            {/* Logo Section */}
-            <div className="flex items-center justify-end w-full">
-              <img 
-                src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
-                alt="Facing Fentanyl Logo"
-                className="h-12 w-auto"
-              />
+            {/* Bottom Section - Text and Logo aligned */}
+            <div className="flex items-end justify-between w-full px-4">
+              {/* Left side - Cursive text */}
+              <div className="flex-1">
+                <p className="text-white font-dancing text-2xl font-bold leading-tight text-left transform -rotate-12">
+                  share the message<br />save a life
+                </p>
+              </div>
+              
+              {/* Right side - Logo */}
+              <div className="flex items-end">
+                <img 
+                  src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
+                  alt="Facing Fentanyl Logo"
+                  className="h-12 w-auto"
+                />
+              </div>
             </div>
             
           </div>
