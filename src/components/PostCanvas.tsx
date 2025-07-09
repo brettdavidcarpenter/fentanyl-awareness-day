@@ -32,47 +32,28 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
     return (
       <div 
         id="post-canvas" 
-        className="relative w-[540px] h-[540px] mx-auto shadow-lg overflow-hidden bg-gradient-to-r from-black to-blue-900"
+        className="relative w-[540px] h-[540px] mx-auto shadow-lg overflow-hidden"
         style={{ fontSize: '16px' }}
       >
-        {/* Central Black Frame containing all content */}
-        <div className="w-full h-full flex items-center justify-center p-12 relative">
-          {/* QR Code - Top Right */}
-          <div className="absolute top-4 right-4 bg-white p-2 rounded">
-            <QRCodeSVG value={qrCodeUrl} size={48} />
-          </div>
-          
-          <div className="bg-black p-8 shadow-2xl flex flex-col items-center justify-between min-h-[420px]">
-            
-            {/* Photo Section */}
-            <div className="flex items-center justify-center mb-8">
-              <img 
-                src={getImageSrc()}
-                alt="Memorial photo"
-                className="max-w-[280px] max-h-[280px] w-auto h-auto object-cover"
-              />
-            </div>
-            
-            {/* Bottom Section - Text and Logo aligned */}
-            <div className="flex items-end justify-between w-full px-4">
-              {/* Left side - Cursive text */}
-              <div className="flex-1">
-                <p className="text-white font-dancing text-2xl font-bold leading-tight text-left transform -rotate-12">
-                  share the message<br />save a life
-                </p>
-              </div>
-              
-              {/* Right side - Logo */}
-              <div className="flex items-end">
-                <img 
-                  src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
-                  alt="Facing Fentanyl Logo"
-                  className="h-12 w-auto"
-                />
-              </div>
-            </div>
-            
-          </div>
+        {/* QR Code - Top Right */}
+        <div className="absolute top-4 right-4 bg-white p-2 rounded z-10">
+          <QRCodeSVG value={qrCodeUrl} size={48} />
+        </div>
+        
+        {/* Just the image without black frame */}
+        <img 
+          src={getImageSrc()}
+          alt="Memorial photo"
+          className="w-full h-full object-cover"
+        />
+        
+        {/* Logo moved to bottom right */}
+        <div className="absolute bottom-4 right-4 bg-white/90 p-2 rounded">
+          <img 
+            src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
+            alt="Facing Fentanyl Logo"
+            className="h-8 w-auto"
+          />
         </div>
       </div>
     );
