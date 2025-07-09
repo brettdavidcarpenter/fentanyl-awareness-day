@@ -1,6 +1,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import CTASection from "@/components/CTASection";
+import ShareSection from "@/components/ShareSection";
 import { Shield, Heart } from "lucide-react";
 
 const Index = () => {
@@ -29,6 +30,9 @@ const Index = () => {
         
         {/* CTA Section */}
         <CTASection />
+        
+        {/* Share Section */}
+        <ShareSection />
         
         {/* Facing Fentanyl Awareness Image Section */}
         <section className="py-12 text-center border-t border-white/10 mt-8">

@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+
+import { TrackedButton } from "@/components/TrackedButton";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus, Share2, Copy, CheckCircle, Target, Users, Bell, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -203,15 +204,18 @@ August 21 is our day to make our voices heard and save lives through action...`;
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-white font-semibold">Get Your Reminder</h4>
                 {showAdminControls && (
-                  <Button
+                  <TrackedButton
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowTestSettings(!showTestSettings)}
                     className="text-gray-400 hover:text-white p-1"
+                    trackingName="admin_test_settings_toggle"
+                    trackingCategory="admin_controls"
+                    trackingPage="home_cta"
                   >
                     <Settings className="w-4 h-4" />
-                  </Button>
+                  </TrackedButton>
                 )}
               </div>
               <p className="text-gray-300 text-sm">
@@ -264,13 +268,17 @@ August 21 is our day to make our voices heard and save lives through action...`;
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 required
               />
-              <Button 
+              <TrackedButton
                 type="submit" 
                 disabled={isSubmitting}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                trackingName="cta_email_signup"
+                trackingCategory="email_signup"
+                trackingPage="home_cta"
+                trackingData={{ testMode, testDateOffset }}
               >
                 {isSubmitting ? "Signing up..." : "Remind Me to Act"}
-              </Button>
+              </TrackedButton>
               {/* Privacy Policy Notice */}
               <p className="text-xs text-gray-400 text-center">
                 By signing up, you agree to our{" "}
@@ -301,15 +309,18 @@ August 21 is our day to make our voices heard and save lives through action...`;
             <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-6 flex-grow">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-white font-semibold">Share This Message:</h4>
-                <Button
+                <TrackedButton
                   type="button"
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsMessageExpanded(!isMessageExpanded)}
                   className="text-blue-300 hover:text-white p-1"
+                  trackingName="expand_share_message"
+                  trackingCategory="ui_interaction"
+                  trackingPage="home_cta"
                 >
                   {isMessageExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </Button>
+                </TrackedButton>
               </div>
               
               <p className="text-blue-100 text-sm leading-relaxed mb-4">
@@ -317,15 +328,18 @@ August 21 is our day to make our voices heard and save lives through action...`;
               </p>
               
               {!isMessageExpanded && (
-                <Button
+                <TrackedButton
                   type="button"
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsMessageExpanded(true)}
                   className="text-blue-300 hover:text-white text-xs p-0"
+                  trackingName="show_full_message"
+                  trackingCategory="ui_interaction"
+                  trackingPage="home_cta"
                 >
                   Show full message...
-                </Button>
+                </TrackedButton>
               )}
               
               <p className="text-blue-200 text-sm font-medium">
@@ -341,21 +355,28 @@ August 21 is our day to make our voices heard and save lives through action...`;
             </div>
 
             <div className="space-y-3 mt-auto">
-              <Button
+              <TrackedButton
                 onClick={navigator.share ? handleNativeShare : handleCopyLink}
                 variant="outline"
                 className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
+                trackingName="copy_message_cta"
+                trackingCategory="social_share"
+                trackingPage="home_cta"
+                trackingData={{ hasNativeShare: !!navigator.share }}
               >
                 {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 {copied ? "Copied!" : "Copy Message"}
-              </Button>
+              </TrackedButton>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <Button
+                <TrackedButton
                   onClick={handleTwitterShare}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                  trackingName="share_twitter_cta"
+                  trackingCategory="social_share"
+                  trackingPage="home_cta"
                 >
                   Share on X
-                </Button>
+                </TrackedButton>
                 <EnhancedFacebookShare
                   url={shareUrl}
                   message={facebookText}
