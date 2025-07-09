@@ -32,7 +32,7 @@ const CTASection = () => {
     time: "1200", // 12:00 PM
   };
 
-  // Email signup functionality
+  // Secondary email signup functionality
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
@@ -47,13 +47,6 @@ const CTASection = () => {
     setIsSubmitting(true);
     
     try {
-      // Calculate test target date if in test mode
-      let testTargetDate = null;
-      if (testMode) {
-        const now = new Date();
-        testTargetDate = new Date(now.getTime() + (testDateOffset * 24 * 60 * 60 * 1000));
-      }
-
       const { data, error } = await supabase.functions.invoke('email-signup', {
         body: { 
           email,
@@ -119,7 +112,6 @@ August 21 is our day to raise awareness & post life-saving prevention facts.
 
 #FacingFentanyl #NationalFentanylPreventionandAwarenessDay`;
 
-  // Condensed message for collapsed state
   const condensedMessage = `💔 I'm joining the movement for National Fentanyl Prevention and Awareness Day.
 
 August 21 is our day to make our voices heard and save lives through action...`;
@@ -164,45 +156,114 @@ August 21 is our day to make our voices heard and save lives through action...`;
   };
 
   return (
-    <section className="py-16">
+    <section className="py-8">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Enhanced Email Reminder CTA Card */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 flex flex-col">
-            <div className="text-center mb-8">
-              <Target className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold text-white mb-2">
-                Plan to Take Action
-              </h3>
-              <p className="text-gray-300">
-                Mark your calendar for National Fentanyl Prevention & Awareness Day
-              </p>
-            </div>
-
-            <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-6 flex-grow">
-              <h4 className="text-white font-semibold mb-3">{eventDetails.title}</h4>
-              <p className="text-blue-200 text-sm mb-3">📅 August 21, 2025</p>
-              
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2 text-gray-300 text-sm">
-                  <span className="text-blue-300">•</span> Share your story or tribute
-                </div>
-                <div className="flex items-center gap-2 text-gray-300 text-sm">
-                  <span className="text-blue-300">•</span> Honor someone you've lost
-                </div>
-                <div className="flex items-center gap-2 text-gray-300 text-sm">
-                  <span className="text-blue-300">•</span> Spread life-saving facts
+        
+        {/* Compact horizontal action strips */}
+        <div className="space-y-4">
+          
+          {/* Add to Calendar Strip */}
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Calendar className="w-8 h-8 text-blue-400" />
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Add to Your Calendar</h3>
+                  <p className="text-gray-300 text-sm">Never miss the action day - August 21, 2025</p>
                 </div>
               </div>
-              
-              <p className="text-blue-200 text-sm font-medium">
-                Make your voice heard. Save lives through action.
-              </p>
+              <div className="flex gap-2">
+                <TrackedButton
+                  onClick={() => {
+                    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.date}T${eventDetails.time}00Z/${eventDetails.date}T${eventDetails.time}00Z&details=${encodeURIComponent(eventDetails.description)}`;
+                    window.open(googleUrl, '_blank');
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  trackingName="add_google_calendar"
+                  trackingCategory="calendar"
+                  trackingPage="home_cta"
+                >
+                  Google Calendar
+                </TrackedButton>
+                <TrackedButton
+                  onClick={() => {
+                    const appleUrl = `data:text/calendar;charset=utf8,BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:${shareUrl}
+DTSTART:${eventDetails.date}T${eventDetails.time}00Z
+SUMMARY:${eventDetails.title}
+DESCRIPTION:${eventDetails.description}
+END:VEVENT
+END:VCALENDAR`;
+                    const element = document.createElement('a');
+                    element.setAttribute('href', appleUrl);
+                    element.setAttribute('download', 'fentanyl-awareness-day.ics');
+                    element.click();
+                  }}
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10"
+                  trackingName="add_apple_calendar"
+                  trackingCategory="calendar"
+                  trackingPage="home_cta"
+                >
+                  Apple Calendar
+                </TrackedButton>
+              </div>
             </div>
+          </Card>
 
-            <div className="mb-3">
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="text-white font-semibold">Get Your Reminder</h4>
+          {/* Share the Word Strip */}
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Users className="w-8 h-8 text-blue-400" />
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Spread the Word Now</h3>
+                  <p className="text-gray-300 text-sm">Help build momentum by inviting your network</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <TrackedButton
+                  onClick={handleNativeShare}
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10"
+                  trackingName="copy_message_cta"
+                  trackingCategory="social_share"
+                  trackingPage="home_cta"
+                >
+                  {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied ? "Copied!" : "Copy Message"}
+                </TrackedButton>
+                <TrackedButton
+                  onClick={handleTwitterShare}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  trackingName="share_twitter_cta"
+                  trackingCategory="social_share"
+                  trackingPage="home_cta"
+                >
+                  Share on X
+                </TrackedButton>
+                <EnhancedFacebookShare
+                  url={shareUrl}
+                  message={facebookText}
+                  onFallbackCopy={() => setCopied(true)}
+                />
+              </div>
+            </div>
+          </Card>
+
+          {/* Secondary Email Signup Strip */}
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Bell className="w-8 h-8 text-blue-400" />
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Backup Reminder</h3>
+                  <p className="text-gray-300 text-sm">Add another email for extra security</p>
+                </div>
+              </div>
+              <div className="flex gap-2 items-center">
                 {showAdminControls && (
                   <TrackedButton
                     type="button"
@@ -217,15 +278,33 @@ August 21 is our day to make our voices heard and save lives through action...`;
                     <Settings className="w-4 h-4" />
                   </TrackedButton>
                 )}
+                <form onSubmit={handleEmailSubmit} className="flex gap-2">
+                  <Input
+                    type="email"
+                    placeholder="Another email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 w-64"
+                    required
+                  />
+                  <TrackedButton
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    trackingName="cta_secondary_email_signup"
+                    trackingCategory="email_signup"
+                    trackingPage="home_cta"
+                    trackingData={{ testMode, testDateOffset }}
+                  >
+                    {isSubmitting ? "Adding..." : "Add Reminder"}
+                  </TrackedButton>
+                </form>
               </div>
-              <p className="text-gray-300 text-sm">
-                We'll remind you to take action on National Fentanyl Prevention & Awareness Day
-              </p>
             </div>
-
+            
             {/* Test Mode Settings */}
             {showTestSettings && (
-              <div className="mb-4 p-3 bg-white/10 rounded-lg border border-white/20">
+              <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
                 <div className="flex items-center gap-2 mb-2">
                   <input
                     type="checkbox"
@@ -258,132 +337,6 @@ August 21 is our day to make our voices heard and save lives through action...`;
                 )}
               </div>
             )}
-            
-            <form onSubmit={handleEmailSubmit} className="space-y-3 mt-auto">
-              <Input
-                type="email"
-                placeholder="Your email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                required
-              />
-              <TrackedButton
-                type="submit" 
-                disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                trackingName="cta_email_signup"
-                trackingCategory="email_signup"
-                trackingPage="home_cta"
-                trackingData={{ testMode, testDateOffset }}
-              >
-                {isSubmitting ? "Signing up..." : "Remind Me to Act"}
-              </TrackedButton>
-              {/* Privacy Policy Notice */}
-              <p className="text-xs text-gray-400 text-center">
-                By signing up, you agree to our{" "}
-                <a 
-                  href="/privacy-policy" 
-                  className="text-blue-300 hover:text-blue-200 underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Privacy Policy
-                </a>
-              </p>
-            </form>
-          </Card>
-
-          {/* Enhanced Pre-Event Sharing CTA Card - Restructured Layout */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-8 flex flex-col">
-            <div className="text-center mb-8">
-              <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold text-white mb-2">
-                Spread the Word About the Upcoming Event
-              </h3>
-              <p className="text-gray-300">
-                Help build momentum by inviting your friends and network to join the movement
-              </p>
-            </div>
-
-            <div className="bg-blue-900/30 border border-blue-500/30 rounded-xl p-6 mb-6 flex-grow">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="text-white font-semibold">Share This Message:</h4>
-                <TrackedButton
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsMessageExpanded(!isMessageExpanded)}
-                  className="text-blue-300 hover:text-white p-1"
-                  trackingName="expand_share_message"
-                  trackingCategory="ui_interaction"
-                  trackingPage="home_cta"
-                >
-                  {isMessageExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </TrackedButton>
-              </div>
-              
-              <p className="text-blue-100 text-sm leading-relaxed mb-4">
-                {isMessageExpanded ? facebookText : condensedMessage}
-              </p>
-              
-              {!isMessageExpanded && (
-                <TrackedButton
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsMessageExpanded(true)}
-                  className="text-blue-300 hover:text-white text-xs p-0"
-                  trackingName="show_full_message"
-                  trackingCategory="ui_interaction"
-                  trackingPage="home_cta"
-                >
-                  Show full message...
-                </TrackedButton>
-              )}
-              
-              <p className="text-blue-200 text-sm font-medium">
-                Build awareness now. Every invitation helps grow the movement before August 21st.
-              </p>
-            </div>
-
-            <div className="mb-3">
-              <h4 className="text-white font-semibold mb-2">Share with Your Network</h4>
-              <p className="text-gray-300 text-sm">
-                Every post helps create momentum
-              </p>
-            </div>
-
-            <div className="space-y-3 mt-auto">
-              <TrackedButton
-                onClick={navigator.share ? handleNativeShare : handleCopyLink}
-                variant="outline"
-                className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
-                trackingName="copy_message_cta"
-                trackingCategory="social_share"
-                trackingPage="home_cta"
-                trackingData={{ hasNativeShare: !!navigator.share }}
-              >
-                {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Copied!" : "Copy Message"}
-              </TrackedButton>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <TrackedButton
-                  onClick={handleTwitterShare}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                  trackingName="share_twitter_cta"
-                  trackingCategory="social_share"
-                  trackingPage="home_cta"
-                >
-                  Share on X
-                </TrackedButton>
-                <EnhancedFacebookShare
-                  url={shareUrl}
-                  message={facebookText}
-                  onFallbackCopy={() => setCopied(true)}
-                />
-              </div>
-            </div>
           </Card>
         </div>
       </div>

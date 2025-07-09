@@ -96,30 +96,30 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="text-center py-12 md:py-20">
+    <section className="text-center py-6 md:py-10">
       <div className="max-w-6xl mx-auto">
-        {/* Main branding */}
-        <div className="mb-12">
-          <div className="mb-8">
-            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-32 md:h-40 object-contain" />
+        {/* Compressed main branding */}
+        <div className="mb-8">
+          <div className="mb-4">
+            <img src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png" alt="Facing Fentanyl Logo" className="mx-auto h-20 md:h-24 object-contain" />
           </div>
           
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
             Make a post.<br />
             <span className="text-blue-300">Make an impact.</span>
           </h1>
           
-          <p className="text-2xl md:text-3xl text-blue-200 font-semibold mb-4">
+          <p className="text-xl md:text-2xl text-blue-200 font-semibold mb-3">
             Taking action together saves lives
           </p>
         </div>
 
-        {/* Countdown and Email Signup Cards */}
-        <div className="grid md:grid-cols-5 gap-4 mb-12 max-w-5xl mx-auto">
-          {/* Countdown Card - Takes 3/5 of the width on desktop */}
-          <div className="md:col-span-3 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
-            <div className="text-center mb-4">
-              <h2 className="text-lg font-semibold text-white mb-2">National Fentanyl Prevention & Awareness Day</h2>
+        {/* Optimized layout prioritizing email signup - 2:3 ratio */}
+        <div className="grid md:grid-cols-5 gap-3 mb-8 max-w-5xl mx-auto">
+          {/* Countdown Card - Takes 2/5 of the width on desktop */}
+          <div className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-3 md:p-4">
+            <div className="text-center mb-3">
+              <h2 className="text-base font-semibold text-white mb-1">National Fentanyl Prevention & Awareness Day</h2>
               
               {/* Senate Resolution Badge */}
               <a 
@@ -134,37 +134,40 @@ const HeroSection = () => {
               </a>
             </div>
             
-            <div className="grid grid-cols-4 gap-2 md:gap-4">
+            <div className="grid grid-cols-4 gap-1 md:gap-2">
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.days}</div>
-                <div className="text-gray-300 text-xs md:text-sm">DAYS</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.days}</div>
+                <div className="text-gray-300 text-xs">DAYS</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.hours}</div>
-                <div className="text-gray-300 text-xs md:text-sm">HOURS</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.hours}</div>
+                <div className="text-gray-300 text-xs">HOURS</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.minutes}</div>
-                <div className="text-gray-300 text-xs md:text-sm">MINUTES</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.minutes}</div>
+                <div className="text-gray-300 text-xs">MINS</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-4xl font-bold text-blue-300">{timeLeft.seconds}</div>
-                <div className="text-gray-300 text-xs md:text-sm">SECONDS</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.seconds}</div>
+                <div className="text-gray-300 text-xs">SECS</div>
               </div>
             </div>
             
-            <div className="text-lg md:text-xl text-blue-200 font-semibold mt-3">
+            <div className="text-sm md:text-base text-blue-200 font-semibold mt-2">
               AUGUST 21, 2025
             </div>
           </div>
 
-          {/* Email Signup Card - Takes 2/5 of the width on desktop */}
-          <div className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-white/20 rounded-2xl p-4 md:p-6">
-            <div className="mb-3">
+          {/* Enhanced Email Signup Card - Takes 3/5 of the width on desktop */}
+          <div className="md:col-span-3 bg-gradient-to-br from-blue-900/40 to-blue-700/40 backdrop-blur-sm border-2 border-blue-400/50 rounded-2xl p-4 md:p-6 shadow-xl">
+            <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-xl md:text-2xl font-bold text-white">
-                  Get Ready to Act
-                </h2>
+                <div className="flex items-center gap-2">
+                  <Bell className="w-6 h-6 text-blue-300" />
+                  <h2 className="text-xl md:text-2xl font-bold text-white">
+                    Get Ready to Take Action
+                  </h2>
+                </div>
                 {showAdminControls && (
                   <TrackedButton
                     type="button"
@@ -180,8 +183,11 @@ const HeroSection = () => {
                   </TrackedButton>
                 )}
               </div>
+              <p className="text-blue-200 text-sm mb-2">
+                Join thousands taking action nationwide on August 21st
+              </p>
               <p className="text-gray-300 text-sm">
-                We'll remind you to take action on National Fentanyl Prevention & Awareness Day
+                We'll remind you to share your story, honor loved ones, and spread life-saving facts
               </p>
             </div>
 
@@ -227,19 +233,19 @@ const HeroSection = () => {
                 placeholder="Your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 h-12 text-base"
                 required
               />
               <TrackedButton 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-lg rounded-lg shadow-lg hover:shadow-xl transition-all"
                 trackingName="hero_email_signup"
                 trackingCategory="email_signup"
                 trackingPage="home_hero"
                 trackingData={{ testMode, testDateOffset }}
               >
-                {isSubmitting ? "Signing up..." : "Remind Me to Act"}
+                {isSubmitting ? "Signing up..." : "Remind Me to Take Action"}
               </TrackedButton>
             </form>
           </div>
