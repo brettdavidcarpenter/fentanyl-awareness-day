@@ -35,20 +35,15 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
         className="relative w-[540px] h-[540px] mx-auto shadow-lg overflow-hidden"
         style={{ fontSize: '16px' }}
       >
-        {/* QR Code - Top Right */}
-        <div className="absolute top-4 right-4 bg-white p-2 rounded z-10">
-          <QRCodeSVG value={qrCodeUrl} size={48} />
-        </div>
-        
-        {/* Just the image without black frame */}
+        {/* Just the image without QR code */}
         <img 
           src={getImageSrc()}
           alt="Memorial photo"
           className="w-full h-full object-cover"
         />
         
-        {/* Logo moved to bottom right */}
-        <div className="absolute bottom-4 right-4 bg-white/90 p-2 rounded">
+        {/* Logo moved to bottom right without white background */}
+        <div className="absolute bottom-4 right-4">
           <img 
             src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
             alt="Facing Fentanyl Logo"
