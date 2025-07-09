@@ -5,157 +5,159 @@ import { useRef, useState, useEffect, Suspense } from 'react';
 import { Mesh, Group } from 'three';
 import { useFrame } from '@react-three/fiber';
 
-// Social media platform data
-const socialPlatforms = [
+// Realistic social media post data
+const socialPosts = [
   {
-    name: 'Facebook',
-    color: '#1877F2',
+    platform: 'Facebook',
+    username: 'Sarah M.',
+    avatar: '👩‍💼',
+    content: 'Did you know 2mg of fentanyl can be lethal? That\'s smaller than a grain of salt. Please share to save lives. #FentanylAwareness #August21',
+    likes: '47',
+    comments: '12',
+    shares: '8',
     position: [-3, 1, 0] as [number, number, number],
-    messages: [
-      '💔 Fentanyl is 50x more potent than heroin',
-      '🚨 2 mg of fentanyl can be lethal',
-      '💊 Test strips save lives',
-      '🏥 Have naloxone nearby'
-    ]
+    color: '#ffffff'
   },
   {
-    name: 'Instagram',
-    color: '#E4405F',
-    position: [0, 2, 0] as [number, number, number],
-    messages: [
-      'Share your story 📱',
-      'Spread awareness 🔥',
-      'Save lives together 💪',
-      'August 21st - Take Action 📅'
-    ]
+    platform: 'Instagram',
+    username: 'awareness_advocate',
+    avatar: '🏥',
+    content: 'Carrying naloxone saves lives 💊\nTest strips detect fentanyl 🧪\nEvery story matters 💙\n#FacingFentanyl #SaveLives',
+    likes: '234',
+    comments: '45',
+    shares: '67',
+    position: [0, 2.5, 0] as [number, number, number],
+    color: '#ffffff'
   },
   {
-    name: 'Twitter/X',
-    color: '#1DA1F2',
-    position: [3, 1, 0] as [number, number, number],
-    messages: [
-      '#FacingFentanyl',
-      'Every voice matters',
-      'Prevention saves lives',
-      'Join the movement'
-    ]
+    platform: 'Twitter',
+    username: '@FentanylFacts',
+    avatar: '⚠️',
+    content: 'FACT: Fentanyl is 50x stronger than heroin. One pill can kill. Share this thread to spread awareness. #FentanylAwareness #August21st',
+    likes: '156',
+    comments: '23',
+    shares: '89',
+    position: [3.2, 1, 0] as [number, number, number],
+    color: '#ffffff'
   },
   {
-    name: 'TikTok',
-    color: '#FF0050',
-    position: [-1.5, -1, 0] as [number, number, number],
-    messages: [
-      'Real talk about fentanyl',
-      'Education goes viral',
-      'Your story matters',
-      'Aug 21 - Post for change'
-    ]
+    platform: 'TikTok',
+    username: 'SafetyFirst2024',
+    avatar: '🎵',
+    content: 'Real talk about fentanyl awareness 📢\nEvery voice matters\nJoin the movement Aug 21st',
+    likes: '1.2K',
+    comments: '234',
+    shares: '456',
+    position: [-1.8, -1.2, 0] as [number, number, number],
+    color: '#ffffff'
   },
   {
-    name: 'LinkedIn',
-    color: '#0A66C2',
-    position: [1.5, -1, 0] as [number, number, number],
-    messages: [
-      'Workplace awareness',
-      'Professional responsibility',
-      'Community action',
-      'Making a difference'
-    ]
+    platform: 'LinkedIn',
+    username: 'Dr. Jennifer Kim',
+    avatar: '👨‍⚕️',
+    content: 'As healthcare professionals, we must lead fentanyl awareness efforts. Join colleagues nationwide on August 21st.',
+    likes: '89',
+    comments: '15',
+    shares: '34',
+    position: [2, -1.5, 0] as [number, number, number],
+    color: '#ffffff'
   }
 ];
 
-interface SocialCardProps {
-  platform: typeof socialPlatforms[0];
+interface SocialPostCardProps {
+  post: typeof socialPosts[0];
   index: number;
 }
 
-function SocialCard({ platform, index }: SocialCardProps) {
+function SocialPostCard({ post, index }: SocialPostCardProps) {
   const meshRef = useRef<Mesh>(null);
   const groupRef = useRef<Group>(null);
-  const [messageIndex, setMessageIndex] = useState(0);
 
-  // Rotate messages every 3 seconds with staggered timing
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMessageIndex((prev) => (prev + 1) % platform.messages.length);
-    }, 3000 + index * 500);
-
-    return () => clearInterval(interval);
-  }, [platform.messages.length, index]);
-
-  // Animation loop
+  // Gentle floating animation
   useFrame((state) => {
     if (groupRef.current) {
-      // Floating motion
-      groupRef.current.position.y = platform.position[1] + Math.sin(state.clock.elapsedTime + index) * 0.2;
-      
-      // Gentle rotation
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5 + index) * 0.1;
+      // Subtle floating motion only - no rotation
+      groupRef.current.position.y = post.position[1] + Math.sin(state.clock.elapsedTime * 0.8 + index * 0.3) * 0.15;
     }
   });
 
   return (
-    <group ref={groupRef} position={platform.position}>
-      <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
-        {/* Card background */}
-        <mesh ref={meshRef}>
-          <boxGeometry args={[2, 1.2, 0.1]} />
-          <meshStandardMaterial color={platform.color} />
+    <group ref={groupRef} position={post.position}>
+      <Float speed={0.5} rotationIntensity={0} floatIntensity={0.2}>
+        {/* White card background with shadow effect */}
+        <mesh ref={meshRef} position={[0, 0, -0.02]}>
+          <boxGeometry args={[2.4, 2.8, 0.08]} />
+          <meshStandardMaterial color="#ffffff" />
         </mesh>
         
-        {/* Platform name - removed custom font */}
+        {/* Platform header */}
         <Text
-          position={[0, 0.3, 0.06]}
-          fontSize={0.15}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-          {platform.name}
-        </Text>
-        
-        {/* Awareness message - removed custom font */}
-        <Text
-          position={[0, -0.1, 0.06]}
+          position={[-1, 1.2, 0.05]}
           fontSize={0.12}
-          color="white"
-          anchorX="center"
+          color="#1a1a1a"
+          anchorX="left"
           anchorY="middle"
-          maxWidth={1.8}
-          textAlign="center"
+          font="/fonts/inter-medium.woff"
         >
-          {platform.messages[messageIndex]}
+          {post.platform}
         </Text>
         
-        {/* Call to action - removed custom font */}
+        {/* User info */}
         <Text
-          position={[0, -0.4, 0.06]}
-          fontSize={0.08}
-          color="#E0E0E0"
-          anchorX="center"
+          position={[-1, 1, 0.05]}
+          fontSize={0.1}
+          color="#333333"
+          anchorX="left"
           anchorY="middle"
-          maxWidth={1.8}
-          textAlign="center"
         >
-          Join the movement • Aug 21
+          {post.avatar} {post.username}
         </Text>
+        
+        {/* Post content */}
+        <Text
+          position={[-1, 0.2, 0.05]}
+          fontSize={0.08}
+          color="#1a1a1a"
+          anchorX="left"
+          anchorY="top"
+          maxWidth={2.2}
+          textAlign="left"
+          lineHeight={1.3}
+        >
+          {post.content}
+        </Text>
+        
+        {/* Engagement stats */}
+        <Text
+          position={[-1, -0.8, 0.05]}
+          fontSize={0.07}
+          color="#666666"
+          anchorX="left"
+          anchorY="middle"
+        >
+          👍 {post.likes}   💬 {post.comments}   🔄 {post.shares}
+        </Text>
+        
+        {/* Bottom border accent */}
+        <mesh position={[0, -1.35, 0.05]}>
+          <boxGeometry args={[2.2, 0.02, 0.01]} />
+          <meshStandardMaterial color="#e0e0e0" />
+        </mesh>
       </Float>
     </group>
   );
 }
 
 function Scene() {
-  console.log('3D Scene rendering...');
-  
   return (
     <>
-      {/* Improved lighting setup */}
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[10, 10, 5]} intensity={1.2} />
-      <pointLight position={[0, 0, 5]} intensity={0.8} color="#ffffff" />
+      {/* Optimized lighting for white cards */}
+      <ambientLight intensity={1.2} />
+      <directionalLight position={[5, 5, 2]} intensity={0.8} castShadow />
+      <directionalLight position={[-5, 5, 2]} intensity={0.4} />
       
-      {socialPlatforms.map((platform, index) => (
-        <SocialCard key={platform.name} platform={platform} index={index} />
+      {socialPosts.map((post, index) => (
+        <SocialPostCard key={post.platform} post={post} index={index} />
       ))}
       
       <OrbitControls
@@ -163,8 +165,9 @@ function Scene() {
         enablePan={false}
         maxPolarAngle={Math.PI / 2}
         minPolarAngle={Math.PI / 2}
-        autoRotate
-        autoRotateSpeed={0.5}
+        autoRotate={false}
+        enableRotate={true}
+        rotateSpeed={0.3}
       />
     </>
   );
@@ -173,7 +176,7 @@ function Scene() {
 function LoadingFallback() {
   return (
     <div className="h-96 w-full flex items-center justify-center">
-      <div className="text-white text-lg">Loading 3D experience...</div>
+      <div className="text-gray-400 text-sm">Loading posts...</div>
     </div>
   );
 }
@@ -181,9 +184,8 @@ function LoadingFallback() {
 function ErrorFallback() {
   return (
     <div className="h-96 w-full flex items-center justify-center">
-      <div className="text-center text-white">
-        <div className="text-lg mb-2">3D visualization unavailable</div>
-        <div className="text-sm text-gray-300">Your posts will still create powerful impact on August 21st</div>
+      <div className="text-center text-gray-400">
+        <div className="text-sm">Posts visualization unavailable</div>
       </div>
     </div>
   );
@@ -192,30 +194,12 @@ function ErrorFallback() {
 const SocialMediaTakeover3D = () => {
   const [hasError, setHasError] = useState(false);
 
-  console.log('SocialMediaTakeover3D component rendering...');
-
   if (hasError) {
     return (
-      <section className="py-16 bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
+      <section className="py-8">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              The Social Media Takeover
-            </h2>
-            <p className="text-lg text-blue-200 mb-2">
-              Thousands of voices, one powerful message
-            </p>
-            <p className="text-gray-300">
-              See how your posts will join a nationwide movement on August 21st
-            </p>
-          </div>
-          
-          <ErrorFallback />
-          
-          <div className="text-center mt-8">
-            <p className="text-blue-200 text-sm">
-              Your posts will create real impact across all social platforms
-            </p>
+          <div className="h-96 w-full">
+            <ErrorFallback />
           </div>
         </div>
       </section>
@@ -223,26 +207,13 @@ const SocialMediaTakeover3D = () => {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
+    <section className="py-8">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            The Social Media Takeover
-          </h2>
-          <p className="text-lg text-blue-200 mb-2">
-            Thousands of voices, one powerful message
-          </p>
-          <p className="text-gray-300">
-            See how your posts will join a nationwide movement on August 21st
-          </p>
-        </div>
-        
         <div className="h-96 w-full">
           <Suspense fallback={<LoadingFallback />}>
             <Canvas
-              camera={{ position: [0, 0, 10], fov: 60 }}
+              camera={{ position: [0, 0, 8], fov: 60 }}
               style={{ background: 'transparent' }}
-              onCreated={() => console.log('Canvas created successfully')}
               onError={(error) => {
                 console.error('Canvas error:', error);
                 setHasError(true);
@@ -251,12 +222,6 @@ const SocialMediaTakeover3D = () => {
               <Scene />
             </Canvas>
           </Suspense>
-        </div>
-        
-        <div className="text-center mt-8">
-          <p className="text-blue-200 text-sm">
-            Interactive 3D preview • Your posts will create real impact
-          </p>
         </div>
       </div>
     </section>
