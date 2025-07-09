@@ -5,9 +5,11 @@ interface PostCanvasProps {
   personalization?: any;
   customText?: string;
   customImage?: string;
+  postType?: 'quick' | 'upload';
+  showTextOnImage?: boolean;
 }
 
-const PostCanvas = ({ template, personalization, customText, customImage }: PostCanvasProps) => {
+const PostCanvas = ({ template, personalization, customText, customImage, postType = 'quick', showTextOnImage = true }: PostCanvasProps) => {
   const getMessage = () => {
     if (customText) return customText;
     
@@ -28,7 +30,8 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
   const isFamilyPost = template?.postType === 'family-template' || template?.postType === 'family-custom';
   const qrCodeUrl = window.location.origin + '/day-of-experience';
 
-  if (isFamilyPost) {
+  // For family templates or upload posts - just show image with logo
+  if (isFamilyPost || postType === 'upload') {
     return (
       <div 
         id="post-canvas" 
@@ -38,7 +41,7 @@ const PostCanvas = ({ template, personalization, customText, customImage }: Post
         {/* Just the image without QR code */}
         <img 
           src={getImageSrc()}
-          alt="Memorial photo"
+          alt="Post image"
           className="w-full h-full object-cover"
         />
         

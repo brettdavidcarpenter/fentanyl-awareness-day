@@ -5,9 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import PersonaSelection from '@/components/PersonaSelection';
-import TemplateSelector from '@/components/TemplateSelector';
+import UnifiedPostSelector from '@/components/UnifiedPostSelector';
 import CustomPostCreator from '@/components/CustomPostCreator';
-import FamilyPostSelector from '@/components/FamilyPostSelector';
 import PostCanvas from '@/components/PostCanvas';
 import SocialShare from '@/components/SocialShare';
 import { usePostGeneration } from '@/hooks/usePostGeneration';
@@ -115,18 +114,11 @@ const DayOfExperience = () => {
             <PersonaSelection onPersonaSelect={handlePersonaSelect} />
           )}
 
-          {currentStep === 'templates' && selectedPersona === 'family' && (
-            <FamilyPostSelector
-              onTemplateSelect={handleTemplateSelect}
-              onCustomPost={handleCustomPost}
-            />
-          )}
-
-          {currentStep === 'templates' && selectedPersona !== 'family' && (
-            <TemplateSelector
+          {currentStep === 'templates' && (
+            <UnifiedPostSelector
               persona={selectedPersona}
               onTemplateSelect={handleTemplateSelect}
-              onCreateCustom={handleCreateCustom}
+              onCustomPost={handleCustomPost}
               onBack={() => setCurrentStep('persona')}
             />
           )}
@@ -154,12 +146,40 @@ const DayOfExperience = () => {
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-white mb-6">Your Post is Ready!</h2>
                 
+                {/* Caption Section - show text separately */}
+                {(selectedTemplate?.message || customData?.text) && (
+                  <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm mb-8 max-w-2xl mx-auto">
+                    <h3 className="text-lg font-semibold text-white mb-3">Caption for Your Post</h3>
+                    <div className="bg-gray-800 p-4 rounded border text-sm text-gray-100 mb-4">
+                      {customData?.text || selectedTemplate?.message}
+                    </div>
+                    <TrackedButton
+                      onClick={() => {
+                        navigator.clipboard.writeText(customData?.text || selectedTemplate?.message || '');
+                        toast({
+                          title: "Caption Copied!",
+                          description: "Paste this into your social media post"
+                        });
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="text-white border-white hover:bg-white hover:text-black"
+                      trackingName="copy_caption"
+                      trackingCategory="post_creation"
+                      trackingPage="day_of_experience"
+                    >
+                      Copy Caption
+                    </TrackedButton>
+                  </div>
+                )}
+
                 <div className="flex justify-center mb-8">
                   <PostCanvas
                     template={selectedTemplate}
                     personalization={personalization}
                     customText={customData?.text}
                     customImage={customData?.image}
+                    postType={personalization?.type || customData?.type}
                   />
                 </div>
 
