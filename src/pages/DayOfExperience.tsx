@@ -1,297 +1,257 @@
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { TrackedButton } from "@/components/TrackedButton";
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
-import PersonaSelection from '@/components/PersonaSelection';
-import UnifiedPostSelector from '@/components/UnifiedPostSelector';
-import CustomPostCreator from '@/components/CustomPostCreator';
+import LivePostForm from "@/components/LivePostForm";
 import PostCanvas from '@/components/PostCanvas';
 import SocialShare from '@/components/SocialShare';
 import { usePostGeneration } from '@/hooks/usePostGeneration';
+import { getTemplatesByPersona } from "@/data/postTemplates";
 
 const DayOfExperience = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState<'persona' | 'templates' | 'custom' | 'preview'>('persona');
-  const [selectedPersona, setSelectedPersona] = useState<string>('');
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
-  const [personalization, setPersonalization] = useState<any>(null);
-  const [customData, setCustomData] = useState<any>(null);
-  const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
   const { createPost, isGenerating } = usePostGeneration();
+  const [formData, setFormData] = useState<any>({
+    persona: 'family',
+    template: getTemplatesByPersona('family')[0],
+    customText: '',
+    personalization: { name: '', relationship: '' },
+    uploadedImage: null,
+    isCustomizing: false
+  });
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
 
-  const handlePersonaSelect = (persona: string) => {
-    setSelectedPersona(persona);
-    setCurrentStep('templates');
-  };
+  const handleFormChange = useCallback((newData: any) => {
+    setFormData(newData);
+  }, []);
 
-  const handleTemplateSelect = (template: any, personalizationData?: any) => {
-    setSelectedTemplate(template);
-    setPersonalization(personalizationData);
-    setCurrentStep('preview');
-    generatePost(template, personalizationData);
-  };
-
-  const handleCreateCustom = () => {
-    setCurrentStep('custom');
-  };
-
-  const handleCustomPost = (customPostData: any) => {
-    setCustomData(customPostData);
-    setSelectedTemplate({
-      message: customPostData.customText || customPostData.text,
-      imagePath: customPostData.customImage || customPostData.image,
-      postType: customPostData.postType || 'custom'
+  const handleGeneratePost = async () => {
+    const imageUrl = await createPost({
+      persona: formData.persona,
+      postType: formData.uploadedImage ? 'custom' : 'prepopulated',
+      template: formData.template?.id,
+      customText: formData.customText,
+      personalization: formData.personalization
     });
-    setCurrentStep('preview');
-    generatePost({
-      message: customPostData.customText || customPostData.text,
-      imagePath: customPostData.customImage || customPostData.image,
-      postType: customPostData.postType || 'custom'
-    });
-  };
-
-  const generatePost = async (template: any, personalizationData?: any) => {
-    // Wait for the next render cycle to ensure PostCanvas is rendered
-    setTimeout(async () => {
-      const imageUrl = await createPost({
-        persona: selectedPersona,
-        postType: customData ? 'custom' : 'prepopulated',
-        template: template.id,
-        customText: customData?.text,
-        personalization: personalizationData
+    
+    if (imageUrl) {
+      setGeneratedImageUrl(imageUrl);
+      toast({
+        title: "Post Generated!",
+        description: "Your post is ready to share"
       });
-      
-      if (imageUrl) {
-        setGeneratedImageUrl(imageUrl);
-      }
-    }, 100);
+    }
   };
 
-  const resetToStart = () => {
-    setCurrentStep('persona');
-    setSelectedPersona('');
-    setSelectedTemplate(null);
-    setPersonalization(null);
-    setCustomData(null);
-    setGeneratedImageUrl('');
+  const getCurrentMessage = () => {
+    if (formData.customText) return formData.customText;
+    
+    let message = formData.template?.message || '';
+    if (formData.personalization?.name && formData.personalization?.relationship) {
+      message = message
+        .replace('[Name]', formData.personalization.name)
+        .replace('[relationship]', formData.personalization.relationship);
+    }
+    return message;
+  };
+
+  const getCurrentImage = () => {
+    return formData.uploadedImage || formData.template?.imagePath;
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center justify-end mb-8">
-          {currentStep !== 'persona' && (
-            <TrackedButton 
-              onClick={resetToStart} 
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-              trackingName="navigation_start_over"
-              trackingCategory="navigation"
-              trackingPage="day_of_experience"
-              trackingData={{ currentStep, selectedPersona }}
-            >
-              Start Over
-            </TrackedButton>
-          )}
-        </div>
-
-        {/* Title */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-4">
-            Fentanyl Awareness Day Experience
+            Create Your Fentanyl Awareness Post
           </h1>
           <p className="text-xl text-blue-100">
-            Create meaningful posts to share your story and save lives
+            Customize your message and see it come to life instantly
           </p>
         </div>
 
-        {/* Content */}
-        <div className="max-w-6xl mx-auto">
-          {currentStep === 'persona' && (
-            <PersonaSelection onPersonaSelect={handlePersonaSelect} />
-          )}
-
-          {currentStep === 'templates' && (
-            <UnifiedPostSelector
-              persona={selectedPersona}
-              onTemplateSelect={handleTemplateSelect}
-              onCustomPost={handleCustomPost}
-              onBack={() => setCurrentStep('persona')}
+        {/* Split Screen Layout */}
+        <div className="grid lg:grid-cols-5 gap-8 max-w-7xl mx-auto">
+          {/* Left Side - Form Controls */}
+          <div className="lg:col-span-2 space-y-6">
+            <LivePostForm 
+              onFormChange={handleFormChange}
+              initialData={formData}
             />
-          )}
+            
+            {/* Action Buttons */}
+            <div className="space-y-4">
+              <TrackedButton
+                onClick={handleGeneratePost}
+                disabled={isGenerating}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                trackingName="generate_post_live"
+                trackingCategory="post_creation"
+                trackingPage="day_of_experience"
+                trackingData={{ 
+                  persona: formData.persona, 
+                  hasCustomText: !!formData.customText,
+                  hasUploadedImage: !!formData.uploadedImage
+                }}
+              >
+                {isGenerating ? 'Generating...' : 'Generate Final Post'}
+              </TrackedButton>
 
-          {currentStep === 'custom' && (
-            <CustomPostCreator
-              onCreatePost={handleCustomPost}
-              onBack={() => setCurrentStep('templates')}
-            />
-          )}
+              <TrackedButton
+                onClick={() => {
+                  navigator.clipboard.writeText(getCurrentMessage());
+                  toast({
+                    title: "Caption Copied!",
+                    description: "Paste this into your social media post"
+                  });
+                }}
+                variant="outline"
+                className="w-full text-white border-white hover:bg-white hover:text-black"
+                trackingName="copy_caption_live"
+                trackingCategory="post_creation"
+                trackingPage="day_of_experience"
+              >
+                Copy Caption
+              </TrackedButton>
+            </div>
+          </div>
 
-          {currentStep === 'preview' && (
-            <div className="space-y-8">
-              {/* Hidden canvas for image generation */}
-              <div className="hidden">
-                <PostCanvas
-                  template={selectedTemplate}
-                  personalization={personalization}
-                  customText={customData?.text}
-                  customImage={customData?.image}
-                />
+          {/* Right Side - Live Preview */}
+          <div className="lg:col-span-3">
+            <div className="sticky top-8 space-y-6">
+              {/* Live Preview Header */}
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-white mb-2">Live Preview</h2>
+                <p className="text-blue-100">
+                  Your changes appear instantly below
+                </p>
               </div>
 
-              {/* Visible preview */}
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-white mb-6">Your Post is Ready!</h2>
-                
-                {/* Caption Section - show text separately */}
-                {(selectedTemplate?.message || customData?.text) && (
-                  <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm mb-8 max-w-2xl mx-auto">
-                    <h3 className="text-lg font-semibold text-white mb-3">Caption for Your Post</h3>
-                    <div className="bg-gray-800 p-4 rounded border text-sm text-gray-100 mb-4">
-                      {customData?.text || selectedTemplate?.message}
-                    </div>
-                    <TrackedButton
-                      onClick={() => {
-                        navigator.clipboard.writeText(customData?.text || selectedTemplate?.message || '');
-                        toast({
-                          title: "Caption Copied!",
-                          description: "Paste this into your social media post"
-                        });
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="text-white border-white hover:bg-white hover:text-black"
-                      trackingName="copy_caption"
-                      trackingCategory="post_creation"
-                      trackingPage="day_of_experience"
-                    >
-                      Copy Caption
-                    </TrackedButton>
-                  </div>
-                )}
-
-                <div className="flex justify-center mb-8">
+              {/* Post Preview */}
+              <div className="flex justify-center">
+                <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
                   <PostCanvas
-                    template={selectedTemplate}
-                    personalization={personalization}
-                    customText={customData?.text}
-                    customImage={customData?.image}
-                    postType={personalization?.type || customData?.type}
+                    template={{
+                      ...formData.template,
+                      message: getCurrentMessage(),
+                      imagePath: getCurrentImage()
+                    }}
+                    personalization={formData.personalization}
+                    customText={formData.customText}
+                    customImage={formData.uploadedImage}
+                    postType={formData.uploadedImage ? 'upload' : 'quick'}
                   />
                 </div>
+              </div>
 
-                {/* Progress indicator */}
-                {isGenerating && (
-                  <div className="mb-6">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
-                    <p className="text-white">Creating your post...</p>
-                  </div>
-                )}
+              {/* Caption Preview */}
+              <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+                <h3 className="text-lg font-semibold text-white mb-3">Caption Preview</h3>
+                <div className="bg-gray-800 p-4 rounded border text-sm text-gray-100">
+                  {getCurrentMessage()}
+                </div>
+              </div>
 
-                {/* Social sharing - show even while generating */}
-                <div className="mb-8">
+              {/* Social Sharing */}
+              {generatedImageUrl && (
+                <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+                  <h3 className="text-lg font-semibold text-white mb-4">Share Your Post</h3>
                   <SocialShare
                     imageUrl={generatedImageUrl}
-                    message={selectedTemplate?.message || customData?.text || ''}
-                    isGenerating={isGenerating}
+                    message={getCurrentMessage()}
+                    isGenerating={false}
                   />
                 </div>
+              )}
 
-                {/* Share the Day of Experience section */}
-                <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    💫 Help Others Create Their Posts Too
-                  </h3>
-                  <p className="text-blue-100 mb-4">
-                    Share this tool with friends and family so they can create their own awareness posts
-                  </p>
+              {/* Share the Tool */}
+              <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+                <h3 className="text-xl font-bold text-white mb-4">
+                  💫 Help Others Create Posts Too
+                </h3>
+                <p className="text-blue-100 mb-4">
+                  Share this tool so others can create their own awareness posts
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <TrackedButton
+                    onClick={() => {
+                      const shareText = "Create your own Fentanyl Awareness Day post and help save lives.";
+                      const shareUrl = window.location.origin + "/day-of-experience";
+                      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+                    }}
+                    className="bg-blue-500 hover:bg-blue-600 text-white text-sm"
+                    trackingName="share_tool_twitter"
+                    trackingCategory="tool_sharing"
+                    trackingPage="day_of_experience"
+                  >
+                    Share on X
+                  </TrackedButton>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <TrackedButton
-                      onClick={() => {
-                        const shareText = "Create your own Fentanyl Awareness Day post and help save lives. Every share makes a difference.";
-                        const shareUrl = window.location.origin + "/day-of-experience";
-                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
-                      }}
-                      className="bg-blue-500 hover:bg-blue-600 text-white"
-                      trackingName="share_tool_twitter"
-                      trackingCategory="tool_sharing"
-                      trackingPage="day_of_experience"
-                    >
-                      Share Tool on Twitter/X
-                    </TrackedButton>
-                    
-                    <TrackedButton
-                      onClick={() => {
-                        const shareText = "Create your own Fentanyl Awareness Day post and help save lives. Every share makes a difference.";
-                        const shareUrl = window.location.origin + "/day-of-experience";
-                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
-                      }}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
-                      trackingName="share_tool_facebook"
-                      trackingCategory="tool_sharing"
-                      trackingPage="day_of_experience"
-                    >
-                      Share Tool on Facebook
-                    </TrackedButton>
-                    
-                    <TrackedButton
-                      onClick={async () => {
-                        const shareText = `Create your own Fentanyl Awareness Day post and help save lives. Every share makes a difference.\n\n${window.location.origin}/day-of-experience`;
+                  <TrackedButton
+                    onClick={() => {
+                      const shareText = "Create your own Fentanyl Awareness Day post and help save lives.";
+                      const shareUrl = window.location.origin + "/day-of-experience";
+                      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
+                    }}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                    trackingName="share_tool_facebook"
+                    trackingCategory="tool_sharing"
+                    trackingPage="day_of_experience"
+                  >
+                    Share on Facebook
+                  </TrackedButton>
+                  
+                  <TrackedButton
+                    onClick={async () => {
+                      const shareText = `Create your own Fentanyl Awareness Day post: ${window.location.origin}/day-of-experience`;
+                      try {
+                        await navigator.clipboard.writeText(shareText);
+                        toast({
+                          title: "Link Copied!",
+                          description: "Share this with friends"
+                        });
+                      } catch (err) {
+                        console.error('Copy failed:', err);
+                      }
+                    }}
+                    variant="outline"
+                    className="text-white border-white hover:bg-white hover:text-black text-sm"
+                    trackingName="copy_tool_link"
+                    trackingCategory="tool_sharing"
+                    trackingPage="day_of_experience"
+                  >
+                    Copy Link
+                  </TrackedButton>
+                  
+                  <TrackedButton
+                    onClick={async () => {
+                      if (navigator.share) {
                         try {
-                          await navigator.clipboard.writeText(shareText);
-                          toast({
-                            title: "Link Copied!",
-                            description: "Share this with friends so they can create their own posts"
+                          await navigator.share({
+                            title: 'Fentanyl Awareness Post Creator',
+                            text: 'Create your own Fentanyl Awareness Day post and help save lives.',
+                            url: window.location.origin + '/day-of-experience'
                           });
                         } catch (err) {
-                          console.error('Failed to copy:', err);
-                          toast({
-                            title: "Copy Failed",
-                            description: "Please copy the link manually",
-                            variant: "destructive"
-                          });
+                          console.log('Share canceled');
                         }
-                      }}
-                      variant="outline"
-                      className="text-white border-white hover:bg-white hover:text-black"
-                      trackingName="copy_tool_link"
-                      trackingCategory="tool_sharing"
-                      trackingPage="day_of_experience"
-                    >
-                      Copy Link to Share
-                    </TrackedButton>
-                    
-                    <TrackedButton
-                      onClick={async () => {
-                        if (navigator.share) {
-                          try {
-                            await navigator.share({
-                              title: 'Fentanyl Awareness Day Post Creator',
-                              text: 'Create your own Fentanyl Awareness Day post and help save lives. Every share makes a difference.',
-                              url: window.location.origin + '/day-of-experience'
-                            });
-                          } catch (err) {
-                            console.log('Share canceled');
-                          }
-                        }
-                      }}
-                      variant="outline"
-                      className="text-white border-white hover:bg-white hover:text-black"
-                      trackingName="native_share_tool"
-                      trackingCategory="tool_sharing"
-                      trackingPage="day_of_experience"
-                    >
-                      Share with Friends
-                    </TrackedButton>
-                  </div>
+                      }
+                    }}
+                    variant="outline"
+                    className="text-white border-white hover:bg-white hover:text-black text-sm"
+                    trackingName="native_share_tool"
+                    trackingCategory="tool_sharing"
+                    trackingPage="day_of_experience"
+                  >
+                    Share
+                  </TrackedButton>
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
