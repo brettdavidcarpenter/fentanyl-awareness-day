@@ -30,8 +30,8 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   const isFamilyPost = template?.postType === 'family-template' || template?.postType === 'family-custom';
   const qrCodeUrl = window.location.origin + '/day-of-experience';
 
-  // For family templates or upload posts
-  if (isFamilyPost || postType === 'upload') {
+  // For family templates with default image or upload posts without custom image
+  if ((isFamilyPost && !customImage) || (postType === 'upload' && !customImage)) {
     const hasCustomText = customText && customText.trim() !== '';
     const imageHeight = hasCustomText ? '400px' : '540px';
     const textHeight = hasCustomText ? '140px' : '0px';
