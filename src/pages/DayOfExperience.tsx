@@ -100,23 +100,6 @@ const DayOfExperience = () => {
                 {isGenerating ? 'Generating...' : 'Generate Final Post'}
               </TrackedButton>
 
-              <TrackedButton
-                onClick={() => {
-                  const socialCaption = "#FacingFentanyl #FentanylAwareness #NationalFentanylPreventionDay\n\nCreate your own awareness post at https://facingfentanylnow.aware-share.com/day-of-experience";
-                  navigator.clipboard.writeText(socialCaption);
-                  toast({
-                    title: "Caption Copied!",
-                    description: "Paste this into your social media post"
-                  });
-                }}
-                variant="outline"
-                className="w-full text-white border-white hover:bg-white hover:text-black"
-                trackingName="copy_caption_live"
-                trackingCategory="post_creation"
-                trackingPage="day_of_experience"
-              >
-                Copy Caption
-              </TrackedButton>
             </div>
           </div>
 
