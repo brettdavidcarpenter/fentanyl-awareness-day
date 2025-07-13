@@ -126,9 +126,7 @@ describe('DayOfExperience Page', () => {
     render(<DayOfExperience />);
     
     expect(screen.getByText('💫 Help Others Create Posts Too')).toBeInTheDocument();
-    expect(screen.getByText('Share this tool so others can create their own awareness posts')).toBeInTheDocument();
-    expect(screen.getByText('Share on X')).toBeInTheDocument();
-    expect(screen.getByText('Share on Facebook')).toBeInTheDocument();
+    expect(screen.getByText('Text to a Friend')).toBeInTheDocument();
   });
 
   it('handles image upload', async () => {

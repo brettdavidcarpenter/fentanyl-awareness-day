@@ -4,6 +4,7 @@ import { TrackedButton } from "@/components/TrackedButton";
 import { useToast } from "@/hooks/use-toast";
 import LivePostForm from "@/components/LivePostForm";
 import PostCanvas from '@/components/PostCanvas';
+import ShareSection from '@/components/ShareSection';
 
 import { usePostGeneration } from '@/hooks/usePostGeneration';
 import { getTemplatesByPersona } from "@/data/postTemplates";
@@ -156,89 +157,7 @@ const DayOfExperience = () => {
 
 
               {/* Share the Tool */}
-              <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                <h3 className="text-xl font-bold text-white mb-4">
-                  💫 Help Others Create Posts Too
-                </h3>
-                <p className="text-blue-100 mb-4">
-                  Share this tool so others can create their own awareness posts
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <TrackedButton
-                    onClick={() => {
-                      const shareText = "Create your own Fentanyl Awareness Day post and help save lives.";
-                      const shareUrl = window.location.origin + "/day-of-experience";
-                      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
-                    }}
-                    className="bg-blue-500 hover:bg-blue-600 text-white text-sm"
-                    trackingName="share_tool_twitter"
-                    trackingCategory="tool_sharing"
-                    trackingPage="day_of_experience"
-                  >
-                    Share on X
-                  </TrackedButton>
-                  
-                  <TrackedButton
-                    onClick={() => {
-                      const shareText = "Create your own Fentanyl Awareness Day post and help save lives.";
-                      const shareUrl = window.location.origin + "/day-of-experience";
-                      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
-                    }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
-                    trackingName="share_tool_facebook"
-                    trackingCategory="tool_sharing"
-                    trackingPage="day_of_experience"
-                  >
-                    Share on Facebook
-                  </TrackedButton>
-                  
-                  <TrackedButton
-                    onClick={async () => {
-                      const shareText = `Create your own Fentanyl Awareness Day post: ${window.location.origin}/day-of-experience`;
-                      try {
-                        await navigator.clipboard.writeText(shareText);
-                        toast({
-                          title: "Link Copied!",
-                          description: "Share this with friends"
-                        });
-                      } catch (err) {
-                        console.error('Copy failed:', err);
-                      }
-                    }}
-                    variant="outline"
-                    className="text-white border-white hover:bg-white hover:text-black text-sm"
-                    trackingName="copy_tool_link"
-                    trackingCategory="tool_sharing"
-                    trackingPage="day_of_experience"
-                  >
-                    Copy Link
-                  </TrackedButton>
-                  
-                  <TrackedButton
-                    onClick={async () => {
-                      if (navigator.share) {
-                        try {
-                          await navigator.share({
-                            title: 'Fentanyl Awareness Post Creator',
-                            text: 'Create your own Fentanyl Awareness Day post and help save lives.',
-                            url: window.location.origin + '/day-of-experience'
-                          });
-                        } catch (err) {
-                          console.log('Share canceled');
-                        }
-                      }
-                    }}
-                    variant="outline"
-                    className="text-white border-white hover:bg-white hover:text-black text-sm"
-                    trackingName="native_share_tool"
-                    trackingCategory="tool_sharing"
-                    trackingPage="day_of_experience"
-                  >
-                    Share
-                  </TrackedButton>
-                </div>
-              </div>
+              <ShareSection />
             </div>
           </div>
         </div>
