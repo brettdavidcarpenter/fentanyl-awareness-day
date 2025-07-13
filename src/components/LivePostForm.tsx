@@ -18,6 +18,7 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
   const [selectedPersona, setSelectedPersona] = useState('family');
   const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
   const [customText, setCustomText] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
   const [personalization, setPersonalization] = useState({
     name: '',
     relationship: ''
@@ -30,13 +31,20 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
     { id: 'recovery', title: 'Recovery Orgs', icon: Users, color: 'text-green-500' }
   ];
 
-  // Initialize with default template
+  // Initialize with default template and set initial text
   useEffect(() => {
     const templates = getTemplatesByPersona(selectedPersona);
     if (templates.length > 0 && !selectedTemplate) {
-      setSelectedTemplate(templates[0]);
+      const template = templates[0];
+      setSelectedTemplate(template);
+      
+      // Initialize customText with template message if not already initialized
+      if (!isInitialized && template.message) {
+        setCustomText(template.message);
+        setIsInitialized(true);
+      }
     }
-  }, [selectedPersona, selectedTemplate]);
+  }, [selectedPersona, selectedTemplate, isInitialized]);
 
   // Update parent component whenever form changes
   useEffect(() => {
@@ -83,7 +91,8 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
                   variant={selectedPersona === persona.id ? "default" : "outline"}
                   onClick={() => {
                     setSelectedPersona(persona.id);
-                    setSelectedTemplate(null); // Reset template when persona changes
+                    setSelectedTemplate(null);
+                    setIsInitialized(false); // Reset initialization when persona changes
                   }}
                   className="flex items-center justify-start gap-2 h-auto p-3"
                 >
@@ -110,7 +119,7 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
               id="custom-message"
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
-              placeholder={currentTemplate?.message || "Enter your custom message..."}
+              placeholder="Enter your custom message..."
               className="min-h-[100px] resize-none"
               maxLength={280}
             />
