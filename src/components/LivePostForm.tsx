@@ -97,34 +97,6 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
       </Card>
 
 
-      {/* Personalization for Family Posts */}
-      {selectedPersona === 'family' && currentTemplate?.customizable && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Personalize Your Message</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label htmlFor="name">Loved One's Name</Label>
-              <Input
-                id="name"
-                value={personalization.name}
-                onChange={(e) => setPersonalization(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Enter their name"
-              />
-            </div>
-            <div>
-              <Label htmlFor="relationship">Your Relationship</Label>
-              <Input
-                id="relationship"
-                value={personalization.relationship}
-                onChange={(e) => setPersonalization(prev => ({ ...prev, relationship: e.target.value }))}
-                placeholder="e.g., son, daughter, friend"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Custom Message */}
       <Card>
