@@ -57,15 +57,7 @@ const ShareSection = () => {
           </p>
         </div>
 
-        <div className="max-w-md mx-auto mb-8">
-          {/* Message Preview */}
-          <div className="bg-orange-900/30 border border-orange-500/30 rounded-xl p-6 mb-6">
-            <h4 className="text-white font-semibold mb-3">Message to send:</h4>
-            <p className="text-gray-200 text-sm leading-relaxed">
-              {textMessage}
-            </p>
-          </div>
-
+        <div className="max-w-md mx-auto">
           <div className="text-center">
             <TrackedButton
               onClick={handleTextToFriend}
@@ -77,17 +69,7 @@ const ShareSection = () => {
               <MessageCircle className="w-5 h-5" />
               Text to a Friend
             </TrackedButton>
-            
-            <p className="text-gray-400 text-xs mt-3">
-              {copied ? "Message copied to clipboard!" : "Opens your messaging app or copies message"}
-            </p>
           </div>
-        </div>
-
-        <div className="text-center">
-          <p className="text-gray-400 text-sm">
-            Together we can save lives. Every share brings us closer to ending the fentanyl crisis.
-          </p>
         </div>
       </Card>
     </section>
