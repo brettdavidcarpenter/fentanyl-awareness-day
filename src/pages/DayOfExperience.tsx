@@ -4,7 +4,7 @@ import { TrackedButton } from "@/components/TrackedButton";
 import { useToast } from "@/hooks/use-toast";
 import LivePostForm from "@/components/LivePostForm";
 import PostCanvas from '@/components/PostCanvas';
-import SocialShare from '@/components/SocialShare';
+
 import { usePostGeneration } from '@/hooks/usePostGeneration';
 import { getTemplatesByPersona } from "@/data/postTemplates";
 
@@ -154,17 +154,6 @@ const DayOfExperience = () => {
                 </div>
               </div>
 
-              {/* Social Sharing */}
-              {generatedImageUrl && (
-                <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                  <h3 className="text-lg font-semibold text-white mb-4">Share Your Post</h3>
-                  <SocialShare
-                    imageUrl={generatedImageUrl}
-                    message={getCurrentMessage()}
-                    isGenerating={false}
-                  />
-                </div>
-              )}
 
               {/* Share the Tool */}
               <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">

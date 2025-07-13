@@ -96,33 +96,6 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
         </CardContent>
       </Card>
 
-      {/* Template Selector */}
-      {templates.length > 1 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Choose Template</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 gap-2">
-              {templates.map((template) => (
-                <Button
-                  key={template.id}
-                  variant={selectedTemplate?.id === template.id ? "default" : "outline"}
-                  onClick={() => setSelectedTemplate(template)}
-                  className="justify-start h-auto p-3 text-left"
-                >
-                  <div>
-                    <div className="font-medium text-sm">{template.title}</div>
-                    <div className="text-xs text-muted-foreground line-clamp-2">
-                      {template.message.substring(0, 60)}...
-                    </div>
-                  </div>
-                </Button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Personalization for Family Posts */}
       {selectedPersona === 'family' && currentTemplate?.customizable && (
