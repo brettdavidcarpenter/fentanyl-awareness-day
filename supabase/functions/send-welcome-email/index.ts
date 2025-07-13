@@ -60,9 +60,9 @@ serve(async (req) => {
     const resend = new Resend(resendApiKey);
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Send welcome email with unified professional template
+    // Send welcome email with unified professional template using new domain
     const emailResponse = await resend.emails.send({
-      from: "Facing Fentanyl <noreply@facingfentanylnow.aware-share.com>",
+      from: "Facing Fentanyl <noreply@mail.aware-share.com>",
       to: [email],
       subject: "Thank you for joining Fentanyl Awareness Day 2025",
       html: `
@@ -90,12 +90,12 @@ serve(async (req) => {
             <p>Together, we can make a difference and raise awareness about fentanyl prevention.</p>
             
             <div style="text-align: center; margin: 30px 0;">
-              <a href="https://facingfentanylnow.org" style="display: inline-block; background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Visit Facing Fentanyl Now</a>
+              <a href="https://facingfentanylnow.aware-share.com" style="display: inline-block; background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Visit Facing Fentanyl Now</a>
             </div>
             
             <p style="font-size: 14px; color: #666; margin-top: 30px;">
               If you no longer wish to receive these emails, you can 
-              <a href="https://facingfentanylnow.org/unsubscribe?token={{unsubscribe_token}}" style="color: #3b82f6;">unsubscribe here</a>.
+              <a href="https://facingfentanylnow.aware-share.com/unsubscribe?token={{unsubscribe_token}}" style="color: #3b82f6;">unsubscribe here</a>.
             </p>
           </div>
         </div>

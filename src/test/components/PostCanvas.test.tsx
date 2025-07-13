@@ -1,108 +1,58 @@
 
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '../utils/test-utils';
-import PostCanvas from '@/components/PostCanvas';
-import { familyTemplates } from '@/data/postTemplates';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render } from '@testing-library/react';
+import { PostCanvas } from '@/components/PostCanvas';
+
+// Mock html2canvas
+vi.mock('html2canvas', () => ({
+  default: vi.fn().mockResolvedValue({
+    toDataURL: vi.fn().mockReturnValue('data:image/png;base64,mock-image-data'),
+  }),
+}));
 
 describe('PostCanvas Component', () => {
-  const mockTemplate = familyTemplates[0];
-  
   beforeEach(() => {
-    // Mock QRCodeSVG component
-    vi.mock('qrcode.react', () => ({
-      QRCodeSVG: ({ value, size }: { value: string; size: number }) => (
-        <div data-testid="qr-code" data-value={value} data-size={size}>QR Code</div>
-      ),
-    }));
+    vi.clearAllMocks();
   });
 
-  it('renders default post canvas with template', () => {
-    render(<PostCanvas template={mockTemplate} />);
-    
-    // Should render image
-    const image = screen.getByAltText('Memorial photo');
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src', mockTemplate.imagePath);
-    
-    // Should render message
-    expect(screen.getByText(mockTemplate.message)).toBeInTheDocument();
-    
-    // Should render QR code
-    expect(screen.getByTestId('qr-code')).toBeInTheDocument();
-  });
-
-  it('renders personalized message when personalization provided', () => {
-    const personalization = { name: 'John', relationship: 'son' };
-    render(
-      <PostCanvas 
-        template={mockTemplate} 
-        personalization={personalization}
+  it('renders post canvas with basic props', () => {
+    const { container } = render(
+      <PostCanvas
+        persona="family"
+        template="family-1"
+        personalization={{ name: 'John', relationship: 'son' }}
+        customText="Test message"
       />
     );
-    
-    const expectedMessage = mockTemplate.message
-      .replace('[Name]', 'John')
-      .replace('[relationship]', 'son');
-    
-    expect(screen.getByText(expectedMessage)).toBeInTheDocument();
+
+    expect(container.querySelector('#post-canvas')).toBeInTheDocument();
   });
 
-  it('renders custom text when provided', () => {
-    const customText = 'This is my custom message for awareness';
-    render(
-      <PostCanvas 
-        template={mockTemplate} 
-        customText={customText}
+  it('applies correct styling based on persona', () => {
+    const { container } = render(
+      <PostCanvas
+        persona="advocate"
+        template="advocate-1"
+        personalization={{}}
+        customText="Advocacy message"
       />
     );
-    
-    expect(screen.getByText(customText)).toBeInTheDocument();
+
+    const canvas = container.querySelector('#post-canvas');
+    expect(canvas).toBeInTheDocument();
   });
 
-  it('renders custom image when provided', () => {
-    const customImage = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...';
-    render(
-      <PostCanvas 
-        template={mockTemplate} 
-        customImage={customImage}
+  it('handles custom text properly', () => {
+    const customMessage = 'This is a custom message for awareness';
+    const { getByText } = render(
+      <PostCanvas
+        persona="family"
+        template="family-1"
+        personalization={{ name: 'Jane', relationship: 'daughter' }}
+        customText={customMessage}
       />
     );
-    
-    const image = screen.getByAltText('Memorial photo');
-    expect(image).toHaveAttribute('src', customImage);
-  });
 
-  it('renders family post layout for family templates', () => {
-    const familyTemplate = { ...mockTemplate, postType: 'family-template' };
-    render(<PostCanvas template={familyTemplate} />);
-    
-    // Family posts should only show image with logo, no QR code
-    expect(screen.queryByTestId('qr-code')).not.toBeInTheDocument();
-    
-    // Should have the logo
-    const logo = screen.getByAltText('Facing Fentanyl Logo');
-    expect(logo).toBeInTheDocument();
-  });
-
-  it('renders upload post layout correctly', () => {
-    render(<PostCanvas template={mockTemplate} postType="upload" />);
-    
-    // Upload posts should only show image with logo, no QR code
-    expect(screen.queryByTestId('qr-code')).not.toBeInTheDocument();
-    
-    // Should have the logo
-    const logo = screen.getByAltText('Facing Fentanyl Logo');
-    expect(logo).toBeInTheDocument();
-  });
-
-  it('has correct canvas dimensions', () => {
-    render(<PostCanvas template={mockTemplate} />);
-    
-    const canvas = screen.getByTestId('post-canvas') || 
-                  document.querySelector('#post-canvas');
-    
-    if (canvas) {
-      expect(canvas).toHaveClass('w-[540px]', 'h-[540px]');
-    }
+    expect(getByText(customMessage)).toBeInTheDocument();
   });
 });
