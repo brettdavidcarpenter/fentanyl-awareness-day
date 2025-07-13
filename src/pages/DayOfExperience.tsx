@@ -150,7 +150,7 @@ const DayOfExperience = () => {
 
               {/* Social Media Caption */}
               <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                <h3 className="text-lg font-semibold text-white mb-3">Help us by Using the following hashtags</h3>
+                <h3 className="text-lg font-semibold text-white mb-3 text-center">Help us by Using the following hashtags</h3>
                 <div className="bg-gray-800 p-4 rounded border text-sm text-gray-100">
                   #FacingFentanyl #FentanylAwareness #NationalFentanylPreventionDay
                   
