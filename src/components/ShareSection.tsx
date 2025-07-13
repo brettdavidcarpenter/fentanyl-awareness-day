@@ -48,28 +48,25 @@ const ShareSection = () => {
     <section className="py-16">
       <Card className="max-w-4xl mx-auto bg-white/5 backdrop-blur-sm border-white/10 p-8">
         <div className="text-center mb-8">
-          <MessageCircle className="w-12 h-12 text-blue-400 mx-auto mb-4" />
           <h3 className="text-2xl font-semibold text-white mb-2">
-            💫 Help Others Create Posts Too
+            Help Others Create Posts Too
           </h3>
           <p className="text-gray-300">
             Share this tool with a friend so they can create their own awareness post
           </p>
         </div>
 
-        <div className="max-w-md mx-auto">
-          <div className="text-center">
-            <TrackedButton
-              onClick={handleTextToFriend}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 text-lg font-semibold w-full sm:w-auto flex items-center justify-center gap-3"
-              trackingName="text_to_friend"
-              trackingCategory="social_share"
-              trackingPage="day_of_experience"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Text to a Friend
-            </TrackedButton>
-          </div>
+        <div className="text-center">
+          <TrackedButton
+            onClick={handleTextToFriend}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 text-lg font-semibold flex items-center justify-center gap-3 mx-auto"
+            trackingName="text_to_friend"
+            trackingCategory="social_share"
+            trackingPage="day_of_experience"
+          >
+            <MessageCircle className="w-5 h-5" />
+            Text to a Friend
+          </TrackedButton>
         </div>
       </Card>
     </section>
