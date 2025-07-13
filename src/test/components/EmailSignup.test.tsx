@@ -1,6 +1,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '../utils/test-utils';
+import { render } from '../utils/test-utils';
+import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import EmailSignup from '@/components/EmailSignup';
 
@@ -25,7 +26,7 @@ describe('EmailSignup Component', () => {
     await user.click(submitButton);
     
     // Should show toast error for empty email
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByText('Email required')).toBeInTheDocument();
     });
   });
@@ -40,7 +41,7 @@ describe('EmailSignup Component', () => {
     await user.type(emailInput, 'invalid-email');
     await user.click(submitButton);
     
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByText('Invalid email')).toBeInTheDocument();
     });
   });
@@ -59,7 +60,7 @@ describe('EmailSignup Component', () => {
     expect(screen.getByText('Adding you to the list...')).toBeInTheDocument();
     
     // Should show success message
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByText("You're on the list!")).toBeInTheDocument();
       expect(screen.getByText("We'll remind you before August 21, 2025")).toBeInTheDocument();
     });

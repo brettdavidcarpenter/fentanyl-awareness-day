@@ -1,6 +1,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '../utils/test-utils';
+import { render } from '../utils/test-utils';
+import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import DayOfExperience from '@/pages/DayOfExperience';
 
@@ -101,7 +102,7 @@ describe('DayOfExperience Page', () => {
     
     expect(screen.getByText('Generating...')).toBeInTheDocument();
     
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByText('Generate Final Post')).toBeInTheDocument();
     });
   });
@@ -140,7 +141,7 @@ describe('DayOfExperience Page', () => {
     await user.upload(fileInput, file);
     
     // Should show remove image button after upload
-    await waitFor(() => {
+    await vi.waitFor(() => {
       expect(screen.getByText('Remove Image')).toBeInTheDocument();
     });
   });

@@ -1,7 +1,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '@testing-library/react';
-import { PostCanvas } from '@/components/PostCanvas';
+import PostCanvas from '@/components/PostCanvas';
 
 // Mock html2canvas
 vi.mock('html2canvas', () => ({
@@ -16,10 +16,16 @@ describe('PostCanvas Component', () => {
   });
 
   it('renders post canvas with basic props', () => {
+    const mockTemplate = {
+      id: 'family-1',
+      message: 'In memory of [Name], my beloved [relationship]',
+      imagePath: '/test-image.jpg',
+      postType: 'family-template'
+    };
+    
     const { container } = render(
       <PostCanvas
-        persona="family"
-        template="family-1"
+        template={mockTemplate}
         personalization={{ name: 'John', relationship: 'son' }}
         customText="Test message"
       />
@@ -28,11 +34,17 @@ describe('PostCanvas Component', () => {
     expect(container.querySelector('#post-canvas')).toBeInTheDocument();
   });
 
-  it('applies correct styling based on persona', () => {
+  it('applies correct styling for different template types', () => {
+    const mockTemplate = {
+      id: 'advocate-1',
+      message: 'Advocacy message for awareness',
+      imagePath: '/test-image.jpg',
+      postType: 'advocate'
+    };
+    
     const { container } = render(
       <PostCanvas
-        persona="advocate"
-        template="advocate-1"
+        template={mockTemplate}
         personalization={{}}
         customText="Advocacy message"
       />
@@ -44,10 +56,16 @@ describe('PostCanvas Component', () => {
 
   it('handles custom text properly', () => {
     const customMessage = 'This is a custom message for awareness';
+    const mockTemplate = {
+      id: 'family-1',
+      message: 'In memory of [Name], my beloved [relationship]',
+      imagePath: '/test-image.jpg',
+      postType: 'family-template'
+    };
+    
     const { getByText } = render(
       <PostCanvas
-        persona="family"
-        template="family-1"
+        template={mockTemplate}
         personalization={{ name: 'Jane', relationship: 'daughter' }}
         customText={customMessage}
       />

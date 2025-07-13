@@ -1,6 +1,6 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { usePostGeneration } from '@/hooks/usePostGeneration';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
@@ -76,7 +76,7 @@ describe('usePostGeneration Hook', () => {
     expect(result.current.isGenerating).toBe(true);
     
     // Wait for completion
-    await waitFor(() => promise);
+    await promise;
     
     // Should no longer be generating
     expect(result.current.isGenerating).toBe(false);
