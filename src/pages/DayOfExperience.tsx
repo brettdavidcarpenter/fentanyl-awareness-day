@@ -1,17 +1,17 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { TrackedButton } from "@/components/TrackedButton";
 import { useToast } from "@/hooks/use-toast";
 import LivePostForm from "@/components/LivePostForm";
 import PostCanvas from '@/components/PostCanvas';
 import ShareSection from '@/components/ShareSection';
 
-import { usePostGeneration } from '@/hooks/usePostGeneration';
 import { getTemplatesByPersona } from "@/data/postTemplates";
 
 const DayOfExperience = () => {
   const { toast } = useToast();
-  const { createPost, isGenerating } = usePostGeneration();
+  const postCanvasRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState<any>({
     persona: 'family',
     template: getTemplatesByPersona('family')[0],
@@ -20,26 +20,36 @@ const DayOfExperience = () => {
     uploadedImage: null,
     isCustomizing: false
   });
-  const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
+  
 
   const handleFormChange = useCallback((newData: any) => {
     setFormData(newData);
   }, []);
 
-  const handleGeneratePost = async () => {
-    const imageUrl = await createPost({
-      persona: formData.persona,
-      postType: formData.uploadedImage ? 'custom' : 'prepopulated',
-      template: formData.template?.id,
-      customText: formData.customText,
-      personalization: formData.personalization
-    });
+  const handleDownloadImage = async () => {
+    if (!postCanvasRef.current) return;
     
-    if (imageUrl) {
-      setGeneratedImageUrl(imageUrl);
+    try {
+      const canvas = await html2canvas(postCanvasRef.current, {
+        backgroundColor: null,
+        scale: 2,
+        useCORS: true
+      });
+      
+      const link = document.createElement('a');
+      link.download = 'fentanyl-awareness-post.png';
+      link.href = canvas.toDataURL();
+      link.click();
+      
       toast({
-        title: "Post Generated!",
-        description: "Your post is ready to share"
+        title: "Image Downloaded!",
+        description: "Your post image has been saved to your device"
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "There was an error downloading your image. Please try again.",
+        variant: "destructive"
       });
     }
   };
@@ -85,10 +95,9 @@ const DayOfExperience = () => {
             {/* Action Buttons */}
             <div className="space-y-4">
               <TrackedButton
-                onClick={handleGeneratePost}
-                disabled={isGenerating}
+                onClick={handleDownloadImage}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                trackingName="generate_post_live"
+                trackingName="download_post_image"
                 trackingCategory="post_creation"
                 trackingPage="day_of_experience"
                 trackingData={{ 
@@ -97,7 +106,7 @@ const DayOfExperience = () => {
                   hasUploadedImage: !!formData.uploadedImage
                 }}
               >
-                {isGenerating ? 'Generating...' : 'Generate Final Post'}
+                Download Image
               </TrackedButton>
 
             </div>
@@ -116,7 +125,7 @@ const DayOfExperience = () => {
 
               {/* Post Preview */}
               <div className="flex justify-center">
-                <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+                <div ref={postCanvasRef} className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
                   <PostCanvas
                     template={{
                       ...formData.template,
