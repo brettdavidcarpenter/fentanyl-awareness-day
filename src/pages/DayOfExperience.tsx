@@ -102,7 +102,7 @@ const DayOfExperience = () => {
 
               <TrackedButton
                 onClick={() => {
-                  const socialCaption = "Join the fight against fentanyl. Every voice matters in raising awareness and saving lives. #FacingFentanyl #FentanylAwareness #NationalFentanylPreventionDay\n\nCreate your own awareness post at " + window.location.origin + "/day-of-experience";
+                  const socialCaption = "Join the fight against fentanyl. Every voice matters in raising awareness and saving lives. #FacingFentanyl #FentanylAwareness #NationalFentanylPreventionDay\n\nCreate your own awareness post at https://facingfentanylnow.aware-share.com/day-of-experience";
                   navigator.clipboard.writeText(socialCaption);
                   toast({
                     title: "Caption Copied!",
@@ -150,11 +150,11 @@ const DayOfExperience = () => {
 
               {/* Social Media Caption */}
               <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                <h3 className="text-lg font-semibold text-white mb-3">Social Media Caption</h3>
+                <h3 className="text-lg font-semibold text-white mb-3">Please use the following hashtags to spread awareness</h3>
                 <div className="bg-gray-800 p-4 rounded border text-sm text-gray-100">
                   Join the fight against fentanyl. Every voice matters in raising awareness and saving lives. #FacingFentanyl #FentanylAwareness #NationalFentanylPreventionDay
                   
-                  Create your own awareness post at {window.location.origin}/day-of-experience
+                  Create your own awareness post at https://facingfentanylnow.aware-share.com/day-of-experience
                 </div>
               </div>
 
