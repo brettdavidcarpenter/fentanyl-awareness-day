@@ -17,13 +17,13 @@ test.describe('Day of Experience Flow', () => {
     // Should see personalization fields for family (default)
     await expect(page.getByText('Personalize Your Message')).toBeVisible();
     
-    // Fill out personalization
-    await page.getByLabelText("Loved One's Name").fill('John');
-    await page.getByLabelText('Your Relationship').fill('son');
+    // Fill out personalization using Playwright locators
+    await page.locator('input[placeholder*="Enter loved one\'s name"]').fill('John');
+    await page.locator('input[placeholder*="son, daughter, friend"]').fill('son');
     
     // Add custom message
     const customMessage = 'This is my custom awareness message';
-    await page.getByLabelText('Your Message (optional)').fill(customMessage);
+    await page.locator('textarea[placeholder*="Add your personal message"]').fill(customMessage);
     
     // Should see character count
     await expect(page.getByText(`${customMessage.length}/280 characters`)).toBeVisible();
@@ -60,8 +60,8 @@ test.describe('Day of Experience Flow', () => {
     // Should see upload section
     await expect(page.getByText('Upload Your Photo (optional)')).toBeVisible();
     
-    // Mock file upload
-    const fileInput = page.getByLabel('Click to upload your own image');
+    // Mock file upload - use proper Playwright file upload
+    const fileInput = page.locator('input[type="file"]');
     await fileInput.setInputFiles({
       name: 'test.jpg',
       mimeType: 'image/jpeg',

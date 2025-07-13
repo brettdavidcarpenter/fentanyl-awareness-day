@@ -4,10 +4,10 @@ import { http, HttpResponse } from 'msw';
 export const handlers = [
   // Mock Supabase email signup function
   http.post('*/functions/v1/email-signup', async ({ request }) => {
-    const body = await request.json() as { email: string; testMode?: boolean };
+    const body = await request.json() as any;
     
     // Simulate validation
-    if (!body.email || !body.email.includes('@')) {
+    if (!body?.email || !body.email.includes('@')) {
       return HttpResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -27,28 +27,28 @@ export const handlers = [
 
   // Mock Supabase database operations
   http.post('*/rest/v1/email_signups', async ({ request }) => {
-    const body = await request.json();
+    const body = await request.json() as any;
     return HttpResponse.json({
       id: 'mock-id',
-      email: body.email,
+      email: body?.email || 'test@example.com',
       created_at: new Date().toISOString(),
     });
   }),
 
   http.post('*/rest/v1/day_of_experience_posts', async ({ request }) => {
-    const body = await request.json();
+    const body = await request.json() as any;
     return HttpResponse.json({
       id: 'mock-post-id',
-      ...body,
+      ...(body || {}),
       created_at: new Date().toISOString(),
     });
   }),
 
   http.post('*/rest/v1/button_clicks', async ({ request }) => {
-    const body = await request.json();
+    const body = await request.json() as any;
     return HttpResponse.json({
       id: 'mock-click-id',
-      ...body,
+      ...(body || {}),
       created_at: new Date().toISOString(),
     });
   }),
