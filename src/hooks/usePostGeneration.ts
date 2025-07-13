@@ -26,9 +26,7 @@ export const usePostGeneration = () => {
       if (!element) throw new Error('Post element not found');
 
       const canvas = await html2canvas(element, {
-        width: 1080,
-        height: 1080,
-        scale: 2,
+        scale: 1,
         backgroundColor: '#ffffff'
       });
 
