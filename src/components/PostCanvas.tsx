@@ -98,8 +98,11 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         />
       </div>
       
+      {/* Black divider line */}
+      <div className="w-full h-[2px] bg-black"></div>
+      
       {/* Middle Section - Black background with cursive message (25% height) */}
-      <div className="w-full h-[135px] bg-black flex items-center justify-start px-8">
+      <div className="w-full h-[133px] bg-black flex items-center justify-start px-8">
         <p className="text-white font-kalam text-2xl leading-relaxed italic transform -rotate-2">
           {getMessage()}
         </p>
