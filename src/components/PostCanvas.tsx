@@ -84,10 +84,6 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
       className="relative w-[540px] h-[540px] mx-auto bg-black shadow-lg overflow-hidden"
       style={{ fontSize: '16px' }}
     >
-      {/* QR Code - Top Right */}
-      <div className="absolute top-4 right-4 bg-white p-2 rounded z-10">
-        <QRCodeSVG value={qrCodeUrl} size={48} />
-      </div>
       
       {/* Top Section - User Photo (65% height) */}
       <div className="relative w-full h-[351px] overflow-hidden">
