@@ -1,4 +1,5 @@
 import { QRCodeSVG } from 'qrcode.react';
+import { useState, useEffect } from 'react';
 
 interface PostCanvasProps {
   template: any;
@@ -10,6 +11,8 @@ interface PostCanvasProps {
 }
 
 const PostCanvas = ({ template, personalization, customText, customImage, postType = 'quick', showTextOnImage = true }: PostCanvasProps) => {
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const getMessage = () => {
     if (customText) return customText;
     
@@ -27,10 +30,37 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
     return template.imagePath;
   };
 
-  // Unified layout for all post types
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    setImageDimensions({
+      width: img.naturalWidth,
+      height: img.naturalHeight
+    });
+    setImageLoaded(true);
+  };
+
+  // Calculate dynamic sizing based on image aspect ratio
   const hasCustomText = customText && customText.trim() !== '';
-  const imageHeight = hasCustomText ? '400px' : '540px';
-  const textHeight = hasCustomText ? '140px' : '0px';
+  const isPortrait = imageDimensions ? imageDimensions.height > imageDimensions.width : false;
+  const isSquare = imageDimensions ? Math.abs(imageDimensions.width - imageDimensions.height) < 50 : false;
+  
+  // Dynamic height calculation for better aspect ratio handling
+  const getImageAreaHeight = () => {
+    if (!imageDimensions) return hasCustomText ? '360px' : '428px';
+    
+    if (isSquare) return hasCustomText ? '360px' : '428px';
+    if (isPortrait) return hasCustomText ? '380px' : '448px';
+    return hasCustomText ? '340px' : '408px'; // landscape
+  };
+
+  // Better object fit strategy based on image type
+  const getObjectFit = () => {
+    if (!imageDimensions) return 'object-contain';
+    
+    const aspectRatio = imageDimensions.width / imageDimensions.height;
+    // Use cover for images close to square or landscape, contain for extreme ratios
+    return aspectRatio > 0.5 && aspectRatio < 2 ? 'object-cover' : 'object-contain';
+  };
 
   return (
     <div 
@@ -44,13 +74,23 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
       {/* Polaroid-style inner container */}
       <div className="w-full h-full bg-white flex flex-col">
         {/* Image section with polaroid frame */}
-        <div className="relative w-full flex-1 bg-gray-100 p-4 pb-2">
+        <div 
+          className="relative w-full bg-gray-100 p-4 pb-2"
+          style={{ height: getImageAreaHeight() }}
+        >
           <div className="w-full h-full bg-white shadow-inner">
             <img 
               src={getImageSrc()}
               alt="Post image"
-              className="w-full h-full object-contain"
+              className={`w-full h-full ${getObjectFit()}`}
+              onLoad={handleImageLoad}
+              onError={() => setImageLoaded(true)}
             />
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+                <div className="text-gray-400 text-sm">Loading...</div>
+              </div>
+            )}
           </div>
         </div>
         
