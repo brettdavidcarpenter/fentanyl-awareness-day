@@ -35,41 +35,45 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   return (
     <div 
       id="post-canvas" 
-      className="relative w-[540px] h-[540px] mx-auto shadow-lg overflow-hidden bg-black"
-      style={{ fontSize: '16px' }}
+      className="relative w-[540px] h-[540px] mx-auto bg-white p-6 shadow-2xl"
+      style={{ 
+        fontSize: '16px',
+        boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
+      }}
     >
-      {/* Image section */}
-      <div className="relative w-full overflow-hidden" style={{ height: imageHeight }}>
-        <img 
-          src={getImageSrc()}
-          alt="Post image"
-          className="w-full h-full object-cover"
-        />
-        
-        {/* Logo overlay on image */}
-        <div className="absolute bottom-4 right-4">
-          <img 
-            src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
-            alt="Facing Fentanyl Logo"
-            className="h-8 w-auto"
-          />
+      {/* Polaroid-style inner container */}
+      <div className="w-full h-full bg-white flex flex-col">
+        {/* Image section with polaroid frame */}
+        <div className="relative w-full flex-1 bg-gray-100 p-4 pb-2">
+          <div className="w-full h-full bg-white shadow-inner">
+            <img 
+              src={getImageSrc()}
+              alt="Post image"
+              className="w-full h-full object-contain"
+            />
+          </div>
         </div>
-      </div>
-      
-      {/* Text section with divider - only show if custom text exists */}
-      {hasCustomText && (
-        <>
-          {/* Black divider line */}
-          <div className="w-full h-[2px] bg-black"></div>
-          
-          {/* Text area */}
-          <div className="w-full bg-black flex items-center justify-center px-6" style={{ height: textHeight }}>
-            <p className="text-white text-lg font-medium text-center leading-relaxed max-w-[480px]">
+        
+        {/* Polaroid bottom section */}
+        <div className="w-full h-20 bg-white flex flex-col justify-center px-4">
+          {hasCustomText ? (
+            <p className="text-gray-800 text-sm font-medium text-center leading-tight">
               {customText}
             </p>
-          </div>
-        </>
-      )}
+          ) : (
+            <div className="flex items-center justify-between">
+              <div className="text-gray-600 text-xs">
+                facingfentanylnow.org
+              </div>
+              <img 
+                src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
+                alt="Facing Fentanyl Logo"
+                className="h-6 w-auto"
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
