@@ -142,38 +142,40 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
               </div>
             )}
             
-            {/* Logo overlay for user-uploaded images only */}
-            {customImage && (
-              <div className="absolute bottom-2 right-2 flex flex-col items-end">
-                <img
-                  src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
-                  alt="Facing Fentanyl Logo"
-                  className="w-16 h-auto mb-1"
-                  style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
-                />
-                <div 
-                  className="text-xs font-semibold text-black px-1 py-0.5 rounded"
-                  style={{ 
-                    backgroundColor: 'rgba(255,255,255,0.9)',
-                    fontSize: '10px',
-                    textShadow: '0 1px 2px rgba(255,255,255,0.8)'
-                  }}
-                >
-                  facingfentanylnow.org
-                </div>
-              </div>
-            )}
           </div>
         </div>
         
-        {/* Polaroid bottom section with extra space for uploaded images */}
-        <div className={`w-full bg-black flex flex-col justify-center ${customImage ? 'h-28 px-6 py-3' : 'h-20 px-4'}`}>
-          <p 
-            className="text-white font-dancing text-lg leading-relaxed transform -rotate-2 text-center"
-            style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
-          >
-            {getMessage()}
-          </p>
+        {/* Polaroid bottom section with flex layout for text and logo */}
+        <div className={`w-full bg-black flex items-end ${customImage ? 'h-28 px-6 py-3' : 'h-20 px-4'}`}>
+          {/* Text area - constrained to left 2/3 */}
+          <div className="flex-1 max-w-[66%] pr-4">
+            <p 
+              className="text-white font-dancing text-lg leading-relaxed transform -rotate-2 text-left"
+              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
+            >
+              {getMessage()}
+            </p>
+          </div>
+          
+          {/* Logo area - positioned in bottom right for uploaded images only */}
+          {customImage && (
+            <div className="flex flex-col items-end justify-end">
+              <img
+                src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
+                alt="Facing Fentanyl Logo"
+                className="w-12 h-auto mb-1"
+              />
+              <div 
+                className="text-white font-semibold"
+                style={{ 
+                  fontSize: '8px',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
+                }}
+              >
+                facingfentanylnow.org
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
