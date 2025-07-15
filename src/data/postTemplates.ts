@@ -28,7 +28,7 @@ export const lawEnforcementTemplates: PostTemplate[] = [
   {
     id: 'law-1',
     title: 'United We Stand',
-    message: 'Our department stands with families affected by fentanyl. Education saves lives. #FacingFentanyl #CommunitySupport #FentanylAwareness',
+    message: 'Our department stands with families affected by fentanyl. Education saves lives. #FacingFentanyl',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   },
@@ -45,7 +45,7 @@ export const recoveryTemplates: PostTemplate[] = [
   {
     id: 'recovery-1',
     title: 'Hope & Recovery',
-    message: 'Recovery is possible. Hope is real. Resources are available today. #Recovery #Hope #FacingFentanyl #FentanylAwareness',
+    message: 'Recovery is possible. Hope is real. Resources are available today. #FacingFentanyl',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   },
