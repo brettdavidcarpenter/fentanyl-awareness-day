@@ -147,10 +147,10 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         
         {/* Polaroid bottom section with flex layout for text and logo */}
         <div className={`w-full bg-black flex items-end ${customImage ? 'h-28 px-6 py-3' : 'h-20 px-4'}`}>
-          {/* Text area - constrained to left 2/3 */}
-          <div className="flex-1 max-w-[66%] pr-4">
+          {/* Text area - constrained to left 2/3 when custom image, centered otherwise */}
+          <div className={customImage ? "flex-1 max-w-[66%] pr-4" : "flex-1"}>
             <p 
-              className="text-white font-dancing text-lg leading-relaxed transform -rotate-2 text-left"
+              className={`text-white font-dancing text-lg leading-relaxed transform -rotate-2 ${customImage ? 'text-left' : 'text-center'}`}
               style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
             >
               {getMessage()}
