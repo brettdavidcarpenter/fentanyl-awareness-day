@@ -127,7 +127,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
           className="relative w-full bg-black p-4 pb-2"
           style={{ height: getImageAreaHeight() }}
         >
-          <div className="w-full h-full bg-white shadow-inner border-2 border-white">
+          <div className="w-full h-full bg-white shadow-inner border-2 border-white relative">
             <img 
               src={getImageSrc()}
               alt="Post image"
@@ -139,6 +139,28 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
                 <div className="text-gray-400 text-sm">Loading...</div>
+              </div>
+            )}
+            
+            {/* Logo overlay for user-uploaded images only */}
+            {customImage && (
+              <div className="absolute bottom-2 right-2 flex flex-col items-end">
+                <img
+                  src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
+                  alt="Facing Fentanyl Logo"
+                  className="w-16 h-auto mb-1"
+                  style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
+                />
+                <div 
+                  className="text-xs font-semibold text-black px-1 py-0.5 rounded"
+                  style={{ 
+                    backgroundColor: 'rgba(255,255,255,0.9)',
+                    fontSize: '10px',
+                    textShadow: '0 1px 2px rgba(255,255,255,0.8)'
+                  }}
+                >
+                  facingfentanylnow.org
+                </div>
               </div>
             )}
           </div>
