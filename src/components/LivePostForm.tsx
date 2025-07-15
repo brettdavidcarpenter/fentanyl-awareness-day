@@ -121,25 +121,33 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
               onChange={(e) => setCustomText(e.target.value)}
               placeholder="Enter your custom message..."
               className="min-h-[100px] resize-none"
-              maxLength={90}
+              maxLength={uploadedImage ? 90 : 115}
             />
             <div className={`text-xs text-right flex items-center justify-between ${
               (() => {
                 const count = customText.length;
-                if (count <= 72) return 'text-green-600';
-                if (count <= 81) return 'text-orange-500';
+                const maxLength = uploadedImage ? 90 : 115;
+                const warningThreshold = uploadedImage ? 72 : 95;
+                const limitThreshold = uploadedImage ? 81 : 105;
+                
+                if (count <= warningThreshold) return 'text-green-600';
+                if (count <= limitThreshold) return 'text-orange-500';
                 return 'text-red-500 font-medium';
               })()
             }`}>
               <span className="text-muted-foreground">
                 {(() => {
                   const count = customText.length;
-                  if (count > 81) return '⚠️ Character limit reached';
-                  if (count > 72) return '⚠️ Approaching limit';
+                  const maxLength = uploadedImage ? 90 : 115;
+                  const warningThreshold = uploadedImage ? 72 : 95;
+                  const limitThreshold = uploadedImage ? 81 : 105;
+                  
+                  if (count > limitThreshold) return '⚠️ Character limit reached';
+                  if (count > warningThreshold) return '⚠️ Approaching limit';
                   return 'Good length for polaroid';
                 })()}
               </span>
-              <span>{customText.length}/90</span>
+              <span>{customText.length}/{uploadedImage ? 90 : 115}</span>
             </div>
           </div>
         </CardContent>
