@@ -71,14 +71,14 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
       }}
     >
-      {/* Polaroid-style inner container */}
-      <div className="w-full h-full bg-white flex flex-col">
+      {/* Polaroid-style inner container with black background */}
+      <div className="w-full h-full bg-black flex flex-col border-8 border-white">
         {/* Image section with polaroid frame */}
         <div 
-          className="relative w-full bg-gray-100 p-4 pb-2"
+          className="relative w-full bg-black p-4 pb-2"
           style={{ height: getImageAreaHeight() }}
         >
-          <div className="w-full h-full bg-white shadow-inner">
+          <div className="w-full h-full bg-white shadow-inner border-2 border-white">
             <img 
               src={getImageSrc()}
               alt="Post image"
@@ -92,23 +92,31 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
               </div>
             )}
           </div>
+          
+          {/* Cursive handwritten text overlay */}
+          {hasCustomText && (
+            <div className="absolute bottom-6 left-6 right-6">
+              <p 
+                className="text-white font-dancing text-lg leading-relaxed transform -rotate-2 drop-shadow-lg"
+                style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
+              >
+                {getMessage()}
+              </p>
+            </div>
+          )}
         </div>
         
         {/* Polaroid bottom section */}
-        <div className="w-full h-20 bg-white flex flex-col justify-center px-4">
-          {hasCustomText ? (
-            <p className="text-gray-800 text-sm font-medium text-center leading-tight">
-              {customText}
-            </p>
-          ) : (
+        <div className="w-full h-20 bg-black flex flex-col justify-center px-4">
+          {!hasCustomText && (
             <div className="flex items-center justify-between">
-              <div className="text-gray-600 text-xs">
+              <div className="text-white text-xs">
                 facingfentanylnow.org
               </div>
               <img 
                 src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
                 alt="Facing Fentanyl Logo"
-                className="h-6 w-auto"
+                className="h-6 w-auto brightness-0 invert"
               />
             </div>
           )}
