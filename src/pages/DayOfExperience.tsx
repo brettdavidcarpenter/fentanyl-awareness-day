@@ -3,6 +3,7 @@ import { useState, useCallback, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { TrackedButton } from "@/components/TrackedButton";
 import { useToast } from "@/hooks/use-toast";
+import { usePreviewGeneration } from "@/hooks/usePreviewGeneration";
 import LivePostForm from "@/components/LivePostForm";
 import PostCanvas from '@/components/PostCanvas';
 import ShareSection from '@/components/ShareSection';
@@ -21,24 +22,34 @@ const DayOfExperience = () => {
     isCustomizing: false
   });
   
+  // Use the preview generation hook
+  const { previewImageUrl, isGenerating, error } = usePreviewGeneration({ formData });
 
   const handleFormChange = useCallback((newData: any) => {
     setFormData(newData);
   }, []);
 
   const handleDownloadImage = async () => {
-    if (!postCanvasRef.current) return;
-    
     try {
-      const canvas = await html2canvas(postCanvasRef.current, {
-        backgroundColor: null,
-        scale: 2,
-        useCORS: true
-      });
+      // Use the preview image URL if available, otherwise generate new one
+      let imageUrl = previewImageUrl;
+      
+      if (!imageUrl) {
+        const element = document.getElementById('hidden-post-canvas');
+        if (!element) throw new Error('Canvas element not found');
+        
+        const canvas = await html2canvas(element, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true
+        });
+        
+        imageUrl = canvas.toDataURL('image/png', 0.95);
+      }
       
       const link = document.createElement('a');
       link.download = 'fentanyl-awareness-post.png';
-      link.href = canvas.toDataURL();
+      link.href = imageUrl;
       link.click();
       
       toast({
@@ -115,17 +126,48 @@ const DayOfExperience = () => {
           {/* Right Side - Live Preview */}
           <div className="lg:col-span-3">
             <div className="sticky top-8 space-y-6">
-              {/* Live Preview Header */}
+              {/* Final Image Preview Header */}
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-white mb-2">Live Preview</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">Final Image Preview</h2>
                 <p className="text-blue-100">
-                  Your changes appear instantly below
+                  This is exactly what will be downloaded
                 </p>
               </div>
 
-              {/* Post Preview */}
+              {/* Post Preview - Generated Image */}
               <div className="flex justify-center">
-                <div ref={postCanvasRef} className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+                <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+                  {isGenerating ? (
+                    <div className="w-[540px] h-[540px] bg-gray-200 rounded-lg flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p className="text-gray-600">Generating preview...</p>
+                      </div>
+                    </div>
+                  ) : error ? (
+                    <div className="w-[540px] h-[540px] bg-red-50 rounded-lg flex items-center justify-center">
+                      <div className="text-center">
+                        <p className="text-red-600 mb-2">Preview generation failed</p>
+                        <p className="text-sm text-gray-500">The download function will still work</p>
+                      </div>
+                    </div>
+                  ) : previewImageUrl ? (
+                    <img 
+                      src={previewImageUrl} 
+                      alt="Final post preview" 
+                      className="w-[540px] h-[540px] object-contain rounded-lg"
+                    />
+                  ) : (
+                    <div className="w-[540px] h-[540px] bg-gray-100 rounded-lg flex items-center justify-center">
+                      <p className="text-gray-600">Loading preview...</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Hidden Canvas for Generation */}
+              <div className="absolute -left-[9999px] top-0 pointer-events-none">
+                <div id="hidden-post-canvas">
                   <PostCanvas
                     template={{
                       ...formData.template,
