@@ -12,9 +12,11 @@ import { getTemplatesByPersona } from "@/data/postTemplates";
 interface LivePostFormProps {
   onFormChange: (data: any) => void;
   initialData?: any;
+  showOnlyPersona?: boolean;
+  showOnlyCustomization?: boolean;
 }
 
-const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
+const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCustomization }: LivePostFormProps) => {
   const [selectedPersona, setSelectedPersona] = useState('family');
   const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
   const [customText, setCustomText] = useState('');
@@ -74,6 +76,137 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
   const templates = getTemplatesByPersona(selectedPersona);
   const currentTemplate = selectedTemplate || templates[0];
 
+  // Render only persona selection for mobile first section
+  if (showOnlyPersona) {
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Choose Your Role</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3">
+              {personas.map((persona) => {
+                const IconComponent = persona.icon;
+                return (
+                  <Button
+                    key={persona.id}
+                    variant={selectedPersona === persona.id ? "default" : "outline"}
+                    onClick={() => {
+                      setSelectedPersona(persona.id);
+                      setSelectedTemplate(null);
+                      setIsInitialized(false);
+                    }}
+                    className="flex items-center justify-start gap-2 h-auto p-3"
+                  >
+                    <IconComponent className={`w-4 h-4 ${persona.color}`} />
+                    <span className="text-sm">{persona.title}</span>
+                  </Button>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Render only customization sections for mobile second section
+  if (showOnlyCustomization) {
+    return (
+      <div className="space-y-6">
+        {/* Custom Message */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Customize Your Message</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <Label htmlFor="custom-message">Your Message (optional)</Label>
+              <Textarea
+                id="custom-message"
+                value={customText}
+                onChange={(e) => setCustomText(e.target.value)}
+                placeholder="Enter your custom message..."
+                className="min-h-[100px] resize-none"
+                maxLength={uploadedImage ? 90 : 115}
+              />
+              <div className={`text-xs text-right flex items-center justify-between ${
+                (() => {
+                  const count = customText.length;
+                  const maxLength = uploadedImage ? 90 : 115;
+                  const warningThreshold = uploadedImage ? 72 : 95;
+                  const limitThreshold = uploadedImage ? 81 : 105;
+                  
+                  if (count <= warningThreshold) return 'text-green-600';
+                  if (count <= limitThreshold) return 'text-orange-500';
+                  return 'text-red-500 font-medium';
+                })()
+              }`}>
+                <span className="text-muted-foreground">
+                  {(() => {
+                    const count = customText.length;
+                    const maxLength = uploadedImage ? 90 : 115;
+                    const warningThreshold = uploadedImage ? 72 : 95;
+                    const limitThreshold = uploadedImage ? 81 : 105;
+                    
+                    if (count > limitThreshold) return '⚠️ Character limit reached';
+                    if (count > warningThreshold) return '⚠️ Approaching limit';
+                    return 'Good length for polaroid';
+                  })()}
+                </span>
+                <span>{customText.length}/{uploadedImage ? 90 : 115}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Image Upload */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Upload Your Photo (optional)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                {uploadedImage ? (
+                  <div className="space-y-2">
+                    <img 
+                      src={uploadedImage} 
+                      alt="Uploaded preview" 
+                      className="w-24 h-24 mx-auto rounded object-cover"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setUploadedImage(null)}
+                    >
+                      Remove Image
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                    <p className="text-sm text-gray-600 mb-2">
+                      Click to upload your own image
+                    </p>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="cursor-pointer"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Default: render full form for desktop
   return (
     <div className="space-y-6">
       {/* Persona Selector */}
@@ -104,8 +237,6 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
           </div>
         </CardContent>
       </Card>
-
-
 
       {/* Custom Message */}
       <Card>
