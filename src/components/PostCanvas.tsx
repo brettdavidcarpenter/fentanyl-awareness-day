@@ -55,6 +55,10 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
 
   // Better object fit strategy based on image type
   const getObjectFit = () => {
+    // For custom uploaded images, always use object-contain to preserve proportions
+    if (customImage) return 'object-contain';
+    
+    // For template images, use the existing logic
     if (!imageDimensions) return 'object-contain';
     
     const aspectRatio = imageDimensions.width / imageDimensions.height;
