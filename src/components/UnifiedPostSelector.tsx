@@ -269,10 +269,25 @@ const UnifiedPostSelector = ({ persona, onTemplateSelect, onCustomPost, onBack }
                   onChange={(e) => setCustomText(e.target.value)}
                   className="w-full p-3 border rounded min-h-[100px] bg-background"
                   placeholder="Enter your message..."
-                  maxLength={160}
+                  maxLength={120}
                 />
-                <div className="text-xs text-muted-foreground text-right mt-1">
-                  {(customText || primaryTemplate?.message || '').length}/160 characters
+                <div className={`text-xs text-right mt-1 flex items-center justify-between ${
+                  (() => {
+                    const count = (customText || primaryTemplate?.message || '').length;
+                    if (count <= 96) return 'text-green-600';
+                    if (count <= 108) return 'text-orange-500';
+                    return 'text-red-500 font-medium';
+                  })()
+                }`}>
+                  <span className="text-muted-foreground">
+                    {(() => {
+                      const count = (customText || primaryTemplate?.message || '').length;
+                      if (count > 108) return '⚠️ Character limit reached';
+                      if (count > 96) return '⚠️ Approaching limit';
+                      return 'Good length for polaroid';
+                    })()}
+                  </span>
+                  <span>{(customText || primaryTemplate?.message || '').length}/120</span>
                 </div>
               </div>
             </CardContent>

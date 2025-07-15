@@ -69,11 +69,26 @@ const CustomPostCreator = ({ onCreatePost, onBack }: CustomPostCreatorProps) => 
               onChange={(e) => setCustomText(e.target.value)}
               placeholder="Share your message for Fentanyl Awareness Day..."
               className="min-h-[100px]"
-              maxLength={160}
+              maxLength={120}
             />
-            <p className="text-xs text-gray-500 mt-1">
-              {customText.length}/160 characters
-            </p>
+            <div className={`text-xs mt-1 flex items-center justify-between ${
+              (() => {
+                const count = customText.length;
+                if (count <= 96) return 'text-green-600';
+                if (count <= 108) return 'text-orange-500';
+                return 'text-red-500 font-medium';
+              })()
+            }`}>
+              <span className="text-muted-foreground">
+                {(() => {
+                  const count = customText.length;
+                  if (count > 108) return '⚠️ Character limit reached';
+                  if (count > 96) return '⚠️ Approaching limit';
+                  return 'Good length for polaroid';
+                })()}
+              </span>
+              <span>{customText.length}/120</span>
+            </div>
           </div>
 
           {/* Image Upload */}
