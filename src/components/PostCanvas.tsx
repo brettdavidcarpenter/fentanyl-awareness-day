@@ -92,34 +92,16 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
               </div>
             )}
           </div>
-          
-          {/* Cursive handwritten text overlay */}
-          {hasCustomText && (
-            <div className="absolute bottom-6 left-6 right-6">
-              <p 
-                className="text-white font-dancing text-lg leading-relaxed transform -rotate-2 drop-shadow-lg"
-                style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
-              >
-                {getMessage()}
-              </p>
-            </div>
-          )}
         </div>
         
         {/* Polaroid bottom section */}
         <div className="w-full h-20 bg-black flex flex-col justify-center px-4">
-          {!hasCustomText && (
-            <div className="flex items-center justify-between">
-              <div className="text-white text-xs">
-                facingfentanylnow.org
-              </div>
-              <img 
-                src="/lovable-uploads/070b7c42-c1ba-4a5e-a936-88454e322deb.png"
-                alt="Facing Fentanyl Logo"
-                className="h-6 w-auto brightness-0 invert"
-              />
-            </div>
-          )}
+          <p 
+            className="text-white font-dancing text-lg leading-relaxed transform -rotate-2 text-center"
+            style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
+          >
+            {getMessage()}
+          </p>
         </div>
       </div>
     </div>
