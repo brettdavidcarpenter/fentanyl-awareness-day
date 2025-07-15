@@ -69,10 +69,10 @@ const CustomPostCreator = ({ onCreatePost, onBack }: CustomPostCreatorProps) => 
               onChange={(e) => setCustomText(e.target.value)}
               placeholder="Share your message for Fentanyl Awareness Day..."
               className="min-h-[100px]"
-              maxLength={280}
+              maxLength={160}
             />
             <p className="text-xs text-gray-500 mt-1">
-              {customText.length}/280 characters
+              {customText.length}/160 characters
             </p>
           </div>
 

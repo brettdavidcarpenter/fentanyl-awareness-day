@@ -121,10 +121,10 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
               onChange={(e) => setCustomText(e.target.value)}
               placeholder="Enter your custom message..."
               className="min-h-[100px] resize-none"
-              maxLength={280}
+              maxLength={160}
             />
             <div className="text-xs text-muted-foreground text-right">
-              {customText.length}/280 characters
+              {customText.length}/160 characters
             </div>
           </div>
         </CardContent>

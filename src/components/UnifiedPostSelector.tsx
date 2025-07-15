@@ -269,7 +269,11 @@ const UnifiedPostSelector = ({ persona, onTemplateSelect, onCustomPost, onBack }
                   onChange={(e) => setCustomText(e.target.value)}
                   className="w-full p-3 border rounded min-h-[100px] bg-background"
                   placeholder="Enter your message..."
+                  maxLength={160}
                 />
+                <div className="text-xs text-muted-foreground text-right mt-1">
+                  {(customText || primaryTemplate?.message || '').length}/160 characters
+                </div>
               </div>
             </CardContent>
           </Card>
