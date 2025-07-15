@@ -50,10 +50,35 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   const isWidePortrait = aspectRatio < 0.7; // Very tall images
   const isWideLandscape = aspectRatio > 1.4; // Very wide images
   
-  // iPhone-optimized height calculation
+  // iPhone-optimized height calculation with extra space for uploaded images
   const getImageAreaHeight = () => {
-    if (!imageDimensions) return hasCustomText ? '360px' : '428px';
+    // For uploaded images, reduce image area slightly to accommodate larger bottom section
+    const baseHeight = customImage ? (hasCustomText ? '340px' : '408px') : (hasCustomText ? '360px' : '428px');
     
+    if (!imageDimensions) return baseHeight;
+    
+    // For uploaded images, use slightly smaller heights
+    if (customImage) {
+      // iPhone landscape (4:3) - optimize for this common ratio
+      if (isIPhoneLandscape) return hasCustomText ? '360px' : '428px';
+      
+      // iPhone portrait (3:4) - most common iPhone photo orientation
+      if (isIPhonePortrait) return hasCustomText ? '380px' : '448px';
+      
+      // Square images
+      if (isSquare) return hasCustomText ? '340px' : '408px';
+      
+      // Very wide landscape
+      if (isWideLandscape) return hasCustomText ? '300px' : '368px';
+      
+      // Very tall portrait
+      if (isWidePortrait) return hasCustomText ? '400px' : '468px';
+      
+      // Default fallback for uploaded images
+      return hasCustomText ? '340px' : '408px';
+    }
+    
+    // Original heights for template images
     // iPhone landscape (4:3) - optimize for this common ratio
     if (isIPhoneLandscape) return hasCustomText ? '380px' : '448px';
     
@@ -119,8 +144,8 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
           </div>
         </div>
         
-        {/* Polaroid bottom section */}
-        <div className="w-full h-20 bg-black flex flex-col justify-center px-4">
+        {/* Polaroid bottom section with extra space for uploaded images */}
+        <div className={`w-full bg-black flex flex-col justify-center ${customImage ? 'h-28 px-6 py-3' : 'h-20 px-4'}`}>
           <p 
             className="text-white font-dancing text-lg leading-relaxed transform -rotate-2 text-center"
             style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
