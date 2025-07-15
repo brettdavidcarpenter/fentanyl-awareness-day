@@ -1,7 +1,7 @@
 
 import { Heart, Clock, Bell, Settings, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -166,15 +166,18 @@ const HeroSection = () => {
                   Get Ready to Act
                 </h2>
                 {showAdminControls && (
-                  <Button
+                  <TrackedButton
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowTestSettings(!showTestSettings)}
                     className="text-gray-400 hover:text-white p-1"
+                    trackingName="admin_test_settings_toggle"
+                    trackingCategory="admin"
+                    trackingPage="home_hero"
                   >
                     <Settings className="w-4 h-4" />
-                  </Button>
+                  </TrackedButton>
                 )}
               </div>
               <p className="text-gray-300 text-sm">
@@ -227,13 +230,17 @@ const HeroSection = () => {
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 required
               />
-              <Button 
+              <TrackedButton 
                 type="submit" 
                 disabled={isSubmitting}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                trackingName="hero_email_signup"
+                trackingCategory="email_signup"
+                trackingPage="home_hero"
+                trackingData={{ testMode, testDateOffset }}
               >
                 {isSubmitting ? "Signing up..." : "Remind Me to Act"}
-              </Button>
+              </TrackedButton>
             </form>
           </div>
         </div>

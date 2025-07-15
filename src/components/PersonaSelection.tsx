@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { Heart, Shield, Users } from "lucide-react";
 
 interface PersonaSelectionProps {
@@ -46,12 +46,16 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
               <CardDescription>{persona.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button 
+              <TrackedButton 
                 onClick={() => onPersonaSelect(persona.id)}
                 className="w-full"
+                trackingName={`persona_select_${persona.id}`}
+                trackingCategory="persona_selection"
+                trackingPage="day_of_experience"
+                trackingData={{ personaId: persona.id, personaTitle: persona.title }}
               >
                 Create Post
-              </Button>
+              </TrackedButton>
             </CardContent>
           </Card>
         );

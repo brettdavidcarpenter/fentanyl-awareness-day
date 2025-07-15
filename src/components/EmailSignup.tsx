@@ -1,12 +1,16 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, CheckCircle, Bell } from "lucide-react";
 
-const EmailSignup = () => {
+interface EmailSignupProps {
+  location?: string;
+}
+
+const EmailSignup = ({ location = "hero" }: EmailSignupProps) => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,13 +88,16 @@ const EmailSignup = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="bg-white/10 border-white/30 text-white placeholder-gray-300 focus:border-blue-300 h-14 text-lg"
           />
-          <Button 
+          <TrackedButton 
             type="submit" 
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 text-lg rounded-lg"
             disabled={isLoading}
+            trackingName={`email_signup_${location}`}
+            trackingCategory="email_signup"
+            trackingPage={location === "hero" ? "home_hero" : "home_cta"}
           >
             {isLoading ? "Adding you to the list..." : "Remind me to post on Awareness Day"}
-          </Button>
+          </TrackedButton>
         </form>
       </Card>
     </section>

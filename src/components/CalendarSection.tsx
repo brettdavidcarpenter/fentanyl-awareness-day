@@ -1,5 +1,5 @@
 
-import { Button } from "@/components/ui/button";
+import { TrackedButton } from "@/components/TrackedButton";
 import { Card } from "@/components/ui/card";
 import { Calendar, Plus } from "lucide-react";
 
@@ -72,22 +72,28 @@ END:VCALENDAR`;
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">
-          <Button
+          <TrackedButton
             onClick={handleGoogleCalendar}
             variant="outline"
             className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
+            trackingName="add_google_calendar"
+            trackingCategory="calendar"
+            trackingPage="home_calendar"
           >
             <Plus className="w-4 h-4" />
             Google Calendar
-          </Button>
-          <Button
+          </TrackedButton>
+          <TrackedButton
             onClick={handleAppleCalendar}
             variant="outline"
             className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-2"
+            trackingName="add_apple_calendar"
+            trackingCategory="calendar"
+            trackingPage="home_calendar"
           >
             <Plus className="w-4 h-4" />
             Apple Calendar
-          </Button>
+          </TrackedButton>
         </div>
       </Card>
     </section>

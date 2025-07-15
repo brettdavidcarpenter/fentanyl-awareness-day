@@ -22,7 +22,7 @@ export class EmailService {
       const { subject, html } = this.getEmailContent(reminderType, signup.unsubscribe_token);
       
       await this.resend.emails.send({
-        from: "Facing Fentanyl <noreply@facingfentanylnow.aware-share.com>",
+        from: "Facing Fentanyl <noreply@mail.aware-share.com>",
         to: [signup.email],
         subject,
         html,
