@@ -146,9 +146,9 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         </div>
         
         {/* Polaroid bottom section with flex layout for text and logo */}
-        <div className={`w-full bg-black flex ${customImage ? 'items-center h-28 px-6 py-3' : 'items-end h-20 px-4'}`}>
-          {/* Text area - constrained to left 2/3 when custom image, centered otherwise */}
-          <div className={customImage ? "flex-1 max-w-[66%] pr-4" : "flex-1"}>
+        <div className={`w-full bg-black flex ${customImage ? 'items-center justify-between h-28 px-6 py-3' : 'items-end h-20 px-4'}`}>
+          {/* Text area - constrained to left 60% when custom image, centered otherwise */}
+          <div className={customImage ? "flex-1 max-w-[60%] pr-4" : "flex-1"}>
             <p 
               className={`text-white font-dancing text-lg leading-relaxed transform -rotate-2 ${customImage ? 'text-left' : 'text-center'}`}
               style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
@@ -157,18 +157,18 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
             </p>
           </div>
           
-          {/* Logo area - positioned in bottom right for uploaded images only */}
+          {/* Logo area - positioned and aligned to right edge for uploaded images only */}
           {customImage && (
-            <div className="flex flex-col items-end justify-end">
+            <div className="flex flex-col items-center justify-center">
               <img
                 src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
                 alt="Facing Fentanyl Logo"
-                className="w-12 h-auto mb-1"
+                className="w-20 h-auto mb-2"
               />
               <div 
-                className="text-white font-semibold"
+                className="text-white font-semibold text-center"
                 style={{ 
-                  fontSize: '8px',
+                  fontSize: '12px',
                   textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                 }}
               >
