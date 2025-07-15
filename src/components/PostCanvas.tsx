@@ -159,14 +159,14 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
           
           {/* Logo area - positioned and aligned to right edge for uploaded images only */}
           {customImage && (
-            <div className="flex flex-col items-center justify-end">
+            <div className="flex flex-col items-center justify-end gap-0">
               <img
                 src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
                 alt="Facing Fentanyl Logo"
                 className="w-20 h-auto mb-0"
               />
               <div 
-                className="text-white font-normal text-center"
+                className="text-white font-normal text-center -mt-1 mb-0 leading-none"
                 style={{ 
                   fontSize: '10px',
                   textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
