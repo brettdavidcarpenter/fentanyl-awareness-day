@@ -146,7 +146,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         </div>
         
         {/* Polaroid bottom section with flex layout for text and logo */}
-        <div className={`w-full bg-black flex items-end ${customImage ? 'h-28 px-6 py-3' : 'h-20 px-4'}`}>
+        <div className={`w-full bg-black flex ${customImage ? 'items-center h-28 px-6 py-3' : 'items-end h-20 px-4'}`}>
           {/* Text area - constrained to left 2/3 when custom image, centered otherwise */}
           <div className={customImage ? "flex-1 max-w-[66%] pr-4" : "flex-1"}>
             <p 
