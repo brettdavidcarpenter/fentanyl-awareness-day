@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { usePreviewGeneration } from "@/hooks/usePreviewGeneration";
 import { useIsMobile } from "@/hooks/use-mobile";
 import LivePostForm from "@/components/LivePostForm";
+import PersonaSelection from "@/components/PersonaSelection";
 import PostCanvas from '@/components/PostCanvas';
 import ShareSection from '@/components/ShareSection';
 
@@ -29,6 +30,17 @@ const DayOfExperience = () => {
 
   const handleFormChange = useCallback((newData: any) => {
     setFormData(newData);
+  }, []);
+
+  const handlePersonaSelect = useCallback((persona: string) => {
+    const templates = getTemplatesByPersona(persona);
+    setFormData(prev => ({
+      ...prev,
+      persona,
+      template: templates[0],
+      customText: '',
+      personalization: { name: '', relationship: '' }
+    }));
   }, []);
 
   const handleDownloadImage = async () => {
@@ -101,10 +113,8 @@ const DayOfExperience = () => {
           /* Mobile Layout */
           <div className="space-y-6 max-w-md mx-auto">
             {/* Persona Selection */}
-            <LivePostForm 
-              onFormChange={handleFormChange}
-              initialData={formData}
-              showOnlyPersona={true}
+            <PersonaSelection 
+              onPersonaSelect={handlePersonaSelect}
             />
             
             {/* Final Image Preview */}
