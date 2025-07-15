@@ -41,16 +41,36 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
 
   // Calculate dynamic sizing based on image aspect ratio
   const hasCustomText = customText && customText.trim() !== '';
-  const isPortrait = imageDimensions ? imageDimensions.height > imageDimensions.width : false;
-  const isSquare = imageDimensions ? Math.abs(imageDimensions.width - imageDimensions.height) < 50 : false;
+  const aspectRatio = imageDimensions ? imageDimensions.width / imageDimensions.height : 1;
   
-  // Dynamic height calculation for better aspect ratio handling
+  // iPhone-optimized aspect ratio detection
+  const isIPhoneLandscape = aspectRatio >= 1.25 && aspectRatio <= 1.4; // ~4:3 ratio
+  const isIPhonePortrait = aspectRatio >= 0.7 && aspectRatio <= 0.8; // ~3:4 ratio
+  const isSquare = Math.abs(aspectRatio - 1) < 0.1;
+  const isWidePortrait = aspectRatio < 0.7; // Very tall images
+  const isWideLandscape = aspectRatio > 1.4; // Very wide images
+  
+  // iPhone-optimized height calculation
   const getImageAreaHeight = () => {
     if (!imageDimensions) return hasCustomText ? '360px' : '428px';
     
+    // iPhone landscape (4:3) - optimize for this common ratio
+    if (isIPhoneLandscape) return hasCustomText ? '380px' : '448px';
+    
+    // iPhone portrait (3:4) - most common iPhone photo orientation
+    if (isIPhonePortrait) return hasCustomText ? '400px' : '468px';
+    
+    // Square images
     if (isSquare) return hasCustomText ? '360px' : '428px';
-    if (isPortrait) return hasCustomText ? '380px' : '448px';
-    return hasCustomText ? '340px' : '408px'; // landscape
+    
+    // Very wide landscape
+    if (isWideLandscape) return hasCustomText ? '320px' : '388px';
+    
+    // Very tall portrait
+    if (isWidePortrait) return hasCustomText ? '420px' : '488px';
+    
+    // Default fallback
+    return hasCustomText ? '360px' : '428px';
   };
 
   // Better object fit strategy based on image type
@@ -87,6 +107,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
               src={getImageSrc()}
               alt="Post image"
               className={`w-full h-full ${getObjectFit()}`}
+              style={{ objectPosition: 'center' }}
               onLoad={handleImageLoad}
               onError={() => setImageLoaded(true)}
             />
