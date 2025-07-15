@@ -163,10 +163,10 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
               <img
                 src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
                 alt="Facing Fentanyl Logo"
-                className="w-20 h-auto mb-0"
+                className="w-20 h-auto mb-0 block"
               />
               <div 
-                className="text-white font-normal text-center -mt-1 mb-0 leading-none"
+                className="text-white font-normal text-center -mt-3 mb-0 block"
                 style={{ 
                   fontSize: '10px',
                   textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
