@@ -60,7 +60,7 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
       uploadedImage,
       isCustomizing: !!customText || !!personalization.name || !!uploadedImage
     });
-  }, [selectedPersona, selectedTemplate, customText, personalization, uploadedImage, onFormChange]);
+  }, [selectedPersona, selectedTemplate, customText, personalization, uploadedImage]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -29,9 +29,9 @@ const PostCreatorStep = () => {
     }
   }, [persona, navigate]);
 
-  const handleFormChange = (newData: any) => {
+  const handleFormChange = useCallback((newData: any) => {
     setFormData(newData);
-  };
+  }, []);
 
   const handleGenerate = () => {
     // Pass form data via URL params for the result page
