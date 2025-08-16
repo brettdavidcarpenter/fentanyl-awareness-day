@@ -34,9 +34,15 @@ export function shouldSendReminder(
   reminderType: ReminderType,
   now: Date,
   targetDate: Date,
-  alreadySent: boolean
+  alreadySent: boolean,
+  forceTestMode = false
 ): boolean {
   if (alreadySent) return false;
+  
+  // In test mode, bypass all time and date restrictions
+  if (forceTestMode) {
+    return true;
+  }
   
   // Convert current time to ET for 9am check
   const nowET = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));

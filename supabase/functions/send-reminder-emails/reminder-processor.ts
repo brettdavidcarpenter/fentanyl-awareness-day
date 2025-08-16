@@ -13,7 +13,7 @@ export class ReminderProcessor {
     this.emailService = new EmailService();
   }
 
-  async processAllReminders(): Promise<ProcessingResult> {
+  async processAllReminders(forceTestMode = false): Promise<ProcessingResult> {
     const now = new Date();
     console.log('Processing reminder emails at:', now.toISOString());
 
@@ -26,19 +26,19 @@ export class ReminderProcessor {
       console.log('Found', testSignups.length, 'test mode emails to check');
       
       for (const signup of testSignups) {
-        const result = await this.processSignup(signup, now, true);
+        const result = await this.processSignup(signup, now, true, forceTestMode);
         results.push(result);
         if (!result.success) {
           errors.push(...result.errors);
         }
       }
 
-      // Process production signups
+      // Process production signups (never force immediate for production)
       const productionSignups = await this.dbService.getProductionSignups();
       console.log('Found', productionSignups.length, 'production emails to check');
       
       for (const signup of productionSignups) {
-        const result = await this.processSignup(signup, now, false);
+        const result = await this.processSignup(signup, now, false, false);
         results.push(result);
         if (!result.success) {
           errors.push(...result.errors);
@@ -63,7 +63,7 @@ export class ReminderProcessor {
     }
   }
 
-  private async processSignup(signup: EmailSignup, now: Date, isTestMode: boolean): Promise<SignupResult> {
+  private async processSignup(signup: EmailSignup, now: Date, isTestMode: boolean, forceImmediate = false): Promise<SignupResult> {
     const result: SignupResult = {
       signupId: signup.id,
       email: signup.email,
@@ -80,12 +80,15 @@ export class ReminderProcessor {
       const eligibleReminders = getEligibleReminders(signupDate, targetDate);
       
       console.log(`Processing ${signup.email} - eligible for:`, eligibleReminders);
+      if (forceImmediate && isTestMode) {
+        console.log(`Force immediate mode enabled for test signup: ${signup.email}`);
+      }
 
       // Check each reminder type
       for (const reminderType of eligibleReminders) {
         const alreadySent = this.getReminderSentStatus(signup, reminderType);
         
-        if (shouldSendReminder(reminderType, now, targetDate, alreadySent)) {
+        if (shouldSendReminder(reminderType, now, targetDate, alreadySent, forceImmediate && isTestMode)) {
           console.log(`Sending ${reminderType} reminder to:`, signup.email);
           
           const emailSent = await this.emailService.sendReminderEmail(reminderType, signup);

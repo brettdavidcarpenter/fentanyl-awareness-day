@@ -15,13 +15,27 @@ serve(async (req) => {
   }
 
   try {
+    // Check for immediate test mode parameter
+    let forceTestMode = false;
+    if (req.method === 'POST') {
+      try {
+        const body = await req.json();
+        forceTestMode = body?.forceTestMode === true;
+        if (forceTestMode) {
+          console.log('Force test mode enabled - sending all eligible emails immediately');
+        }
+      } catch {
+        // Ignore JSON parsing errors for GET requests or invalid JSON
+      }
+    }
+
     const processor = new ReminderProcessor();
-    const result = await processor.processAllReminders();
+    const result = await processor.processAllReminders(forceTestMode);
 
     return new Response(
       JSON.stringify({ 
         success: result.success, 
-        message: `Processed ${result.processed} signups`,
+        message: `Processed ${result.processed} signups${forceTestMode ? ' (immediate test mode)' : ''}`,
         errors: result.errors,
         timestamp: new Date().toISOString()
       }),
