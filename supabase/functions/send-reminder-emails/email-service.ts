@@ -55,7 +55,7 @@ export class EmailService {
         };
       case 'day-of':
         return {
-          subject: "🕯 TODAY is Fentanyl Awareness Day!",
+          subject: "🕯 TODAY is National Fentanyl Prevention & Awareness Day!",
           html: getDayOfReminderTemplate(unsubscribeToken)
         };
       default:

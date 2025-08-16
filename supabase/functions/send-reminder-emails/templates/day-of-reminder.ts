@@ -24,7 +24,7 @@ export const getDayOfReminderTemplate = (unsubscribeToken: string) => `
       <p style="font-size: 16px; font-weight: bold;">Every post can save a life. Your voice matters today!</p>
       
       <div style="text-align: center; margin: 30px 0;">
-        <a href="https://facingfentanylnow.org/day-of-experience" style="display: inline-block; background: #dc2626; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 18px;">CREATE YOUR POST</a>
+        <a href="https://facingfentanylnow.aware-share.com/day-of-experience" style="display: inline-block; background: #dc2626; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 18px;">CREATE YOUR POST</a>
       </div>
       
       <p style="font-size: 14px; color: #666; margin-top: 30px;">
