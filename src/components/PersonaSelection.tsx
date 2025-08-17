@@ -42,24 +42,31 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
     return (
       <div className="px-4">
         <h3 className="text-sm font-medium text-muted-foreground mb-3">Choose Your Role</h3>
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="space-y-3">
           {personas.map((persona) => {
             const IconComponent = persona.icon;
             return (
-              <TrackedButton
-                key={persona.id}
-                onClick={() => onPersonaSelect(persona.id)}
-                variant="outline"
-                size="sm"
-                className="flex-shrink-0 flex items-center gap-2 px-3 py-2 min-w-fit"
-                trackingName={`persona_select_${persona.id}`}
-                trackingCategory="persona_selection"
-                trackingPage="day_of_experience"
-                trackingData={{ personaId: persona.id, personaTitle: persona.title }}
-              >
-                <IconComponent className={`w-4 h-4 ${persona.color}`} />
-                <span className="text-xs font-medium">{persona.shortTitle}</span>
-              </TrackedButton>
+              <Card key={persona.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4">
+                  <TrackedButton
+                    onClick={() => onPersonaSelect(persona.id)}
+                    variant="ghost"
+                    className="w-full h-auto p-0 flex items-start gap-3 text-left"
+                    trackingName={`persona_select_${persona.id}`}
+                    trackingCategory="persona_selection"
+                    trackingPage="day_of_experience"
+                    trackingData={{ personaId: persona.id, personaTitle: persona.title }}
+                  >
+                    <div className="flex-shrink-0 mt-1">
+                      <IconComponent className={`w-6 h-6 ${persona.color}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-sm leading-tight">{persona.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{persona.description}</p>
+                    </div>
+                  </TrackedButton>
+                </CardContent>
+              </Card>
             );
           })}
         </div>
