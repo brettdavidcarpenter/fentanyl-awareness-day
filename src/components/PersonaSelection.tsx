@@ -50,7 +50,7 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
                 key={persona.id}
                 onClick={() => onPersonaSelect(persona.id)}
                 variant="outline"
-                className="w-full h-auto p-4 flex items-start gap-3 text-left"
+                className="w-full h-auto p-4 flex items-start gap-3 text-left whitespace-normal overflow-hidden"
                 trackingName={`persona_select_${persona.id}`}
                 trackingCategory="persona_selection"
                 trackingPage="day_of_experience"
