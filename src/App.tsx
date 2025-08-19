@@ -12,6 +12,7 @@ import PostCreatorStep from "./pages/PostCreatorStep";
 import PostResultStep from "./pages/PostResultStep";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
+import RedirectToExperience from "./components/RedirectToExperience";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,8 @@ const App = () => (
       <Analytics />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<RedirectToExperience />} />
+          <Route path="/home" element={<Index />} />
           <Route path="/day-of-experience" element={<RoleSelectionStep />} />
           <Route path="/day-of-experience/desktop" element={<DayOfExperience />} />
           <Route path="/day-of-experience/create" element={<PostCreatorStep />} />

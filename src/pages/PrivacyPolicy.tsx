@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header with back navigation */}
         <div className="mb-8">
-          <Link to="/">
+          <Link to="/home">
             <Button variant="ghost" className="text-white hover:text-blue-300 mb-4">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
