@@ -87,15 +87,6 @@ const RoleSelectionStep = () => {
           </div>
         </div>
 
-        {/* Action Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Every voice matters. Every story saves lives.
-          </h2>
-          <p className="text-lg text-blue-200 mb-6 max-w-2xl mx-auto">
-            Join thousands taking action nationwide. Your post could be the one that saves a life.
-          </p>
-        </div>
 
         {/* Enhanced Role Selection */}
         <div className="mb-12">
