@@ -12,35 +12,34 @@ const RoleSelectionStep = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
+    <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-6">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          {/* Logo/Brand */}
           <div className="mb-6">
             <img 
-              src="/lovable-uploads/02c9439c-bc1e-4d30-83a5-8ed0e49fab85.png" 
+              src="/lovable-uploads/368a6524-5175-45a5-ae1c-b08fdd48989f.png" 
               alt="Facing Fentanyl Logo" 
-              className="h-16 mx-auto mb-4"
+              className="h-20 mx-auto mb-4"
             />
           </div>
           
           {/* Main Headline */}
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Make a post. Make an impact.
           </h1>
           
           {/* Tagline */}
-          <p className="text-xl text-muted-foreground mb-6">
+          <p className="text-xl text-blue-200 mb-6">
             Taking action together saves lives
           </p>
           
           {/* Urgency Message */}
-          <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
-            <p className="text-primary font-semibold">
+          <div className="bg-white/10 border border-white/20 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
+            <p className="text-white font-semibold">
               Don't wait. Create your post today.
             </p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-blue-200 mt-1">
               Ready to make a difference? Choose your role and create your post in under 2 minutes
             </p>
           </div>
@@ -83,10 +82,10 @@ const RoleSelectionStep = () => {
 
         {/* Action Section */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">
+          <h2 className="text-3xl font-bold text-white mb-4">
             Every voice matters. Every story saves lives.
           </h2>
-          <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
+          <p className="text-lg text-blue-200 mb-6 max-w-2xl mx-auto">
             Join thousands taking action nationwide. Your post could be the one that saves a life.
           </p>
         </div>
@@ -94,8 +93,8 @@ const RoleSelectionStep = () => {
         {/* Enhanced Role Selection */}
         <div className="mb-12">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-primary mb-2">Choose Your Role</h3>
-            <p className="text-muted-foreground">
+            <h3 className="text-2xl font-bold text-white mb-2">Choose Your Role</h3>
+            <p className="text-blue-200">
               Select the role that best describes you to get personalized content
             </p>
           </div>
@@ -104,33 +103,33 @@ const RoleSelectionStep = () => {
 
         {/* Senate Resolution Badge */}
         <div className="flex justify-center mb-8">
-          <div className="bg-card border rounded-lg p-4 flex items-center gap-3 max-w-md">
+          <div className="bg-white/10 border border-white/20 rounded-lg p-4 flex items-center gap-3 max-w-md">
             <Shield className="w-6 h-6 text-blue-600" />
             <div className="text-sm">
-              <p className="font-semibold">Recognized by Senate Resolution 323</p>
-              <p className="text-muted-foreground">Supporting National Fentanyl Awareness Day</p>
+              <p className="font-semibold text-white">Recognized by Senate Resolution 323</p>
+              <p className="text-blue-200">Supporting National Fentanyl Awareness Day</p>
             </div>
           </div>
         </div>
 
         {/* Footer Navigation */}
-        <div className="text-center pt-8 border-t">
+        <div className="text-center pt-8 border-t border-white/10">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
               to="/home" 
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              className="text-sm text-blue-200 hover:text-white transition-colors"
             >
               Learn more about our mission
             </Link>
-            <span className="hidden sm:inline text-muted-foreground">•</span>
+            <span className="hidden sm:inline text-blue-200">•</span>
             <Link 
               to="/privacy-policy"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              className="text-sm text-blue-200 hover:text-white transition-colors"
             >
               Privacy Policy
             </Link>
           </div>
-          <p className="text-xs text-muted-foreground mt-4">
+          <p className="text-xs text-blue-200 mt-4">
             © 2024 Facing Fentanyl Now. Taking action together saves lives.
           </p>
         </div>
