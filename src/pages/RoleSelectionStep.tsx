@@ -31,17 +31,24 @@ const RoleSelectionStep = () => {
           
           {/* Tagline */}
           <p className="text-xl text-blue-200 mb-6">
-            Taking action together saves lives
+            Choose your role and create your post in under 2 minutes
           </p>
           
-          {/* Urgency Message */}
-          <div className="bg-white/10 border border-white/20 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
-            <p className="text-white font-semibold">
-              Don't wait. Create your post today.
-            </p>
-            <p className="text-sm text-blue-200 mt-1">
-              Ready to make a difference? Choose your role and create your post in under 2 minutes
-            </p>
+          {/* Senate Badge */}
+          <div className="mb-8">
+            <a 
+              href="https://www.congress.gov/bill/118th-congress/senate-resolution/323/text"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-sm bg-white/10 border border-white/20 rounded-lg px-4 py-3"
+              aria-label="View Senate Resolution 323 on Congress.gov"
+            >
+              <Shield className="w-5 h-5" />
+              <div>
+                <p className="font-semibold">Recognized by Senate Resolution 323</p>
+                <p className="text-xs opacity-80">Supporting National Fentanyl Awareness Day</p>
+              </div>
+            </a>
           </div>
         </div>
 
@@ -101,16 +108,6 @@ const RoleSelectionStep = () => {
           <PersonaSelection onPersonaSelect={handlePersonaSelect} />
         </div>
 
-        {/* Senate Resolution Badge */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white/10 border border-white/20 rounded-lg p-4 flex items-center gap-3 max-w-md">
-            <Shield className="w-6 h-6 text-blue-600" />
-            <div className="text-sm">
-              <p className="font-semibold text-white">Recognized by Senate Resolution 323</p>
-              <p className="text-blue-200">Supporting National Fentanyl Awareness Day</p>
-            </div>
-          </div>
-        </div>
 
         {/* Footer Navigation */}
         <div className="text-center pt-8 border-t border-white/10">
