@@ -34,58 +34,8 @@ const RoleSelectionStep = () => {
             Choose your role and create your post in under 2 minutes
           </p>
           
-          {/* Senate Badge */}
-          <div className="mb-8">
-            <a 
-              href="https://www.congress.gov/bill/118th-congress/senate-resolution/323/text"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-blue-200 hover:text-white transition-colors text-sm bg-white/10 border border-white/20 rounded-lg px-4 py-3"
-              aria-label="View Senate Resolution 323 on Congress.gov"
-            >
-              <Shield className="w-5 h-5" />
-              <div>
-                <p className="font-semibold">Recognized by Senate Resolution 323</p>
-                <p className="text-xs opacity-80">Supporting National Fentanyl Awareness Day</p>
-              </div>
-            </a>
-          </div>
         </div>
 
-        {/* Crisis Context Section */}
-        <div className="mb-12">
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Card className="text-center">
-              <CardContent className="p-6">
-                <TrendingUp className="w-8 h-8 text-red-500 mx-auto mb-3" />
-                <h3 className="font-semibold text-lg mb-2">Every 7 Minutes</h3>
-                <p className="text-sm text-muted-foreground">
-                  Someone dies from a fentanyl overdose in America
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center">
-              <CardContent className="p-6">
-                <Globe className="w-8 h-8 text-blue-500 mx-auto mb-3" />
-                <h3 className="font-semibold text-lg mb-2">Leading Cause</h3>
-                <p className="text-sm text-muted-foreground">
-                  #1 cause of death for Americans aged 18-45
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center">
-              <CardContent className="p-6">
-                <Heart className="w-8 h-8 text-green-500 mx-auto mb-3" />
-                <h3 className="font-semibold text-lg mb-2">Your Voice</h3>
-                <p className="text-sm text-muted-foreground">
-                  Can save lives through awareness and action
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
 
 
         {/* Enhanced Role Selection */}
@@ -99,6 +49,22 @@ const RoleSelectionStep = () => {
           <PersonaSelection onPersonaSelect={handlePersonaSelect} />
         </div>
 
+        {/* Senate Resolution Badge */}
+        <div className="flex justify-center mb-8">
+          <a 
+            href="https://www.congress.gov/bill/118th-congress/senate-resolution/323/text"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 text-blue-200 hover:text-white transition-colors text-sm bg-white/10 border border-white/20 rounded-lg px-4 py-3"
+            aria-label="View Senate Resolution 323 on Congress.gov"
+          >
+            <Shield className="w-5 h-5" />
+            <div>
+              <p className="font-semibold">Recognized by Senate Resolution 323</p>
+              <p className="text-xs opacity-80">Supporting National Fentanyl Awareness Day</p>
+            </div>
+          </a>
+        </div>
 
         {/* Footer Navigation */}
         <div className="text-center pt-8 border-t border-white/10">
