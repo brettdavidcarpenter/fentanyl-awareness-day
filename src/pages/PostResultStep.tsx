@@ -168,8 +168,7 @@ const PostResultStep = () => {
           <div className="space-y-4">
             <Button 
               onClick={handleCopyToClipboard}
-              variant="outline"
-              className="w-full border-white/20 text-white hover:bg-white/10"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 border-0"
               size="lg"
             >
               <Copy className="mr-2 h-4 w-4" />
