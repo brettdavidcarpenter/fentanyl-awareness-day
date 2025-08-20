@@ -100,32 +100,32 @@ const RoleSelectionStep = () => {
         {/* Countdown Timer */}
         <div className="mb-8">
           <Card className="max-w-4xl mx-auto bg-black/30 backdrop-blur-sm border-white/20">
-            <CardContent className="p-6">
-              <div className="text-center mb-4">
-                <h2 className="text-xl font-semibold text-white mb-2">National Fentanyl Prevention & Awareness Day</h2>
-                <p className="text-blue-200 text-sm">Post on or around this date for maximum impact</p>
+            <CardContent className="p-4">
+              <div className="text-center mb-3">
+                <h2 className="text-lg font-semibold text-white mb-1">National Fentanyl Prevention & Awareness Day</h2>
+                <p className="text-blue-200 text-xs">Post on or around this date for maximum impact</p>
               </div>
               
-              <div className="grid grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-4 gap-2 mb-3">
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.days}</div>
-                  <div className="text-gray-300 text-sm">DAYS</div>
+                  <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.days}</div>
+                  <div className="text-gray-300 text-xs">DAYS</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.hours}</div>
-                  <div className="text-gray-300 text-sm">HOURS</div>
+                  <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.hours}</div>
+                  <div className="text-gray-300 text-xs">HOURS</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.minutes}</div>
-                  <div className="text-gray-300 text-sm">MINUTES</div>
+                  <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.minutes}</div>
+                  <div className="text-gray-300 text-xs">MINUTES</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.seconds}</div>
-                  <div className="text-gray-300 text-sm">SECONDS</div>
+                  <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.seconds}</div>
+                  <div className="text-gray-300 text-xs">SECONDS</div>
                 </div>
               </div>
               
-              <div className="text-lg md:text-xl text-blue-200 font-semibold">
+              <div className="text-center text-base md:text-lg text-blue-200 font-semibold">
                 AUGUST 21, 2025
               </div>
             </CardContent>
