@@ -72,6 +72,18 @@ const PostCreatorStep = () => {
   }, [isGenerating]);
 
   const handleContinueToShare = () => {
+    console.log('Continue button clicked', { formData, previewImageUrl });
+    
+    // Check if canvas exists and has content
+    const canvas = document.getElementById('post-canvas');
+    if (canvas) {
+      console.log('Canvas dimensions:', {
+        width: canvas.offsetWidth,
+        height: canvas.offsetHeight,
+        scrollHeight: canvas.scrollHeight
+      });
+    }
+    
     // Pass form data via URL params for the result page
     const params = new URLSearchParams({
       persona: formData.persona || '',
@@ -125,7 +137,7 @@ const PostCreatorStep = () => {
         </div>
 
         {/* Main Content - Responsive Layout */}
-        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto pb-24">
           {/* Form Section - Order 2 on mobile, 1 on desktop */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
             <div className="max-w-md mx-auto">
@@ -139,7 +151,7 @@ const PostCreatorStep = () => {
 
           {/* Live Preview Section - Order 1 on mobile, 2 on desktop */}
           <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:h-fit order-1 lg:order-2">
-            <div className="space-y-4 pb-4">
+            <div className="space-y-4">
               {/* Preview Header */}
               <div className="text-center lg:text-left">
                 <h2 className="text-xl font-semibold text-white mb-2">Live Preview</h2>
@@ -149,7 +161,7 @@ const PostCreatorStep = () => {
               </div>
 
               {/* Preview Canvas - consistent with result page */}
-              <div className="bg-white/10 border border-white/20 rounded-lg p-4 relative">
+              <div className="bg-white/10 border border-white/20 rounded-lg p-4 relative overflow-hidden">
                 <div className="transition-opacity duration-300" style={{ opacity: isGenerating ? 0.8 : 1 }}>
                   <PostCanvas
                     template={formData.template}
@@ -162,7 +174,7 @@ const PostCreatorStep = () => {
 
                 {/* Loading Overlay */}
                 {isGenerating && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg z-10">
                     <div className="bg-white/90 px-4 py-2 rounded-md shadow-lg">
                       <p className="text-sm text-slate-700">Generating image...</p>
                     </div>
@@ -177,13 +189,13 @@ const PostCreatorStep = () => {
                 </div>
               )}
 
-              {/* Action Button - Fixed positioning to hover above all content */}
-              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md px-4">
-                {/* Background protection overlay */}
-                <div className="absolute inset-x-0 -top-8 bottom-0 bg-gradient-to-t from-slate-900/90 via-slate-900/60 to-transparent pointer-events-none rounded-t-xl"></div>
+              {/* Action Button - Inline positioning */}
+              <div className="pt-4">
                 <Button 
                   onClick={handleContinueToShare}
-                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl relative z-10"
+                  onMouseDown={(e) => console.log('Button mouse down', e)}
+                  onTouchStart={(e) => console.log('Button touch start', e)}
+                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl relative z-20"
                   size="lg"
                 >
                   <Share2 className="h-4 w-4" />
