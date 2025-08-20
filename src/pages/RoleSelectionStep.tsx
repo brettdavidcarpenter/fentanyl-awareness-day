@@ -55,8 +55,12 @@ const RoleSelectionStep = () => {
             href="https://www.congress.gov/bill/118th-congress/senate-resolution/323/text"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 text-blue-200 hover:text-white transition-colors text-sm bg-white/10 border border-white/20 rounded-lg px-4 py-3"
+            className="inline-flex items-center gap-3 text-blue-200 hover:text-white transition-colors text-sm bg-white/10 border border-white/20 rounded-lg px-4 py-3 cursor-pointer"
             aria-label="View Senate Resolution 323 on Congress.gov"
+            onClick={(e) => {
+              console.log('Senate badge clicked');
+              // Let the default behavior handle the navigation
+            }}
           >
             <Shield className="w-5 h-5" />
             <div>
