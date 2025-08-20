@@ -72,22 +72,22 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
   }
 
   return (
-    <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
       {personas.map((persona) => {
         const IconComponent = persona.icon;
         return (
           <Card key={persona.id} className="hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer bg-white/95 border-2 hover:border-blue-300">
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 p-3 rounded-full bg-gradient-to-br from-slate-100 to-slate-200">
-                <IconComponent className={`w-8 h-8 ${persona.color}`} />
+            <CardHeader className="text-center pb-6">
+              <div className="mx-auto mb-6 p-4 rounded-full bg-gradient-to-br from-slate-100 to-slate-200">
+                <IconComponent className={`w-10 h-10 ${persona.color}`} />
               </div>
-              <CardTitle className="text-xl font-bold text-slate-900">{persona.title}</CardTitle>
-              <CardDescription className="text-slate-600 text-base">{persona.description}</CardDescription>
+              <CardTitle className="text-2xl font-bold text-slate-900 mb-3">{persona.title}</CardTitle>
+              <CardDescription className="text-slate-600 text-lg leading-relaxed">{persona.description}</CardDescription>
             </CardHeader>
-            <CardContent className="pt-2">
+            <CardContent className="pt-4">
               <TrackedButton 
                 onClick={() => onPersonaSelect(persona.id)}
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 text-base shadow-lg hover:shadow-xl transition-all"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-4 text-lg shadow-lg hover:shadow-xl transition-all"
                 trackingName={`persona_select_${persona.id}`}
                 trackingCategory="persona_selection"
                 trackingPage="day_of_experience"
