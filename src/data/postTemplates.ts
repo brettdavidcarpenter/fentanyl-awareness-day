@@ -11,7 +11,7 @@ export const familyTemplates: PostTemplate[] = [
   {
     id: 'family-1',
     title: 'Honor & Remember',
-    message: 'In loving memory. Together we prevent other families from this heartbreak.',
+    message: 'Together we prevent other families from this heartbreak.',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: true
   },
