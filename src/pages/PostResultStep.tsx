@@ -190,14 +190,14 @@ const PostResultStep = () => {
           {/* Hashtag Callout */}
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-white text-center">Help Us By Using the Following Hashtags</h3>
-            <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-center">
+            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 text-center">
               <p className="text-sm text-white leading-relaxed">
                 "Create your own awareness post at{" "}
                 <a 
                   href="https://facingfentanylnow.aware-share.com/day-of-experience" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-blue-200 underline hover:text-blue-100"
+                  className="text-blue-300 underline hover:text-blue-200"
                 >
                   https://facingfentanylnow.aware-share.com/day-of-experience
                 </a>
