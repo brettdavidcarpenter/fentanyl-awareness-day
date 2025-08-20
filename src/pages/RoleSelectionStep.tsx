@@ -106,7 +106,7 @@ const RoleSelectionStep = () => {
                 <p className="text-blue-200 text-xs">Post on or around this date for maximum impact</p>
               </div>
               
-              <div className="grid grid-cols-4 gap-2 mb-3">
+              <div className="max-w-md mx-auto grid grid-cols-4 gap-2 mb-3">
                 <div className="text-center">
                   <div className="text-xl md:text-2xl font-bold text-blue-300">{timeLeft.days}</div>
                   <div className="text-gray-300 text-xs">DAYS</div>
