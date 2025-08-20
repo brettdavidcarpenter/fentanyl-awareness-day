@@ -180,7 +180,7 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
                       variant="outline"
                       size="sm"
                       onClick={() => setUploadedImage(null)}
-                      className="border-white/20 text-white hover:bg-white/10"
+                      className="bg-red-600 border-red-500 text-white hover:bg-red-700 hover:border-red-600"
                     >
                       Remove Image
                     </Button>
