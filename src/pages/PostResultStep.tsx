@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Copy } from "lucide-react";
 import PostCanvas from "@/components/PostCanvas";
 import ShareSection from "@/components/ShareSection";
 import { getTemplatesByPersona } from "@/data/postTemplates";
+import { useToast } from "@/hooks/use-toast";
 import html2canvas from 'html2canvas';
 
 const PostResultStep = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   
   const [formData, setFormData] = useState(() => {
     const persona = searchParams.get("persona");
@@ -61,6 +63,47 @@ const PostResultStep = () => {
 
   const getCurrentImage = () => {
     return formData.uploadedImage || formData.template?.imagePath;
+  };
+
+  const handleCopyToClipboard = async () => {
+    try {
+      const element = document.getElementById('post-canvas');
+      if (!element) throw new Error('Canvas element not found');
+      
+      const canvas = await html2canvas(element, {
+        backgroundColor: null,
+        scale: 2,
+        useCORS: true
+      });
+      
+      canvas.toBlob(async (blob) => {
+        if (blob) {
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({ 'image/png': blob })
+            ]);
+            toast({
+              title: "Copied to clipboard!",
+              description: "Your image has been copied and can be pasted anywhere.",
+            });
+          } catch (error) {
+            console.error('Error copying to clipboard:', error);
+            toast({
+              title: "Copy failed",
+              description: "Unable to copy image. Try downloading instead.",
+              variant: "destructive",
+            });
+          }
+        }
+      }, 'image/png', 0.95);
+    } catch (error) {
+      console.error('Error creating image:', error);
+      toast({
+        title: "Copy failed",
+        description: "Unable to create image. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDownloadImage = async () => {
@@ -123,6 +166,16 @@ const PostResultStep = () => {
 
           {/* Actions */}
           <div className="space-y-4">
+            <Button 
+              onClick={handleCopyToClipboard}
+              variant="outline"
+              className="w-full border-white/20 text-white hover:bg-white/10"
+              size="lg"
+            >
+              <Copy className="mr-2 h-4 w-4" />
+              Copy to Clipboard
+            </Button>
+            
             <Button 
               onClick={handleDownloadImage}
               className="w-full bg-white text-slate-900 hover:bg-white/90"
