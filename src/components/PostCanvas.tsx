@@ -26,8 +26,18 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   };
 
   const getImageSrc = () => {
-    if (customImage) return customImage;
-    return template.imagePath;
+    console.log('🖼️ PostCanvas getImageSrc - customImage:', typeof customImage, customImage ? customImage.substring(0, 50) + '...' : 'null');
+    console.log('🖼️ PostCanvas getImageSrc - template.imagePath:', template?.imagePath);
+    
+    // Validate custom image data before using it
+    if (customImage && typeof customImage === 'string' && customImage.startsWith('data:image/')) {
+      console.log('✅ Using valid custom image');
+      return customImage;
+    } else if (customImage) {
+      console.log('❌ Invalid custom image data, falling back to template');
+    }
+    
+    return template?.imagePath || '';
   };
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {

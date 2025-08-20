@@ -58,10 +58,20 @@ const PostResultStep = () => {
     let uploadedImage;
     if (hasImage) {
       try {
-        uploadedImage = sessionStorage.getItem('postImage');
-        console.log('📷 Retrieved image from sessionStorage:', uploadedImage ? 'Success' : 'Failed');
+        const retrievedImage = sessionStorage.getItem('postImage');
+        console.log('📷 Retrieved image from sessionStorage:', typeof retrievedImage, retrievedImage ? retrievedImage.substring(0, 50) + '...' : 'null');
+        
+        // Validate retrieved image data
+        if (retrievedImage && typeof retrievedImage === 'string' && retrievedImage.startsWith('data:image/')) {
+          uploadedImage = retrievedImage;
+          console.log('✅ Valid image data retrieved');
+        } else {
+          console.log('❌ Invalid image data retrieved, ignoring:', typeof retrievedImage, retrievedImage);
+          uploadedImage = null;
+        }
       } catch (error) {
         console.error('❌ Failed to retrieve image from sessionStorage:', error);
+        uploadedImage = null;
       }
     }
     

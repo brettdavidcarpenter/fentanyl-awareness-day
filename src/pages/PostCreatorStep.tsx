@@ -119,10 +119,15 @@ const PostCreatorStep = () => {
     });
 
     if (formData.uploadedImage) {
-      console.log('💾 Storing image in sessionStorage');
+      console.log('💾 Storing image in sessionStorage', typeof formData.uploadedImage, formData.uploadedImage.substring(0, 50));
       try {
-        sessionStorage.setItem('postImage', formData.uploadedImage);
-        console.log('✅ Image stored successfully');
+        // Validate image data before storing
+        if (typeof formData.uploadedImage === 'string' && formData.uploadedImage.startsWith('data:image/')) {
+          sessionStorage.setItem('postImage', formData.uploadedImage);
+          console.log('✅ Valid image stored successfully');
+        } else {
+          console.error('❌ Invalid image data, not storing:', typeof formData.uploadedImage, formData.uploadedImage);
+        }
       } catch (error) {
         console.error('❌ Failed to store image:', error);
       }
