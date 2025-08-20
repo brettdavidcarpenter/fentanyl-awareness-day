@@ -6,12 +6,14 @@ import LivePostForm from "@/components/LivePostForm";
 import PostCanvas from "@/components/PostCanvas";
 import { getTemplatesByPersona } from "@/data/postTemplates";
 import { usePreviewGeneration } from "@/hooks/usePreviewGeneration";
+import { useIsRealMobile } from "@/hooks/use-mobile";
 import { debounce } from "@/utils/debounce";
 
 const PostCreatorStep = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const persona = searchParams.get("persona");
+  const isRealMobile = useIsRealMobile();
   
   const [formData, setFormData] = useState(() => {
     if (!persona) return {};
@@ -72,15 +74,36 @@ const PostCreatorStep = () => {
   }, [isGenerating]);
 
   const handleContinueToShare = () => {
-    console.log('Continue button clicked', { formData, previewImageUrl });
+    console.log('Continue button clicked', { 
+      formData, 
+      previewImageUrl, 
+      isRealMobile,
+      timestamp: new Date().toISOString()
+    });
     
-    // Check if canvas exists and has content
+    // Enhanced debugging for square image issues
     const canvas = document.getElementById('post-canvas');
     if (canvas) {
-      console.log('Canvas dimensions:', {
-        width: canvas.offsetWidth,
-        height: canvas.offsetHeight,
-        scrollHeight: canvas.scrollHeight
+      const img = canvas.querySelector('img');
+      const aspectRatio = img ? img.naturalWidth / img.naturalHeight : null;
+      const isSquare = aspectRatio ? Math.abs(aspectRatio - 1) < 0.1 : false;
+      
+      console.log('Canvas analysis:', {
+        canvasDimensions: {
+          width: canvas.offsetWidth,
+          height: canvas.offsetHeight,
+          scrollHeight: canvas.scrollHeight,
+          clientHeight: canvas.clientHeight
+        },
+        imageInfo: img ? {
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight,
+          aspectRatio,
+          isSquare,
+          src: img.src.substring(0, 50) + '...'
+        } : 'No image found',
+        isRealMobile,
+        viewport: { width: window.innerWidth, height: window.innerHeight }
       });
     }
     
@@ -189,18 +212,38 @@ const PostCreatorStep = () => {
                 </div>
               )}
 
-              {/* Action Button - Inline positioning */}
+              {/* Action Button - Enhanced mobile positioning */}
               <div className="pt-4">
-                <Button 
-                  onClick={handleContinueToShare}
-                  onMouseDown={(e) => console.log('Button mouse down', e)}
-                  onTouchStart={(e) => console.log('Button touch start', e)}
-                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl relative z-20"
-                  size="lg"
-                >
-                  <Share2 className="h-4 w-4" />
-                  Continue to Share
-                </Button>
+                <div className={`relative ${isRealMobile ? 'touch-manipulation' : ''}`}>
+                  <Button 
+                    onClick={handleContinueToShare}
+                    onMouseDown={(e) => console.log('Button mouse down', e)}
+                    onTouchStart={(e) => {
+                      console.log('Button touch start', e);
+                      e.preventDefault(); // Prevent zoom on double tap
+                    }}
+                    onTouchEnd={(e) => {
+                      console.log('Button touch end', e);
+                      // Handle touch end for better mobile interaction
+                      if (isRealMobile) {
+                        e.preventDefault();
+                        handleContinueToShare();
+                      }
+                    }}
+                    className={`w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl relative ${
+                      isRealMobile ? 'min-h-[48px] active:scale-95 transition-transform touch-manipulation' : ''
+                    }`}
+                    style={{ 
+                      zIndex: 50,
+                      pointerEvents: 'auto',
+                      position: 'relative'
+                    }}
+                    size="lg"
+                  >
+                    <Share2 className="h-4 w-4" />
+                    Continue to Share
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

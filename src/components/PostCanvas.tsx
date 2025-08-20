@@ -50,6 +50,18 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   const isWidePortrait = aspectRatio < 0.7; // Very tall images
   const isWideLandscape = aspectRatio > 1.4; // Very wide images
   
+  // Debug square image detection
+  useEffect(() => {
+    if (imageDimensions && isSquare) {
+      console.log('Square image detected in PostCanvas:', {
+        aspectRatio,
+        imageDimensions,
+        customImage: !!customImage,
+        template: template?.id
+      });
+    }
+  }, [imageDimensions, isSquare, customImage, template]);
+  
   // Mobile-optimized height calculation
   const getImageAreaHeight = () => {
     // Use flex-1 for responsive height instead of fixed pixels on mobile
@@ -80,19 +92,33 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
       className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
       style={{ 
         fontSize: '16px',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
+        boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)',
+        // Prevent layout shifts for square images
+        minHeight: isSquare ? '380px' : 'auto',
+        contain: 'layout style'
       }}
     >
       {/* Polaroid-style inner container with black background */}
       <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
-        {/* Image section with polaroid frame - fixed height for consistency */}
-        <div className="relative w-full bg-black p-4 pb-2 h-[280px] sm:h-[320px] lg:h-[360px]">
+        {/* Image section with polaroid frame - stable height for square images */}
+        <div 
+          className="relative w-full bg-black p-4 pb-2"
+          style={{
+            height: isSquare ? '320px' : '280px', // Consistent height for square images
+            minHeight: '280px'
+          }}
+        >
           <div className="w-full h-full bg-white shadow-inner border-2 border-white relative">
             <img 
               src={getImageSrc()}
               alt="Post image"
               className={`w-full h-full ${getObjectFit()}`}
-              style={{ objectPosition: 'center' }}
+              style={{ 
+                objectPosition: 'center',
+                // Prevent layout shifts during load
+                minHeight: '100%',
+                maxHeight: '100%'
+              }}
               onLoad={handleImageLoad}
               onError={() => setImageLoaded(true)}
             />
