@@ -103,7 +103,7 @@ const RoleSelectionStep = () => {
             <CardContent className="p-4">
               <div className="text-center mb-3">
                 <h2 className="text-lg font-semibold text-white mb-1">National Fentanyl Prevention & Awareness Day</h2>
-                <p className="text-blue-200 text-xs">Post on or around this date for maximum impact</p>
+                <p className="text-blue-200 text-xs">Let's make our voices heard louder than ever</p>
               </div>
               
               <div className="max-w-md mx-auto grid grid-cols-4 gap-2 mb-3">
