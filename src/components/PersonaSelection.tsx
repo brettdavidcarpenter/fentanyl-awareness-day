@@ -76,18 +76,18 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
       {personas.map((persona) => {
         const IconComponent = persona.icon;
         return (
-          <Card key={persona.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader className="text-center">
-              <div className="mx-auto mb-4">
-                <IconComponent className={`w-12 h-12 ${persona.color}`} />
+          <Card key={persona.id} className="hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer bg-white/95 border-2 hover:border-blue-300">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-4 p-3 rounded-full bg-gradient-to-br from-slate-100 to-slate-200">
+                <IconComponent className={`w-8 h-8 ${persona.color}`} />
               </div>
-              <CardTitle className="text-lg">{persona.title}</CardTitle>
-              <CardDescription>{persona.description}</CardDescription>
+              <CardTitle className="text-xl font-bold text-slate-900">{persona.title}</CardTitle>
+              <CardDescription className="text-slate-600 text-base">{persona.description}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-2">
               <TrackedButton 
                 onClick={() => onPersonaSelect(persona.id)}
-                className="w-full"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 text-base shadow-lg hover:shadow-xl transition-all"
                 trackingName={`persona_select_${persona.id}`}
                 trackingCategory="persona_selection"
                 trackingPage="day_of_experience"
