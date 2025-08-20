@@ -139,7 +139,7 @@ const PostCreatorStep = () => {
 
           {/* Live Preview Section - Order 1 on mobile, 2 on desktop */}
           <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:h-fit order-1 lg:order-2">
-            <div className="space-y-4 pb-4">
+            <div className="space-y-4 pb-20">
               {/* Preview Header */}
               <div className="text-center lg:text-left">
                 <h2 className="text-xl font-semibold text-white mb-2">Live Preview</h2>
@@ -148,22 +148,27 @@ const PostCreatorStep = () => {
                 </p>
               </div>
 
-              {/* Preview Canvas - with height constraints */}
-              <div className="relative max-h-[500px] overflow-hidden">
+              {/* Preview Canvas - with fixed height constraints */}
+              <div className="relative h-[50vh] lg:h-[60vh] max-h-[500px] min-h-[400px] overflow-hidden rounded-lg bg-black/20">
                 {/* Single Canvas for both preview and generation */}
-                <div className="transition-opacity duration-300" style={{ opacity: isGenerating ? 0.8 : 1 }}>
-                  <PostCanvas
-                    template={formData.template}
-                    personalization={formData.personalization}
-                    customText={formData.customText}
-                    customImage={formData.uploadedImage}
-                    postType={formData.uploadedImage ? 'upload' : 'quick'}
-                  />
+                <div 
+                  className="absolute inset-0 flex items-center justify-center transition-opacity duration-300" 
+                  style={{ opacity: isGenerating ? 0.8 : 1 }}
+                >
+                  <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                    <PostCanvas
+                      template={formData.template}
+                      personalization={formData.personalization}
+                      customText={formData.customText}
+                      customImage={formData.uploadedImage}
+                      postType={formData.uploadedImage ? 'upload' : 'quick'}
+                    />
+                  </div>
                 </div>
 
                 {/* Loading Overlay */}
                 {isGenerating && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg z-20">
                     <div className="bg-white/90 px-4 py-2 rounded-md shadow-lg">
                       <p className="text-sm text-slate-700">Generating image...</p>
                     </div>
@@ -177,19 +182,21 @@ const PostCreatorStep = () => {
                   <p className="text-sm text-red-200">{error}</p>
                 </div>
               )}
-
-              {/* Action Button - Fixed positioning on mobile */}
-              <div className="sticky bottom-4 z-10 max-w-md mx-auto">
-                <Button 
-                  onClick={handleContinueToShare}
-                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-lg"
-                  size="lg"
-                >
-                  <Share2 className="h-4 w-4" />
-                  Continue to Share
-                </Button>
-              </div>
             </div>
+          </div>
+        </div>
+
+        {/* Fixed Action Button - Always visible at bottom */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-gradient-to-t from-slate-900 via-slate-900/95 to-transparent">
+          <div className="container mx-auto max-w-md">
+            <Button 
+              onClick={handleContinueToShare}
+              className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-lg"
+              size="lg"
+            >
+              <Share2 className="h-4 w-4" />
+              Continue to Share
+            </Button>
           </div>
         </div>
       </div>
