@@ -139,7 +139,7 @@ const PostCreatorStep = () => {
 
           {/* Live Preview Section - Order 1 on mobile, 2 on desktop */}
           <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:h-fit order-1 lg:order-2">
-            <div className="space-y-6">
+            <div className="space-y-4 pb-4">
               {/* Preview Header */}
               <div className="text-center lg:text-left">
                 <h2 className="text-xl font-semibold text-white mb-2">Live Preview</h2>
@@ -148,8 +148,8 @@ const PostCreatorStep = () => {
                 </p>
               </div>
 
-              {/* Preview Canvas */}
-              <div className="relative">
+              {/* Preview Canvas - with height constraints */}
+              <div className="relative max-h-[500px] overflow-hidden">
                 {/* Single Canvas for both preview and generation */}
                 <div className="transition-opacity duration-300" style={{ opacity: isGenerating ? 0.8 : 1 }}>
                   <PostCanvas
@@ -178,11 +178,11 @@ const PostCreatorStep = () => {
                 </div>
               )}
 
-              {/* Action Button */}
-              <div className="max-w-md mx-auto">
+              {/* Action Button - Fixed positioning on mobile */}
+              <div className="sticky bottom-4 z-10 max-w-md mx-auto">
                 <Button 
                   onClick={handleContinueToShare}
-                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2"
+                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-lg"
                   size="lg"
                 >
                   <Share2 className="h-4 w-4" />
