@@ -77,19 +77,17 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   return (
     <div 
       id="post-canvas" 
-      className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[400px] mx-auto bg-white p-2 sm:p-3 lg:p-4 shadow-2xl"
+      className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
       style={{ 
         fontSize: '16px',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)',
-        maxHeight: '90%',
-        aspectRatio: 'auto'
+        boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
       }}
     >
       {/* Polaroid-style inner container with black background */}
       <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
-        {/* Image section with polaroid frame - constrained height */}
-        <div className="relative w-full bg-black p-2 sm:p-3 lg:p-4 pb-1 sm:pb-2 flex-shrink-0" style={{ height: '200px' }}>
-          <div className="w-full h-full bg-white shadow-inner border-2 border-white relative overflow-hidden">
+        {/* Image section with polaroid frame - flex-1 to fill available space */}
+        <div className="relative w-full bg-black p-4 pb-2 flex-1 min-h-[250px] max-h-[350px]">
+          <div className="w-full h-full bg-white shadow-inner border-2 border-white relative">
             <img 
               src={getImageSrc()}
               alt="Post image"
@@ -108,7 +106,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         </div>
         
         {/* Polaroid bottom section with flex layout for text and logo */}
-        <div className={`w-full bg-black flex flex-shrink-0 ${customImage ? 'items-center justify-between h-12 sm:h-16 lg:h-20 px-2 sm:px-3 lg:px-4 py-1 sm:py-2' : 'items-end h-10 sm:h-12 lg:h-16 px-2 sm:px-3 lg:px-4'}`}>
+        <div className={`w-full bg-black flex ${customImage ? 'items-center justify-between h-16 sm:h-20 lg:h-28 px-2 sm:px-4 lg:px-6 py-1 sm:py-2 lg:py-3' : 'items-end h-12 sm:h-16 lg:h-20 px-2 sm:px-3 lg:px-4'}`}>
           {/* Text area - constrained to left 60% when custom image, centered otherwise */}
           <div className={customImage ? "flex-1 max-w-[70%] pr-1 sm:pr-2" : "flex-1"}>
             <p 
