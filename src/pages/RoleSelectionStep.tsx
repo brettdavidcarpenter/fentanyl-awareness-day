@@ -40,12 +40,6 @@ const RoleSelectionStep = () => {
 
         {/* Enhanced Role Selection */}
         <div className="mb-12">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-white mb-2">Choose Your Role</h3>
-            <p className="text-blue-200">
-              Select the role that best describes you to get personalized content
-            </p>
-          </div>
           <PersonaSelection onPersonaSelect={handlePersonaSelect} />
         </div>
 
