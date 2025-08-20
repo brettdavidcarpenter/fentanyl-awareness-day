@@ -126,12 +126,14 @@ const PostCreatorStep = () => {
         {/* Main Content - Responsive Layout */}
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
           {/* Form Section */}
-          <div className="w-full lg:w-1/2 max-w-md mx-auto lg:mx-0">
-            <LivePostForm
-              onFormChange={handleFormChange}
-              initialData={formData}
-              showOnlyCustomization={true}
-            />
+          <div className="w-full lg:w-1/2">
+            <div className="max-w-md mx-auto">
+              <LivePostForm
+                onFormChange={handleFormChange}
+                initialData={formData}
+                showOnlyCustomization={true}
+              />
+            </div>
           </div>
 
           {/* Live Preview Section */}
@@ -188,21 +190,11 @@ const PostCreatorStep = () => {
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button 
-                  onClick={handleDownload}
-                  variant="outline"
-                  disabled={!previewImageUrl || isGenerating}
-                  className="flex items-center gap-2 border-white/20 text-white hover:bg-white/10"
-                >
-                  <Download className="h-4 w-4" />
-                  Download
-                </Button>
-                
+              {/* Action Button */}
+              <div className="max-w-md mx-auto">
                 <Button 
                   onClick={handleContinueToShare}
-                  className="w-full sm:w-auto flex items-center gap-2 bg-white text-slate-900 hover:bg-white/90"
+                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2"
                   size="lg"
                 >
                   <Share2 className="h-4 w-4" />
