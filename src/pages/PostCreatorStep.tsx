@@ -105,7 +105,7 @@ const PostCreatorStep = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
+    <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
@@ -113,13 +113,13 @@ const PostCreatorStep = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate("/day-of-experience")}
-            className="p-2"
+            className="p-2 text-white hover:bg-white/10"
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-primary">Create Your Post</h1>
-            <p className="text-sm text-muted-foreground">Step 2 of 3: Customize your content</p>
+            <h1 className="text-2xl font-bold text-white">Create Your Post</h1>
+            <p className="text-sm text-blue-200">Step 2 of 3: Customize your content</p>
           </div>
         </div>
 
@@ -139,8 +139,8 @@ const PostCreatorStep = () => {
             <div className="space-y-6">
               {/* Preview Header */}
               <div className="text-center lg:text-left">
-                <h2 className="text-xl font-semibold text-primary mb-2">Live Preview</h2>
-                <p className="text-sm text-muted-foreground">
+                <h2 className="text-xl font-semibold text-white mb-2">Live Preview</h2>
+                <p className="text-sm text-blue-200">
                   {isGenerating ? "Updating preview..." : "Your post updates in real-time"}
                 </p>
               </div>
@@ -173,9 +173,9 @@ const PostCreatorStep = () => {
 
                 {/* Loading Overlay */}
                 {isGenerating && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-background/50 rounded-lg">
-                    <div className="bg-background px-4 py-2 rounded-md shadow-lg">
-                      <p className="text-sm text-muted-foreground">Generating preview...</p>
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg">
+                    <div className="bg-white/90 px-4 py-2 rounded-md shadow-lg">
+                      <p className="text-sm text-slate-700">Generating preview...</p>
                     </div>
                   </div>
                 )}
@@ -183,8 +183,8 @@ const PostCreatorStep = () => {
 
               {/* Error Display */}
               {error && (
-                <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
-                  <p className="text-sm text-destructive">{error}</p>
+                <div className="bg-red-900/20 border border-red-500/30 rounded-md p-3">
+                  <p className="text-sm text-red-200">{error}</p>
                 </div>
               )}
 
@@ -194,7 +194,7 @@ const PostCreatorStep = () => {
                   onClick={handleDownload}
                   variant="outline"
                   disabled={!previewImageUrl || isGenerating}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-white/20 text-white hover:bg-white/10"
                 >
                   <Download className="h-4 w-4" />
                   Download
@@ -202,7 +202,7 @@ const PostCreatorStep = () => {
                 
                 <Button 
                   onClick={handleContinueToShare}
-                  className="w-full sm:w-auto flex items-center gap-2"
+                  className="w-full sm:w-auto flex items-center gap-2 bg-white text-slate-900 hover:bg-white/90"
                   size="lg"
                 >
                   <Share2 className="h-4 w-4" />

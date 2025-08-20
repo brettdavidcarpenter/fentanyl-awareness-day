@@ -116,19 +116,19 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
     return (
       <div className="space-y-6">
         {/* Custom Message */}
-        <Card>
+        <Card className="bg-white/10 border-white/20">
           <CardHeader>
-            <CardTitle className="text-lg">Customize Your Message</CardTitle>
+            <CardTitle className="text-lg text-white">Customize Your Message</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <Label htmlFor="custom-message">Your Message (optional)</Label>
+              <Label htmlFor="custom-message" className="text-blue-200">Your Message (optional)</Label>
               <Textarea
                 id="custom-message"
                 value={customText}
                 onChange={(e) => setCustomText(e.target.value)}
                 placeholder="Enter your custom message..."
-                className="min-h-[100px] resize-none"
+                className="min-h-[100px] resize-none bg-white/10 border-white/20 text-white placeholder:text-blue-200"
                 maxLength={uploadedImage ? 90 : 115}
               />
               <div className={`text-xs text-right flex items-center justify-between ${
@@ -138,12 +138,12 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
                   const warningThreshold = uploadedImage ? 72 : 95;
                   const limitThreshold = uploadedImage ? 81 : 105;
                   
-                  if (count <= warningThreshold) return 'text-green-600';
-                  if (count <= limitThreshold) return 'text-orange-500';
-                  return 'text-red-500 font-medium';
+                  if (count <= warningThreshold) return 'text-green-300';
+                  if (count <= limitThreshold) return 'text-yellow-300';
+                  return 'text-red-300 font-medium';
                 })()
               }`}>
-                <span className="text-muted-foreground">
+                <span className="text-blue-200">
                   {(() => {
                     const count = customText.length;
                     const maxLength = uploadedImage ? 90 : 115;
@@ -162,13 +162,13 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
         </Card>
 
         {/* Image Upload */}
-        <Card>
+        <Card className="bg-white/10 border-white/20">
           <CardHeader>
-            <CardTitle className="text-lg">Upload Your Photo (optional)</CardTitle>
+            <CardTitle className="text-lg text-white">Upload Your Photo (optional)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+              <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center">
                 {uploadedImage ? (
                   <div className="space-y-2">
                     <img 
@@ -180,21 +180,22 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
                       variant="outline"
                       size="sm"
                       onClick={() => setUploadedImage(null)}
+                      className="border-white/20 text-white hover:bg-white/10"
                     >
                       Remove Image
                     </Button>
                   </div>
                 ) : (
                   <div>
-                    <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                    <p className="text-sm text-gray-600 mb-2">
+                    <Upload className="w-8 h-8 mx-auto mb-2 text-blue-200" />
+                    <p className="text-sm text-blue-200 mb-2">
                       Click to upload your own image
                     </p>
                     <Input
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      className="cursor-pointer"
+                      className="cursor-pointer bg-white/10 border-white/20 text-white"
                     />
                   </div>
                 )}

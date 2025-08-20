@@ -88,7 +88,7 @@ const PostResultStep = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
+    <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
@@ -98,20 +98,20 @@ const PostResultStep = () => {
             onClick={() => navigate("/day-of-experience/create?" + new URLSearchParams({
               persona: formData.persona
             }).toString())}
-            className="p-2"
+            className="p-2 text-white hover:bg-white/10"
           >
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-primary">Your Post is Ready!</h1>
-            <p className="text-sm text-muted-foreground">Step 3 of 3: Share your message</p>
+            <h1 className="text-2xl font-bold text-white">Your Post is Ready!</h1>
+            <p className="text-sm text-blue-200">Step 3 of 3: Share your message</p>
           </div>
         </div>
 
         {/* Content */}
         <div className="max-w-md mx-auto space-y-6">
           {/* Preview */}
-          <div className="bg-card rounded-lg p-4 border">
+          <div className="bg-white/10 border border-white/20 rounded-lg p-4">
             <PostCanvas
               template={formData.template}
               personalization={formData.personalization}
@@ -125,7 +125,7 @@ const PostResultStep = () => {
           <div className="space-y-4">
             <Button 
               onClick={handleDownloadImage}
-              className="w-full"
+              className="w-full bg-white text-slate-900 hover:bg-white/90"
               size="lg"
             >
               <Download className="mr-2 h-4 w-4" />
@@ -139,7 +139,7 @@ const PostResultStep = () => {
           <Button
             variant="outline"
             onClick={() => navigate("/day-of-experience")}
-            className="w-full"
+            className="w-full border-white/20 text-white hover:bg-white/10"
           >
             Create Another Post
           </Button>
