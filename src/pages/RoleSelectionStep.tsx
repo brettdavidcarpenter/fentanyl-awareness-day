@@ -2,13 +2,72 @@ import { useNavigate, Link } from "react-router-dom";
 import PersonaSelection from "@/components/PersonaSelection";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Heart, Users, ArrowRight, TrendingUp, Globe } from "lucide-react";
+import { Shield, Heart, Users, ArrowRight, TrendingUp, Globe, Clock, MessageCircle, Copy } from "lucide-react";
+import { useState, useEffect } from "react";
+import { TrackedButton } from "@/components/TrackedButton";
+import { useToast } from "@/hooks/use-toast";
 
 const RoleSelectionStep = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [copied, setCopied] = useState(false);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  // Countdown timer logic
+  useEffect(() => {
+    const targetDate = new Date("2025-08-21T00:00:00").getTime();
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor(difference % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)),
+          minutes: Math.floor(difference % (1000 * 60 * 60) / (1000 * 60)),
+          seconds: Math.floor(difference % (1000 * 60) / 1000)
+        });
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handlePersonaSelect = (persona: string) => {
     navigate(`/day-of-experience/create?persona=${encodeURIComponent(persona)}`);
+  };
+
+  // Share functionality
+  const shareUrl = "https://facingfentanylnow.aware-share.com/day-of-experience";
+  const textMessage = `Hey! I found this tool to create Fentanyl Awareness posts. Check it out: ${shareUrl}`;
+
+  const handleTextToFriend = () => {
+    const smsUrl = `sms:?body=${encodeURIComponent(textMessage)}`;
+    const link = document.createElement('a');
+    link.href = smsUrl;
+    link.click();
+    
+    setTimeout(() => {
+      toast({
+        title: "Message ready to send!",
+        description: "If SMS didn't open, the message is copied to your clipboard to paste in any messaging app.",
+      });
+    }, 1000);
+    
+    handleCopyMessage();
+  };
+
+  const handleCopyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(textMessage);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Copy failed:', err);
+    }
   };
 
   return (
@@ -38,9 +97,73 @@ const RoleSelectionStep = () => {
 
 
 
+        {/* Countdown Timer */}
+        <div className="mb-8">
+          <Card className="max-w-4xl mx-auto bg-black/30 backdrop-blur-sm border-white/20">
+            <CardContent className="p-6">
+              <div className="text-center mb-4">
+                <h2 className="text-xl font-semibold text-white mb-2">National Fentanyl Prevention & Awareness Day</h2>
+                <p className="text-blue-200 text-sm">Post on or around this date for maximum impact</p>
+              </div>
+              
+              <div className="grid grid-cols-4 gap-4 mb-4">
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.days}</div>
+                  <div className="text-gray-300 text-sm">DAYS</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.hours}</div>
+                  <div className="text-gray-300 text-sm">HOURS</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.minutes}</div>
+                  <div className="text-gray-300 text-sm">MINUTES</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-bold text-blue-300">{timeLeft.seconds}</div>
+                  <div className="text-gray-300 text-sm">SECONDS</div>
+                </div>
+              </div>
+              
+              <div className="text-lg md:text-xl text-blue-200 font-semibold">
+                AUGUST 21, 2025
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Enhanced Role Selection */}
         <div className="mb-12">
           <PersonaSelection onPersonaSelect={handlePersonaSelect} />
+        </div>
+
+        {/* Help Others Create Posts Section */}
+        <div className="mb-12">
+          <Card className="max-w-4xl mx-auto bg-white/5 backdrop-blur-sm border-white/10">
+            <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-semibold text-white mb-2">
+                  Help Others Create Posts Too
+                </h3>
+                <p className="text-gray-300">
+                  Share this tool with a friend so they can create their own awareness post
+                </p>
+              </div>
+
+              <div className="text-center">
+                <TrackedButton
+                  onClick={handleTextToFriend}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 text-lg font-semibold flex items-center justify-center gap-3 mx-auto"
+                  trackingName="text_to_friend"
+                  trackingCategory="social_share"
+                  trackingPage="role_selection"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Text to a Friend
+                </TrackedButton>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Senate Resolution Badge */}
