@@ -36,11 +36,15 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
   // Initialize with default template and set initial text
   useEffect(() => {
     const templates = getTemplatesByPersona(selectedPersona);
-    if (templates.length > 0 && !selectedTemplate) {
+    if (templates.length > 0) {
       const template = templates[0];
-      setSelectedTemplate(template);
       
-      // Initialize customText with template message if not already initialized
+      // Always update template when persona changes
+      if (!selectedTemplate || selectedTemplate.id !== template.id) {
+        setSelectedTemplate(template);
+      }
+      
+      // Update customText with template message when persona changes or not initialized
       if (!isInitialized && template.message) {
         setCustomText(template.message);
         setIsInitialized(true);

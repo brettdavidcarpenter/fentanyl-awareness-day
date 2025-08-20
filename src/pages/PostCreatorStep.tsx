@@ -17,10 +17,11 @@ const PostCreatorStep = () => {
     if (!persona) return {};
     
     const templates = getTemplatesByPersona(persona);
+    const defaultTemplate = templates[0];
     return {
       persona,
-      template: templates[0],
-      customText: '',
+      template: defaultTemplate,
+      customText: defaultTemplate?.message || '',
       personalization: { name: '', relationship: '' },
       uploadedImage: null
     };
