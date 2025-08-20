@@ -34,6 +34,7 @@ const PostCreatorStep = () => {
   }, [persona, navigate]);
 
   const [shouldRegeneratePreview, setShouldRegeneratePreview] = useState(true);
+  const [buttonEnabled, setButtonEnabled] = useState(true);
   const debounceRegenerateRef = useRef<(() => void) | null>(null);
 
   // Initialize debounced function
@@ -64,6 +65,17 @@ const PostCreatorStep = () => {
     triggerGeneration: shouldRegeneratePreview
   });
 
+  // Debug logging for button issues
+  useEffect(() => {
+    console.log('🔄 Preview Generation State:', { 
+      isGenerating, 
+      buttonEnabled, 
+      hasPreview: !!previewImageUrl,
+      formDataKeys: Object.keys(formData),
+      uploadedImage: !!formData.uploadedImage 
+    });
+  }, [isGenerating, buttonEnabled, previewImageUrl, formData]);
+
   // Reset regeneration flag after each generation
   useEffect(() => {
     if (!isGenerating) {
@@ -71,17 +83,34 @@ const PostCreatorStep = () => {
     }
   }, [isGenerating]);
 
-  const handleContinueToShare = () => {
-    console.log('Continue button clicked', { formData, previewImageUrl });
+  const handleContinueToShare = useCallback((e?: React.MouseEvent) => {
+    console.log('🚀 Continue button clicked', { 
+      formData, 
+      previewImageUrl, 
+      isGenerating, 
+      buttonEnabled,
+      eventType: e?.type 
+    });
+    
+    // Prevent multiple rapid clicks
+    if (!buttonEnabled) {
+      console.log('❌ Button disabled, ignoring click');
+      return;
+    }
+    
+    setButtonEnabled(false);
     
     // Check if canvas exists and has content
     const canvas = document.getElementById('post-canvas');
     if (canvas) {
-      console.log('Canvas dimensions:', {
+      console.log('✅ Canvas found:', {
         width: canvas.offsetWidth,
         height: canvas.offsetHeight,
-        scrollHeight: canvas.scrollHeight
+        scrollHeight: canvas.scrollHeight,
+        children: canvas.children.length
       });
+    } else {
+      console.log('❌ Canvas not found');
     }
     
     // Pass form data via URL params for the result page
@@ -99,8 +128,12 @@ const PostCreatorStep = () => {
       sessionStorage.setItem('postImage', formData.uploadedImage);
     }
     
+    console.log('🎯 Navigating to result page');
     navigate(`/day-of-experience/result?${params.toString()}`);
-  };
+    
+    // Re-enable button after navigation attempt
+    setTimeout(() => setButtonEnabled(true), 1000);
+  }, [formData, previewImageUrl, isGenerating, buttonEnabled, navigate]);
 
   const handleDownload = async () => {
     if (!previewImageUrl) return;
@@ -147,14 +180,18 @@ const PostCreatorStep = () => {
                 showOnlyCustomization={true}
               />
               
-              {/* Continue to Share Button */}
+              {/* Continue to Share Button - Isolated from preview generation */}
               <Button 
                 onClick={handleContinueToShare}
-                className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl"
+                onTouchStart={(e) => console.log('📱 Touch start on button', e.type)}
+                onTouchEnd={(e) => console.log('📱 Touch end on button', e.type)}
+                disabled={!buttonEnabled}
+                className="w-full bg-white text-slate-900 hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-2xl relative z-50"
+                style={{ pointerEvents: buttonEnabled ? 'auto' : 'none' }}
                 size="lg"
               >
                 <Share2 className="h-4 w-4" />
-                Continue to Share
+                {buttonEnabled ? 'Continue to Share' : 'Processing...'}
               </Button>
             </div>
           </div>

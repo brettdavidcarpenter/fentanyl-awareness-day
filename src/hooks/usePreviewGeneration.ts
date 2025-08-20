@@ -16,29 +16,55 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
   const generatePreviewImage = useCallback(async () => {
     if (!triggerGeneration) return;
 
+    console.log('🎨 Starting preview generation...');
     setIsGenerating(true);
     setError(null);
     
     try {
       // Wait for DOM to update and images to load
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Find the visible post canvas
       const element = document.getElementById('post-canvas');
       if (!element) {
+        console.log('❌ Post canvas element not found');
         throw new Error('Post canvas element not found');
       }
 
+      console.log('✅ Found canvas element:', {
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        children: element.children.length
+      });
+
       // Ensure all images in the canvas are fully loaded
       const images = element.querySelectorAll('img');
+      console.log(`🖼️ Found ${images.length} images in canvas`);
+      
       await Promise.all(
-        Array.from(images).map(img => {
-          if (img.complete) return Promise.resolve();
+        Array.from(images).map((img, index) => {
+          if (img.complete && img.naturalWidth > 0) {
+            console.log(`✅ Image ${index} already loaded`);
+            return Promise.resolve();
+          }
+          
+          console.log(`⏳ Waiting for image ${index} to load...`);
           return new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = reject;
-            // Fallback timeout
-            setTimeout(resolve, 1000);
+            const timeout = setTimeout(() => {
+              console.log(`⏰ Image ${index} load timeout`);
+              resolve(null);
+            }, 2000);
+            
+            img.onload = () => {
+              console.log(`✅ Image ${index} loaded successfully`);
+              clearTimeout(timeout);
+              resolve(null);
+            };
+            img.onerror = () => {
+              console.log(`❌ Image ${index} failed to load`);
+              clearTimeout(timeout);
+              resolve(null); // Don't reject, just continue
+            };
           });
         })
       );
@@ -53,11 +79,13 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
       });
 
       const imageUrl = canvas.toDataURL('image/png', 0.95);
+      console.log('✅ Preview image generated successfully');
       setPreviewImageUrl(imageUrl);
     } catch (error) {
-      console.error('Error generating preview image:', error);
+      console.error('❌ Error generating preview image:', error);
       setError('Failed to generate preview');
     } finally {
+      console.log('🏁 Preview generation completed');
       setIsGenerating(false);
     }
   }, [triggerGeneration]);

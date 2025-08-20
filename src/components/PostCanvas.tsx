@@ -32,11 +32,23 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
+    console.log('🖼️ Image loaded:', {
+      naturalWidth: img.naturalWidth,
+      naturalHeight: img.naturalHeight,
+      aspectRatio: img.naturalWidth / img.naturalHeight,
+      src: img.src.substring(0, 50) + '...'
+    });
+    
     setImageDimensions({
       width: img.naturalWidth,
       height: img.naturalHeight
     });
     setImageLoaded(true);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    console.log('❌ Image load error:', e.currentTarget.src);
+    setImageLoaded(true); // Mark as loaded to prevent infinite loading state
   };
 
   // Calculate dynamic sizing based on image aspect ratio
@@ -94,7 +106,8 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
               className={`w-full h-full ${getObjectFit()}`}
               style={{ objectPosition: 'center' }}
               onLoad={handleImageLoad}
-              onError={() => setImageLoaded(true)}
+              onError={handleImageError}
+              loading="eager"
             />
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
