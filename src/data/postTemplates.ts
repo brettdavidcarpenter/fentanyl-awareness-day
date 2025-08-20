@@ -28,7 +28,7 @@ export const lawEnforcementTemplates: PostTemplate[] = [
   {
     id: 'law-1',
     title: 'United We Stand',
-    message: "As law enforcement, we see fentanyl's devastating impact daily. Together, we protect communities.",
+    message: "As law enforcement, we see fentanyl's devastating impact daily. Let's take a stand against Fentanyl",
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   },
