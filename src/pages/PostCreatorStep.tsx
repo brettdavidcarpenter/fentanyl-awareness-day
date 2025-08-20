@@ -1,9 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download, Share2 } from "lucide-react";
 import LivePostForm from "@/components/LivePostForm";
+import PostCanvas from "@/components/PostCanvas";
 import { getTemplatesByPersona } from "@/data/postTemplates";
+import { usePreviewGeneration } from "@/hooks/usePreviewGeneration";
+import { debounce } from "@/utils/debounce";
 
 const PostCreatorStep = () => {
   const navigate = useNavigate();
@@ -29,11 +32,45 @@ const PostCreatorStep = () => {
     }
   }, [persona, navigate]);
 
-  const handleFormChange = useCallback((newData: any) => {
-    setFormData(newData);
+  const [shouldRegeneratePreview, setShouldRegeneratePreview] = useState(true);
+  const debounceRegenerateRef = useRef<(() => void) | null>(null);
+
+  // Initialize debounced function
+  useEffect(() => {
+    debounceRegenerateRef.current = debounce(() => {
+      setShouldRegeneratePreview(true);
+    }, 500);
   }, []);
 
-  const handleGenerate = () => {
+  const handleFormChange = useCallback((newData: any) => {
+    setFormData(newData);
+    
+    // Trigger immediate regeneration for image uploads or immediate for other changes with debounce
+    if (newData.uploadedImage !== formData.uploadedImage) {
+      // Immediate regeneration for image changes
+      setShouldRegeneratePreview(true);
+    } else {
+      // Debounced regeneration for text changes
+      if (debounceRegenerateRef.current) {
+        debounceRegenerateRef.current();
+      }
+    }
+  }, [formData.uploadedImage]);
+
+  // Use the preview generation hook
+  const { previewImageUrl, isGenerating, error } = usePreviewGeneration({
+    formData,
+    triggerGeneration: shouldRegeneratePreview
+  });
+
+  // Reset regeneration flag after each generation
+  useEffect(() => {
+    if (!isGenerating) {
+      setShouldRegeneratePreview(false);
+    }
+  }, [isGenerating]);
+
+  const handleContinueToShare = () => {
     // Pass form data via URL params for the result page
     const params = new URLSearchParams({
       persona: formData.persona || '',
@@ -50,6 +87,17 @@ const PostCreatorStep = () => {
     }
     
     navigate(`/day-of-experience/result?${params.toString()}`);
+  };
+
+  const handleDownload = async () => {
+    if (!previewImageUrl) return;
+    
+    const link = document.createElement('a');
+    link.href = previewImageUrl;
+    link.download = 'fentanyl-awareness-post.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (!persona) {
@@ -75,21 +123,94 @@ const PostCreatorStep = () => {
           </div>
         </div>
 
-        {/* Form */}
-        <div className="max-w-md mx-auto space-y-6">
-          <LivePostForm
-            onFormChange={handleFormChange}
-            initialData={formData}
-            showOnlyCustomization={true}
-          />
-          
-          <Button 
-            onClick={handleGenerate}
-            className="w-full"
-            size="lg"
-          >
-            Generate Post
-          </Button>
+        {/* Main Content - Responsive Layout */}
+        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
+          {/* Form Section */}
+          <div className="w-full lg:w-1/2 max-w-md mx-auto lg:mx-0">
+            <LivePostForm
+              onFormChange={handleFormChange}
+              initialData={formData}
+              showOnlyCustomization={true}
+            />
+          </div>
+
+          {/* Live Preview Section */}
+          <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:h-fit">
+            <div className="space-y-6">
+              {/* Preview Header */}
+              <div className="text-center lg:text-left">
+                <h2 className="text-xl font-semibold text-primary mb-2">Live Preview</h2>
+                <p className="text-sm text-muted-foreground">
+                  {isGenerating ? "Updating preview..." : "Your post updates in real-time"}
+                </p>
+              </div>
+
+              {/* Preview Canvas */}
+              <div className="relative">
+                {/* Visible Preview */}
+                <div className="transition-opacity duration-300" style={{ opacity: isGenerating ? 0.7 : 1 }}>
+                  <PostCanvas
+                    template={formData.template}
+                    personalization={formData.personalization}
+                    customText={formData.customText}
+                    customImage={formData.uploadedImage}
+                    postType={formData.uploadedImage ? 'upload' : 'quick'}
+                  />
+                </div>
+
+                {/* Hidden Canvas for Image Generation */}
+                <div className="absolute -top-[9999px] left-0 opacity-0 pointer-events-none">
+                  <div id="hidden-post-canvas">
+                    <PostCanvas
+                      template={formData.template}
+                      personalization={formData.personalization}
+                      customText={formData.customText}
+                      customImage={formData.uploadedImage}
+                      postType={formData.uploadedImage ? 'upload' : 'quick'}
+                    />
+                  </div>
+                </div>
+
+                {/* Loading Overlay */}
+                {isGenerating && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/50 rounded-lg">
+                    <div className="bg-background px-4 py-2 rounded-md shadow-lg">
+                      <p className="text-sm text-muted-foreground">Generating preview...</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Error Display */}
+              {error && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
+                  <p className="text-sm text-destructive">{error}</p>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button 
+                  onClick={handleDownload}
+                  variant="outline"
+                  disabled={!previewImageUrl || isGenerating}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download
+                </Button>
+                
+                <Button 
+                  onClick={handleContinueToShare}
+                  className="w-full sm:w-auto flex items-center gap-2"
+                  size="lg"
+                >
+                  <Share2 className="h-4 w-4" />
+                  Continue to Share
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
