@@ -140,12 +140,22 @@ const PostCreatorStep = () => {
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto pb-24">
           {/* Form Section - Order 2 on mobile, 1 on desktop */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <div className="max-w-md mx-auto">
+            <div className="max-w-md mx-auto space-y-6">
               <LivePostForm
                 onFormChange={handleFormChange}
                 initialData={formData}
                 showOnlyCustomization={true}
               />
+              
+              {/* Continue to Share Button */}
+              <Button 
+                onClick={handleContinueToShare}
+                className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl"
+                size="lg"
+              >
+                <Share2 className="h-4 w-4" />
+                Continue to Share
+              </Button>
             </div>
           </div>
 
@@ -188,20 +198,6 @@ const PostCreatorStep = () => {
                   <p className="text-sm text-red-200">{error}</p>
                 </div>
               )}
-
-              {/* Action Button - Inline positioning */}
-              <div className="pt-4">
-                <Button 
-                  onClick={handleContinueToShare}
-                  onMouseDown={(e) => console.log('Button mouse down', e)}
-                  onTouchStart={(e) => console.log('Button touch start', e)}
-                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl relative z-20"
-                  size="lg"
-                >
-                  <Share2 className="h-4 w-4" />
-                  Continue to Share
-                </Button>
-              </div>
             </div>
           </div>
         </div>
