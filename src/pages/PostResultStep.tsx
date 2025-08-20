@@ -183,27 +183,18 @@ const PostResultStep = () => {
               <Download className="mr-2 h-4 w-4" />
               Download Image
             </Button>
+
+            {/* Hashtag Callout */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-white text-center">Help Us By Using the Following Hashtags</h3>
+              <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 text-center">
+                <p className="text-sm text-white leading-relaxed">
+                  "Create your own awareness post at https://facingfentanylnow.aware-share.com/day-of-experience #FacingFentanyl #NationalFentanylPreventionDay"
+                </p>
+              </div>
+            </div>
             
             <ShareSection />
-          </div>
-
-          {/* Hashtag Callout */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-white text-center">Help Us By Using the Following Hashtags</h3>
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 text-center">
-              <p className="text-sm text-white leading-relaxed">
-                "Create your own awareness post at{" "}
-                <a 
-                  href="https://facingfentanylnow.aware-share.com/day-of-experience" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-blue-300 underline hover:text-blue-200"
-                >
-                  https://facingfentanylnow.aware-share.com/day-of-experience
-                </a>
-                {" "}#FacingFentanyl #NationalFentanylPreventionDay"
-              </p>
-            </div>
           </div>
         </div>
       </div>
