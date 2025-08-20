@@ -85,8 +85,8 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
     >
       {/* Polaroid-style inner container with black background */}
       <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
-        {/* Image section with polaroid frame - flex-1 to fill available space */}
-        <div className="relative w-full bg-black p-4 pb-2 flex-1 min-h-[250px] max-h-[350px]">
+        {/* Image section with polaroid frame - fixed height for consistency */}
+        <div className="relative w-full bg-black p-4 pb-2 h-[280px] sm:h-[320px] lg:h-[360px]">
           <div className="w-full h-full bg-white shadow-inner border-2 border-white relative">
             <img 
               src={getImageSrc()}
@@ -106,7 +106,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         </div>
         
         {/* Polaroid bottom section with flex layout for text and logo */}
-        <div className={`w-full bg-black flex ${customImage ? 'items-center justify-between h-16 sm:h-20 lg:h-28 px-2 sm:px-4 lg:px-6 py-1 sm:py-2 lg:py-3' : 'items-end h-12 sm:h-16 lg:h-20 px-2 sm:px-3 lg:px-4'}`}>
+        <div className={`w-full bg-black flex ${customImage ? 'items-center justify-between h-20 sm:h-24 lg:h-28 px-2 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4' : 'items-end h-16 sm:h-20 lg:h-24 px-2 sm:px-3 lg:px-4 py-2'}`}>
           {/* Text area - constrained to left 60% when custom image, centered otherwise */}
           <div className={customImage ? "flex-1 max-w-[70%] pr-1 sm:pr-2" : "flex-1"}>
             <p 

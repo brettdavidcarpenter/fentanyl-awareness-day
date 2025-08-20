@@ -148,9 +148,8 @@ const PostCreatorStep = () => {
                 </p>
               </div>
 
-              {/* Preview Canvas - with height constraints */}
-              <div className="relative max-h-[500px] overflow-hidden">
-                {/* Single Canvas for both preview and generation */}
+              {/* Preview Canvas - consistent with result page */}
+              <div className="bg-white/10 border border-white/20 rounded-lg p-4 relative">
                 <div className="transition-opacity duration-300" style={{ opacity: isGenerating ? 0.8 : 1 }}>
                   <PostCanvas
                     template={formData.template}
