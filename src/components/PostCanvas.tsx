@@ -50,83 +50,43 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   const isWidePortrait = aspectRatio < 0.7; // Very tall images
   const isWideLandscape = aspectRatio > 1.4; // Very wide images
   
-  // iPhone-optimized height calculation with extra space for uploaded images
+  // Mobile-optimized height calculation
   const getImageAreaHeight = () => {
-    // For uploaded images, reduce image area slightly to accommodate larger bottom section
-    const baseHeight = customImage ? (hasCustomText ? '340px' : '408px') : (hasCustomText ? '360px' : '428px');
-    
-    if (!imageDimensions) return baseHeight;
-    
-    // For uploaded images, use slightly smaller heights
-    if (customImage) {
-      // iPhone landscape (4:3) - optimize for this common ratio
-      if (isIPhoneLandscape) return hasCustomText ? '360px' : '428px';
-      
-      // iPhone portrait (3:4) - most common iPhone photo orientation
-      if (isIPhonePortrait) return hasCustomText ? '380px' : '448px';
-      
-      // Square images
-      if (isSquare) return hasCustomText ? '340px' : '408px';
-      
-      // Very wide landscape
-      if (isWideLandscape) return hasCustomText ? '300px' : '368px';
-      
-      // Very tall portrait
-      if (isWidePortrait) return hasCustomText ? '400px' : '468px';
-      
-      // Default fallback for uploaded images
-      return hasCustomText ? '340px' : '408px';
-    }
-    
-    // Original heights for template images
-    // iPhone landscape (4:3) - optimize for this common ratio
-    if (isIPhoneLandscape) return hasCustomText ? '380px' : '448px';
-    
-    // iPhone portrait (3:4) - most common iPhone photo orientation
-    if (isIPhonePortrait) return hasCustomText ? '400px' : '468px';
-    
-    // Square images
-    if (isSquare) return hasCustomText ? '360px' : '428px';
-    
-    // Very wide landscape
-    if (isWideLandscape) return hasCustomText ? '320px' : '388px';
-    
-    // Very tall portrait
-    if (isWidePortrait) return hasCustomText ? '420px' : '488px';
-    
-    // Default fallback
-    return hasCustomText ? '360px' : '428px';
+    // Use flex-1 for responsive height instead of fixed pixels on mobile
+    return 'auto';
   };
 
   // Better object fit strategy based on image type
   const getObjectFit = () => {
-    // For custom uploaded images, always use object-contain to preserve proportions
-    if (customImage) return 'object-contain';
-    
-    // For template images, use the existing logic
     if (!imageDimensions) return 'object-contain';
     
-    const aspectRatio = imageDimensions.width / imageDimensions.height;
-    // Use cover for images close to square or landscape, contain for extreme ratios
+    // For uploaded images, use cover to fill the frame better and reduce white space
+    if (customImage) {
+      // Use cover for most cases to minimize white space
+      if (isSquare || isIPhoneLandscape || isIPhonePortrait) {
+        return 'object-cover';
+      }
+      // Only use contain for extreme ratios
+      return 'object-contain';
+    }
+    
+    // For template images, use the existing logic
     return aspectRatio > 0.5 && aspectRatio < 2 ? 'object-cover' : 'object-contain';
   };
 
   return (
     <div 
       id="post-canvas" 
-      className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] aspect-square mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
+      className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
       style={{ 
         fontSize: '16px',
         boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
       }}
     >
       {/* Polaroid-style inner container with black background */}
-      <div className="w-full h-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
-        {/* Image section with polaroid frame */}
-        <div 
-          className="relative w-full bg-black p-4 pb-2"
-          style={{ height: getImageAreaHeight() }}
-        >
+      <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
+        {/* Image section with polaroid frame - flex-1 to fill available space */}
+        <div className="relative w-full bg-black p-4 pb-2 flex-1 min-h-[250px] max-h-[350px]">
           <div className="w-full h-full bg-white shadow-inner border-2 border-white relative">
             <img 
               src={getImageSrc()}
