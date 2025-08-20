@@ -17,15 +17,14 @@ interface LivePostFormProps {
 }
 
 const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCustomization }: LivePostFormProps) => {
-  const [selectedPersona, setSelectedPersona] = useState('family');
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
-  const [customText, setCustomText] = useState('');
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [personalization, setPersonalization] = useState({
-    name: '',
-    relationship: ''
-  });
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [selectedPersona, setSelectedPersona] = useState(initialData?.persona || 'family');
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(initialData?.template || null);
+  const [customText, setCustomText] = useState(initialData?.customText || '');
+  const [isInitialized, setIsInitialized] = useState(!!initialData?.customText);
+  const [personalization, setPersonalization] = useState(
+    initialData?.personalization || { name: '', relationship: '' }
+  );
+  const [uploadedImage, setUploadedImage] = useState<string | null>(initialData?.uploadedImage || null);
 
   const personas = [
     { id: 'family', title: 'Families & Friends', icon: Heart, color: 'text-red-500' },
@@ -51,6 +50,17 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
       }
     }
   }, [selectedPersona, selectedTemplate, isInitialized]);
+
+  // Separate effect to handle persona changes and reset customText
+  useEffect(() => {
+    if (!isInitialized) {
+      const templates = getTemplatesByPersona(selectedPersona);
+      if (templates.length > 0 && templates[0].message) {
+        setCustomText(templates[0].message);
+        setIsInitialized(true);
+      }
+    }
+  }, [selectedPersona, isInitialized]);
 
   // Update parent component whenever form changes
   useEffect(() => {
