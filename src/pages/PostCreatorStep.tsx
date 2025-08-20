@@ -125,8 +125,8 @@ const PostCreatorStep = () => {
 
         {/* Main Content - Responsive Layout */}
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
-          {/* Form Section */}
-          <div className="w-full lg:w-1/2">
+          {/* Form Section - Order 2 on mobile, 1 on desktop */}
+          <div className="w-full lg:w-1/2 order-2 lg:order-1">
             <div className="max-w-md mx-auto">
               <LivePostForm
                 onFormChange={handleFormChange}
@@ -136,8 +136,8 @@ const PostCreatorStep = () => {
             </div>
           </div>
 
-          {/* Live Preview Section */}
-          <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:h-fit">
+          {/* Live Preview Section - Order 1 on mobile, 2 on desktop */}
+          <div className="w-full lg:w-1/2 lg:sticky lg:top-8 lg:h-fit order-1 lg:order-2">
             <div className="space-y-6">
               {/* Preview Header */}
               <div className="text-center lg:text-left">

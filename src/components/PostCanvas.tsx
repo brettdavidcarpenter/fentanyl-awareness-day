@@ -114,14 +114,14 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   return (
     <div 
       id="post-canvas" 
-      className="relative w-[540px] h-[540px] mx-auto bg-white p-6 shadow-2xl"
+      className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] aspect-square mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
       style={{ 
         fontSize: '16px',
         boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
       }}
     >
       {/* Polaroid-style inner container with black background */}
-      <div className="w-full h-full bg-black flex flex-col border-8 border-white">
+      <div className="w-full h-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
         {/* Image section with polaroid frame */}
         <div 
           className="relative w-full bg-black p-4 pb-2"
@@ -146,11 +146,11 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         </div>
         
         {/* Polaroid bottom section with flex layout for text and logo */}
-        <div className={`w-full bg-black flex ${customImage ? 'items-center justify-between h-28 px-6 py-3' : 'items-end h-20 px-4'}`}>
+        <div className={`w-full bg-black flex ${customImage ? 'items-center justify-between h-16 sm:h-20 lg:h-28 px-2 sm:px-4 lg:px-6 py-1 sm:py-2 lg:py-3' : 'items-end h-12 sm:h-16 lg:h-20 px-2 sm:px-3 lg:px-4'}`}>
           {/* Text area - constrained to left 60% when custom image, centered otherwise */}
-          <div className={customImage ? "flex-1 max-w-[70%] pr-2" : "flex-1"}>
+          <div className={customImage ? "flex-1 max-w-[70%] pr-1 sm:pr-2" : "flex-1"}>
             <p 
-              className={`text-white font-dancing text-lg leading-relaxed transform -rotate-2 ${customImage ? 'text-left' : 'text-center'}`}
+              className={`text-white font-dancing text-sm sm:text-base lg:text-lg leading-tight sm:leading-relaxed transform -rotate-2 ${customImage ? 'text-left' : 'text-center'}`}
               style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
             >
               {getMessage()}
@@ -163,12 +163,12 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
               <img
                 src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
                 alt="Facing Fentanyl Logo"
-                className="w-20 h-auto mb-0 block"
+                className="w-12 sm:w-16 lg:w-20 h-auto mb-0 block"
               />
               <div 
-                className="text-white font-normal text-center -mt-3 mb-0 block"
+                className="text-white font-normal text-center -mt-1 sm:-mt-2 lg:-mt-3 mb-0 block text-xs sm:text-sm lg:text-base"
                 style={{ 
-                  fontSize: '10px',
+                  fontSize: '8px',
                   textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                 }}
               >
