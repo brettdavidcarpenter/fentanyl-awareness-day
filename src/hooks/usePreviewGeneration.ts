@@ -20,18 +20,36 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
     setError(null);
     
     try {
-      // Wait a bit for DOM to update
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Wait for DOM to update and images to load
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      const element = document.getElementById('hidden-post-canvas');
+      // Find the visible post canvas
+      const element = document.getElementById('post-canvas');
       if (!element) {
-        throw new Error('Hidden canvas element not found');
+        throw new Error('Post canvas element not found');
       }
 
+      // Ensure all images in the canvas are fully loaded
+      const images = element.querySelectorAll('img');
+      await Promise.all(
+        Array.from(images).map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            // Fallback timeout
+            setTimeout(resolve, 1000);
+          });
+        })
+      );
+
       const canvas = await html2canvas(element, {
-        backgroundColor: null,
+        backgroundColor: '#ffffff',
         scale: 2,
-        useCORS: true
+        useCORS: true,
+        allowTaint: false,
+        foreignObjectRendering: false,
+        logging: false
       });
 
       const imageUrl = canvas.toDataURL('image/png', 0.95);

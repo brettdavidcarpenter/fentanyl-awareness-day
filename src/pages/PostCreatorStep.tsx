@@ -149,8 +149,8 @@ const PostCreatorStep = () => {
 
               {/* Preview Canvas */}
               <div className="relative">
-                {/* Visible Preview */}
-                <div className="transition-opacity duration-300" style={{ opacity: isGenerating ? 0.7 : 1 }}>
+                {/* Single Canvas for both preview and generation */}
+                <div className="transition-opacity duration-300" style={{ opacity: isGenerating ? 0.8 : 1 }}>
                   <PostCanvas
                     template={formData.template}
                     personalization={formData.personalization}
@@ -160,24 +160,11 @@ const PostCreatorStep = () => {
                   />
                 </div>
 
-                {/* Hidden Canvas for Image Generation */}
-                <div className="absolute -top-[9999px] left-0 opacity-0 pointer-events-none">
-                  <div id="hidden-post-canvas">
-                    <PostCanvas
-                      template={formData.template}
-                      personalization={formData.personalization}
-                      customText={formData.customText}
-                      customImage={formData.uploadedImage}
-                      postType={formData.uploadedImage ? 'upload' : 'quick'}
-                    />
-                  </div>
-                </div>
-
                 {/* Loading Overlay */}
                 {isGenerating && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg">
                     <div className="bg-white/90 px-4 py-2 rounded-md shadow-lg">
-                      <p className="text-sm text-slate-700">Generating preview...</p>
+                      <p className="text-sm text-slate-700">Generating image...</p>
                     </div>
                   </div>
                 )}
