@@ -14,6 +14,9 @@ const PostResultStep = () => {
   const { toast } = useToast();
   
   const [formData, setFormData] = useState(() => {
+    console.log('🔍 PostResultStep - Initializing with search params');
+    console.log('🔗 All search params:', Object.fromEntries(searchParams));
+    
     const persona = searchParams.get("persona");
     const templateId = searchParams.get("templateId");
     const customText = searchParams.get("customText");
@@ -21,40 +24,98 @@ const PostResultStep = () => {
     const personalizationRelationship = searchParams.get("personalizationRelationship");
     const hasImage = searchParams.get("hasImage") === 'true';
     
-    if (!persona) return {};
+    console.log('📝 Parsed params:', {
+      persona,
+      templateId,
+      customText,
+      personalizationName,
+      personalizationRelationship,
+      hasImage
+    });
+    
+    if (!persona) {
+      console.error('❌ No persona found in URL params');
+      return {};
+    }
+    
+    if (!templateId) {
+      console.error('❌ No templateId found in URL params');
+      return { persona };
+    }
     
     const templates = getTemplatesByPersona(persona);
-    const template = templates.find(t => t.id === templateId) || templates[0];
+    console.log('📋 Available templates for persona:', templates.length);
     
-    const uploadedImage = hasImage ? sessionStorage.getItem('postImage') : undefined;
+    const template = templates.find(t => t.id === templateId);
+    if (!template) {
+      console.error('❌ Template not found for ID:', templateId);
+      console.log('📋 Available template IDs:', templates.map(t => t.id));
+      return { persona, template: templates[0] };
+    }
     
-    return {
+    console.log('✅ Template found:', template.id);
+    
+    let uploadedImage;
+    if (hasImage) {
+      try {
+        uploadedImage = sessionStorage.getItem('postImage');
+        console.log('📷 Retrieved image from sessionStorage:', uploadedImage ? 'Success' : 'Failed');
+      } catch (error) {
+        console.error('❌ Failed to retrieve image from sessionStorage:', error);
+      }
+    }
+    
+    const decodedCustomText = customText ? decodeURIComponent(customText) : '';
+    const decodedPersonalizationName = personalizationName ? decodeURIComponent(personalizationName) : '';
+    const decodedPersonalizationRelationship = personalizationRelationship ? decodeURIComponent(personalizationRelationship) : '';
+    
+    const result = {
       persona,
       template,
-      customText: customText || '',
+      customText: decodedCustomText,
       personalization: { 
-        name: personalizationName || '', 
-        relationship: personalizationRelationship || '' 
+        name: decodedPersonalizationName, 
+        relationship: decodedPersonalizationRelationship 
       },
       uploadedImage
     };
+    
+    console.log('✅ Final formData:', result);
+    return result;
   });
 
   useEffect(() => {
+    console.log('🔄 PostResultStep useEffect - checking formData.persona:', formData.persona);
+    
     if (!formData.persona) {
-      navigate('/day-of-experience');
+      console.log('❌ No persona found, redirecting to day-of-experience');
+      setTimeout(() => {
+        navigate('/day-of-experience');
+      }, 100); // Small delay to ensure state is settled
+    } else {
+      console.log('✅ Persona found, staying on result page');
     }
   }, [formData.persona, navigate]);
 
   const getCurrentMessage = () => {
-    if (formData.customText) return formData.customText;
-    if (formData.template?.message) {
-      let message = formData.template.message;
-      if (formData.personalization?.name) {
-        message = message.replace(/\[NAME\]/g, formData.personalization.name);
+    if (!formData.persona || !formData.template) return '';
+    
+    // Type assertion since we've checked for existence above
+    const data = formData as {
+      persona: string;
+      template: any;
+      customText?: string;
+      personalization?: { name?: string; relationship?: string };
+    };
+    
+    if (data.customText) return data.customText;
+    if (data.template?.message) {
+      let message = data.template.message;
+      if (data.personalization?.name) {
+        message = message.replace(/\[NAME\]/g, data.personalization.name);
       }
-      if (formData.personalization?.relationship) {
-        message = message.replace(/\[RELATIONSHIP\]/g, formData.personalization.relationship);
+      if (data.personalization?.relationship) {
+        message = message.replace(/\[RELATIONSHIP\]/g, data.personalization.relationship);
       }
       return message;
     }
@@ -62,7 +123,15 @@ const PostResultStep = () => {
   };
 
   const getCurrentImage = () => {
-    return formData.uploadedImage || formData.template?.imagePath;
+    if (!formData.persona || !formData.template) return '';
+    
+    // Type assertion since we've checked for existence above
+    const data = formData as {
+      uploadedImage?: string;
+      template: { imagePath?: string };
+    };
+    
+    return data.uploadedImage || data.template?.imagePath;
   };
 
   const handleCopyToClipboard = async () => {
@@ -126,7 +195,7 @@ const PostResultStep = () => {
     }
   };
 
-  if (!formData.persona) {
+  if (!formData.persona || !formData.template) {
     return null;
   }
 
@@ -156,11 +225,11 @@ const PostResultStep = () => {
           {/* Preview */}
           <div className="bg-white/10 border border-white/20 rounded-lg p-4">
             <PostCanvas
-              template={formData.template}
-              personalization={formData.personalization}
-              customText={formData.customText}
-              customImage={formData.uploadedImage}
-              postType={formData.uploadedImage ? 'upload' : 'quick'}
+              template={(formData as any).template}
+              personalization={(formData as any).personalization || { name: '', relationship: '' }}
+              customText={(formData as any).customText || ''}
+              customImage={(formData as any).uploadedImage}
+              postType={(formData as any).uploadedImage ? 'upload' : 'quick'}
             />
           </div>
 

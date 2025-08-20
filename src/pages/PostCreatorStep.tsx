@@ -83,57 +83,67 @@ const PostCreatorStep = () => {
     }
   }, [isGenerating]);
 
-  const handleContinueToShare = useCallback((e?: React.MouseEvent) => {
-    console.log('🚀 Continue button clicked', { 
-      formData, 
-      previewImageUrl, 
-      isGenerating, 
-      buttonEnabled,
-      eventType: e?.type 
-    });
+  const handleContinueToShare = () => {
+    console.log('🚀 Button clicked - starting handleContinueToShare');
+    console.log('📊 Current formData:', formData);
+    console.log('🎮 Button enabled state:', buttonEnabled);
+    console.log('⚡ Is generating preview:', isGenerating);
     
-    // Prevent multiple rapid clicks
     if (!buttonEnabled) {
-      console.log('❌ Button disabled, ignoring click');
+      console.log('❌ Button not enabled, stopping');
       return;
     }
-    
+
     setButtonEnabled(false);
     
-    // Check if canvas exists and has content
-    const canvas = document.getElementById('post-canvas');
-    if (canvas) {
-      console.log('✅ Canvas found:', {
-        width: canvas.offsetWidth,
-        height: canvas.offsetHeight,
-        scrollHeight: canvas.scrollHeight,
-        children: canvas.children.length
-      });
-    } else {
-      console.log('❌ Canvas not found');
+    // Ensure we have required data
+    if (!formData.persona) {
+      console.error('❌ Missing persona, cannot continue');
+      setButtonEnabled(true);
+      return;
     }
-    
-    // Pass form data via URL params for the result page
+
+    if (!formData.template?.id) {
+      console.error('❌ Missing template ID, cannot continue');
+      setButtonEnabled(true);
+      return;
+    }
+
     const params = new URLSearchParams({
-      persona: formData.persona || '',
-      templateId: formData.template?.id || '',
-      customText: formData.customText || '',
-      personalizationName: formData.personalization?.name || '',
-      personalizationRelationship: formData.personalization?.relationship || '',
+      persona: formData.persona,
+      templateId: formData.template.id,
+      ...(formData.customText && { customText: encodeURIComponent(formData.customText) }),
+      ...(formData.personalization?.name && { personalizationName: encodeURIComponent(formData.personalization.name) }),
+      ...(formData.personalization?.relationship && { personalizationRelationship: encodeURIComponent(formData.personalization.relationship) }),
+      ...(formData.uploadedImage && { hasImage: 'true' })
     });
-    
+
     if (formData.uploadedImage) {
-      params.set('hasImage', 'true');
-      // Store image in sessionStorage for the result page
-      sessionStorage.setItem('postImage', formData.uploadedImage);
+      console.log('💾 Storing image in sessionStorage');
+      try {
+        sessionStorage.setItem('postImage', formData.uploadedImage);
+        console.log('✅ Image stored successfully');
+      } catch (error) {
+        console.error('❌ Failed to store image:', error);
+      }
     }
+
+    console.log('🔗 Navigating with params:', params.toString());
     
-    console.log('🎯 Navigating to result page');
-    navigate(`/day-of-experience/result?${params.toString()}`);
-    
-    // Re-enable button after navigation attempt
-    setTimeout(() => setButtonEnabled(true), 1000);
-  }, [formData, previewImageUrl, isGenerating, buttonEnabled, navigate]);
+    try {
+      navigate(`/day-of-experience/result?${params.toString()}`);
+      console.log('✅ Navigation initiated');
+    } catch (error) {
+      console.error('❌ Navigation failed:', error);
+      setButtonEnabled(true);
+    }
+
+    // Re-enable button after navigation attempt with longer timeout
+    setTimeout(() => {
+      console.log('🔄 Re-enabling button after timeout');
+      setButtonEnabled(true);
+    }, 5000);
+  };
 
   const handleDownload = async () => {
     if (!previewImageUrl) return;
