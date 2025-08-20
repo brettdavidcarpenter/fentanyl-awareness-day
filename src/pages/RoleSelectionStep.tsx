@@ -67,12 +67,14 @@ const RoleSelectionStep = () => {
         {/* Footer Navigation */}
         <div className="text-center pt-8 border-t border-white/10">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-              to="/home" 
+            <a 
+              href="https://facingfentanylnow.org/" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm text-blue-200 hover:text-white transition-colors"
             >
               Learn more about our mission
-            </Link>
+            </a>
             <span className="hidden sm:inline text-blue-200">•</span>
             <Link 
               to="/privacy-policy"
