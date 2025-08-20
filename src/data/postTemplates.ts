@@ -28,14 +28,14 @@ export const lawEnforcementTemplates: PostTemplate[] = [
   {
     id: 'law-1',
     title: 'United We Stand',
-    message: 'Our department stands with families affected by fentanyl. Education saves lives. #FacingFentanyl',
+    message: 'As law enforcement, we see fentanyl\'s devastating impact daily. Together, we protect our communities through awareness. #FacingFentanyl',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   },
   {
     id: 'law-2',
     title: 'Deadly Dose Warning',
-    message: '2 milligrams can be lethal. Knowledge protects our communities. #FentanylAwareness #PublicSafety #ShareTheMessage',
+    message: 'Just 2 milligrams of fentanyl can kill. Our duty is to warn, educate, and protect. Share this message. #FentanylAwareness #PublicSafety',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   }
@@ -45,14 +45,14 @@ export const recoveryTemplates: PostTemplate[] = [
   {
     id: 'recovery-1',
     title: 'Hope & Recovery',
-    message: 'Recovery is possible. Hope is real. Resources are available today. #FacingFentanyl',
+    message: 'Recovery from addiction is possible. We\'re here with support, resources, and hope. You\'re not alone. #FacingFentanyl #RecoverySupport',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   },
   {
     id: 'recovery-2',
     title: 'Breaking Stigma',
-    message: 'Breaking stigma, building support. We\'re here to help. #RecoverySupport #BreakTheStigma #FacingFentanyl',
+    message: 'Addiction is a disease, not a choice. Our community offers judgment-free support and life-saving resources. #BreakTheStigma #RecoverySupport',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   }
