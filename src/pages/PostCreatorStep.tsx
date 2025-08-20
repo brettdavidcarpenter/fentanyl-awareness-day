@@ -177,11 +177,13 @@ const PostCreatorStep = () => {
                 </div>
               )}
 
-              {/* Action Button - Fixed positioning on mobile */}
-              <div className="sticky bottom-4 z-10 max-w-md mx-auto">
+              {/* Action Button - Fixed positioning to hover above all content */}
+              <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md px-4">
+                {/* Background protection overlay */}
+                <div className="absolute inset-x-0 -top-8 bottom-0 bg-gradient-to-t from-slate-900/90 via-slate-900/60 to-transparent pointer-events-none rounded-t-xl"></div>
                 <Button 
                   onClick={handleContinueToShare}
-                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-lg"
+                  className="w-full bg-white text-slate-900 hover:bg-white/90 flex items-center justify-center gap-2 shadow-2xl relative z-10"
                   size="lg"
                 >
                   <Share2 className="h-4 w-4" />
