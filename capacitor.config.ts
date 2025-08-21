@@ -14,6 +14,11 @@ const config: CapacitorConfig = {
         camera: 'Camera access is required to save images to your photo library.',
         photos: 'Photo library access is required to save awareness posts.'
       }
+    },
+    Media: {
+      permissions: {
+        photos: 'Photo library access is required to save awareness posts to your photo library.'
+      }
     }
   }
 };

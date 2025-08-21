@@ -150,9 +150,9 @@ const PostResultStep = () => {
   const handleCopyToClipboard = async () => {
     setIsProcessing(true);
     try {
-      // Use the HTML version for html2canvas
-      const element = document.querySelector('[data-html-version]') as HTMLElement;
-      if (!element) throw new Error('Canvas element not found');
+      // Use the post-canvas element for html2canvas
+      const element = document.querySelector('#post-canvas') as HTMLElement;
+      if (!element) throw new Error('Post canvas element not found');
       
       const canvas = await html2canvas(element, {
         backgroundColor: null,
@@ -162,16 +162,40 @@ const PostResultStep = () => {
       
       canvas.toBlob(async (blob) => {
         if (blob) {
-          // Try native clipboard first
-          const clipboardSuccess = await copyImageToClipboard(blob);
+          // Try multiple strategies for mobile copy
+          let copySuccess = false;
           
-          if (clipboardSuccess) {
+          // Strategy 1: Try native clipboard
+          if (capabilities.supportsClipboard) {
+            copySuccess = await copyImageToClipboard(blob);
+          }
+          
+          // Strategy 2: Try Web Share API for mobile
+          if (!copySuccess && capabilities.isMobile && navigator.share) {
+            try {
+              const file = new File([blob], 'awareness-post.png', { type: 'image/png' });
+              await navigator.share({
+                files: [file],
+                title: 'Fentanyl Awareness Post',
+                text: 'Creating awareness to prevent fentanyl deaths. #FacingFentanyl'
+              });
+              copySuccess = true;
+              toast({
+                title: "Shared successfully!",
+                description: "Your awareness post has been shared.",
+              });
+            } catch (error) {
+              console.log('Web Share API failed:', error);
+            }
+          }
+          
+          if (copySuccess && !navigator.share) {
             toast({
               title: "Copied to clipboard!",
               description: "Your image has been copied and can be pasted anywhere.",
             });
-          } else {
-            // Fallback: Copy app URL with instructions
+          } else if (!copySuccess) {
+            // Strategy 3: Fallback to text copy with better instructions
             const fallbackText = `Create your own awareness post at https://facingfentanylnow.aware-share.com/day-of-experience #FacingFentanyl #NationalFentanylPreventionDay`;
             const textSuccess = await fallbackCopyText(fallbackText);
             
@@ -179,16 +203,16 @@ const PostResultStep = () => {
               toast({
                 title: "Message copied to clipboard",
                 description: capabilities.isMobile 
-                  ? "Long press the image above to save it to your photos, then paste your message in social media."
-                  : "Right-click the image to save it, then paste your message in social media.",
+                  ? "Use the 'Save to Photos' button below to save the image, then paste your message in social media."
+                  : "Use the 'Download Image' button below to save it, then paste your message in social media.",
                 duration: 8000,
               });
             } else {
               toast({
                 title: "Copy not supported",
                 description: capabilities.isMobile 
-                  ? "Long press the image above to save it to your photos."
-                  : "Right-click the image above to save it to your computer.",
+                  ? "Use the 'Save to Photos' button below to save the image."
+                  : "Use the 'Download Image' button below to save it.",
                 variant: "destructive",
                 duration: 8000,
               });
@@ -211,9 +235,9 @@ const PostResultStep = () => {
   const handleDownloadImage = async () => {
     setIsProcessing(true);
     try {
-      // Use the HTML version for html2canvas
-      const element = document.querySelector('[data-html-version]') as HTMLElement;
-      if (!element) throw new Error('Canvas element not found');
+      // Use the post-canvas element for html2canvas
+      const element = document.querySelector('#post-canvas') as HTMLElement;
+      if (!element) throw new Error('Post canvas element not found');
       
       const canvas = await html2canvas(element, {
         backgroundColor: null,

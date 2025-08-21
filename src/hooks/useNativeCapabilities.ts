@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Media } from '@capacitor-community/media';
 
 export interface DeviceCapabilities {
   isNative: boolean;
@@ -61,16 +62,24 @@ export const useNativeCapabilities = () => {
         directory: Directory.Cache
       });
 
-      // Get the file URI and use Camera plugin to save to gallery
+      // Get the file URI
       const fileUri = await Filesystem.getUri({
         directory: Directory.Cache,
         path: fileName
       });
 
-      // This would require a custom Capacitor plugin for saving images
-      // For now, we'll return false to use web fallback
-      console.log('Native photo save not implemented yet');
-      return false;
+      // Use Media plugin to save to photo library
+      await Media.savePhoto({
+        path: fileUri.uri
+      });
+
+      // Clean up temporary file
+      await Filesystem.deleteFile({
+        path: fileName,
+        directory: Directory.Cache
+      });
+
+      return true;
     } catch (error) {
       console.error('Failed to save to photos:', error);
       return false;
