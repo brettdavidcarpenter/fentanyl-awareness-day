@@ -313,13 +313,14 @@ const PostResultStep = () => {
         <div className="max-w-md mx-auto space-y-6">
           {/* Preview */}
           <div className="bg-white/10 border border-white/20 rounded-lg p-4">
-            <PostCanvas
-              template={(formData as any).template}
-              personalization={(formData as any).personalization || { name: '', relationship: '' }}
-              customText={(formData as any).customText || ''}
-              customImage={(formData as any).uploadedImage}
-              postType={(formData as any).uploadedImage ? 'upload' : 'quick'}
-            />
+          <PostCanvas
+            template={(formData as any).template}
+            personalization={(formData as any).personalization || { name: '', relationship: '' }}
+            customText={(formData as any).customText || ''}
+            customImage={(formData as any).uploadedImage}
+            postType={(formData as any).uploadedImage ? 'upload' : 'quick'}
+            enableLongPress={true}
+          />
           </div>
 
           {/* Actions */}

@@ -9,9 +9,10 @@ interface PostCanvasProps {
   customImage?: string;
   postType?: 'quick' | 'upload';
   showTextOnImage?: boolean;
+  enableLongPress?: boolean; // New prop to enable long-press functionality
 }
 
-const PostCanvas = ({ template, personalization, customText, customImage, postType = 'quick', showTextOnImage = true }: PostCanvasProps) => {
+const PostCanvas = ({ template, personalization, customText, customImage, postType = 'quick', showTextOnImage = true, enableLongPress = false }: PostCanvasProps) => {
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [canvasDataUrl, setCanvasDataUrl] = useState<string>('');
@@ -60,14 +61,14 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
     setImageLoaded(true);
   };
 
-  // Generate canvas version when image loads or content changes
+  // Generate canvas version when image loads or content changes (only if enableLongPress is true)
   useEffect(() => {
-    if (imageLoaded && htmlVersionRef.current && !isGeneratingCanvas) {
+    if (enableLongPress && imageLoaded && htmlVersionRef.current && !isGeneratingCanvas) {
       const generateCanvas = async () => {
         setIsGeneratingCanvas(true);
         try {
           // Small delay to ensure DOM is fully rendered
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise(resolve => setTimeout(resolve, 200));
           
           const canvas = await html2canvas(htmlVersionRef.current!, {
             backgroundColor: null,
@@ -81,6 +82,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
           setCanvasDataUrl(dataUrl);
         } catch (error) {
           console.error('Error generating canvas:', error);
+          // Don't block UI if canvas generation fails
         } finally {
           setIsGeneratingCanvas(false);
         }
@@ -88,7 +90,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
       
       generateCanvas();
     }
-  }, [imageLoaded, customText, customImage, template, personalization]);
+  }, [enableLongPress, imageLoaded, customText, customImage, template, personalization, isGeneratingCanvas]);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     console.log('❌ Image load error:', e.currentTarget.src);
@@ -131,40 +133,42 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   };
 
   return (
-    <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto">
-      {/* Canvas version for user interaction (long-press, save) */}
-      {canvasDataUrl && (
+    <>
+      {/* Canvas version for user interaction (long-press, save) - only when enableLongPress is true */}
+      {enableLongPress && canvasDataUrl ? (
+        <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto">
+          <div 
+            id="post-canvas"
+            className="relative w-full bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
+            style={{ 
+              fontSize: '16px',
+              boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
+            }}
+          >
+            <img 
+              src={canvasDataUrl}
+              alt="Fentanyl Awareness Post - Long press to save"
+              className="w-full h-auto block"
+              style={{ 
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                WebkitTouchCallout: 'default'
+              }}
+            />
+          </div>
+        </div>
+      ) : (
+        /* Regular HTML version */
         <div 
           id="post-canvas"
-          className="relative w-full bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
+          ref={enableLongPress ? htmlVersionRef : undefined}
+          data-html-version={enableLongPress ? true : undefined}
+          className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
           style={{ 
             fontSize: '16px',
             boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
           }}
         >
-          <img 
-            src={canvasDataUrl}
-            alt="Fentanyl Awareness Post - Long press to save"
-            className="w-full h-auto block"
-            style={{ 
-              userSelect: 'none',
-              WebkitUserSelect: 'none',
-              WebkitTouchCallout: 'default'
-            }}
-          />
-        </div>
-      )}
-
-      {/* HTML version for rendering (hidden when canvas is ready) */}
-      <div 
-        ref={htmlVersionRef}
-        data-html-version
-        className={`relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl ${canvasDataUrl ? 'absolute opacity-0 pointer-events-none -z-10' : ''}`}
-        style={{ 
-          fontSize: '16px',
-          boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
-        }}
-      >
       {/* Polaroid-style inner container with black background */}
       <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
         {/* Image section with polaroid frame - fixed height for consistency */}
@@ -222,7 +226,68 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         </div>
       </div>
       </div>
-    </div>
+      )}
+      
+      {/* Hidden HTML version for canvas generation */}
+      {enableLongPress && canvasDataUrl && (
+        <div 
+          ref={htmlVersionRef}
+          data-html-version
+          className="absolute opacity-0 pointer-events-none -z-10"
+          style={{ 
+            fontSize: '16px',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
+          }}
+        >
+          {/* Duplicate content for canvas generation */}
+          <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl">
+            <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
+              <div className="relative w-full bg-black p-4 pb-2 h-[280px] sm:h-[320px] lg:h-[360px]">
+                <div className="w-full h-full bg-white shadow-inner border-2 border-white relative">
+                  <img 
+                    src={getImageSrc()}
+                    alt="Post image"
+                    className={`w-full h-full ${getObjectFit()}`}
+                    style={{ objectPosition: 'center' }}
+                    loading="eager"
+                  />
+                </div>
+              </div>
+              
+              <div className={`w-full bg-black flex ${customImage ? 'items-center justify-between h-20 sm:h-24 lg:h-28 px-2 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4' : 'items-end h-16 sm:h-20 lg:h-24 px-2 sm:px-3 lg:px-4 py-2'}`}>
+                <div className={customImage ? "flex-1 max-w-[70%] pr-1 sm:pr-2" : "flex-1"}>
+                  <p 
+                    className={`text-white font-dancing text-sm sm:text-base lg:text-lg leading-tight sm:leading-relaxed transform -rotate-2 ${customImage ? 'text-left' : 'text-center'}`}
+                    style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
+                  >
+                    {getMessage()}
+                  </p>
+                </div>
+                
+                {customImage && (
+                  <div className="flex flex-col items-center justify-end gap-0">
+                    <img
+                      src="/lovable-uploads/a233bab7-5c2f-40e2-9d21-e61551abee33.png"
+                      alt="Facing Fentanyl Logo"
+                      className="w-12 sm:w-16 lg:w-20 h-auto mb-0 block"
+                    />
+                    <div 
+                      className="text-white font-normal text-center -mt-1 sm:-mt-2 lg:-mt-3 mb-0 block text-xs sm:text-sm lg:text-base"
+                      style={{ 
+                        fontSize: '8px',
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
+                      }}
+                    >
+                      facingfentanylnow.org
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
