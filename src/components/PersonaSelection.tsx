@@ -14,7 +14,7 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
   const personas = [
     {
       id: 'family',
-      title: 'Families & Friends',
+      title: 'For Families & Friends',
       shortTitle: 'Family',
       description: 'Honor loved ones and share stories that save lives',
       icon: Heart,
