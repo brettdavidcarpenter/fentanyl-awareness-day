@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Copy } from "lucide-react";
+import { ArrowLeft, Download, Copy, Smartphone } from "lucide-react";
 import PostCanvas from "@/components/PostCanvas";
 import ShareSection from "@/components/ShareSection";
 import { getTemplatesByPersona } from "@/data/postTemplates";
 import { useToast } from "@/hooks/use-toast";
+import { useNativeCapabilities } from "@/hooks/useNativeCapabilities";
 import html2canvas from 'html2canvas';
 
 const PostResultStep = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const { capabilities, saveImageToPhotos, copyImageToClipboard, fallbackCopyText } = useNativeCapabilities();
+  const [isProcessing, setIsProcessing] = useState(false);
   
   const [formData, setFormData] = useState(() => {
     console.log('🔍 PostResultStep - Initializing with search params');
@@ -145,6 +148,7 @@ const PostResultStep = () => {
   };
 
   const handleCopyToClipboard = async () => {
+    setIsProcessing(true);
     try {
       const element = document.getElementById('post-canvas');
       if (!element) throw new Error('Canvas element not found');
@@ -157,26 +161,44 @@ const PostResultStep = () => {
       
       canvas.toBlob(async (blob) => {
         if (blob) {
-          try {
-            await navigator.clipboard.write([
-              new ClipboardItem({ 'image/png': blob })
-            ]);
+          // Try native clipboard first
+          const clipboardSuccess = await copyImageToClipboard(blob);
+          
+          if (clipboardSuccess) {
             toast({
               title: "Copied to clipboard!",
               description: "Your image has been copied and can be pasted anywhere.",
             });
-          } catch (error) {
-            console.error('Error copying to clipboard:', error);
-            toast({
-              title: "Copy failed",
-              description: "Unable to copy image. Try downloading instead.",
-              variant: "destructive",
-            });
+          } else {
+            // Fallback: Copy app URL with instructions
+            const fallbackText = `Create your own awareness post at https://facingfentanylnow.aware-share.com/day-of-experience #FacingFentanyl #NationalFentanylPreventionDay`;
+            const textSuccess = await fallbackCopyText(fallbackText);
+            
+            if (textSuccess) {
+              toast({
+                title: "Message copied to clipboard",
+                description: capabilities.isMobile 
+                  ? "Long press the image above to save it to your photos, then paste your message in social media."
+                  : "Right-click the image to save it, then paste your message in social media.",
+                duration: 8000,
+              });
+            } else {
+              toast({
+                title: "Copy not supported",
+                description: capabilities.isMobile 
+                  ? "Long press the image above to save it to your photos."
+                  : "Right-click the image above to save it to your computer.",
+                variant: "destructive",
+                duration: 8000,
+              });
+            }
           }
         }
+        setIsProcessing(false);
       }, 'image/png', 0.95);
     } catch (error) {
       console.error('Error creating image:', error);
+      setIsProcessing(false);
       toast({
         title: "Copy failed",
         description: "Unable to create image. Please try again.",
@@ -186,6 +208,7 @@ const PostResultStep = () => {
   };
 
   const handleDownloadImage = async () => {
+    setIsProcessing(true);
     try {
       const element = document.getElementById('post-canvas');
       if (!element) throw new Error('Canvas element not found');
@@ -196,12 +219,66 @@ const PostResultStep = () => {
         useCORS: true
       });
       
+      const dataUrl = canvas.toDataURL('image/png', 0.95);
+      
+      // Try native photo library save first (mobile only)
+      if (capabilities.canSaveToPhotos) {
+        const photoSuccess = await saveImageToPhotos(dataUrl);
+        
+        if (photoSuccess) {
+          toast({
+            title: "Saved to Photos!",
+            description: "Your awareness post has been saved to your photo library.",
+          });
+          setIsProcessing(false);
+          return;
+        }
+      }
+      
+      // Fallback to traditional download
       const link = document.createElement('a');
       link.download = 'fentanyl-awareness-post.png';
-      link.href = canvas.toDataURL('image/png', 0.95);
-      link.click();
+      link.href = dataUrl;
+      
+      if (capabilities.isMobile) {
+        // For mobile browsers, open in new tab for easier saving
+        const newWindow = window.open();
+        if (newWindow) {
+          newWindow.document.write(`
+            <html>
+              <head><title>Fentanyl Awareness Post</title></head>
+              <body style="margin:0;background:#000;text-align:center;padding:20px;">
+                <p style="color:white;font-family:Arial;margin-bottom:20px;">Long press the image below and select "Save to Photos"</p>
+                <img src="${dataUrl}" style="max-width:100%;height:auto;" alt="Fentanyl Awareness Post"/>
+              </body>
+            </html>
+          `);
+        } else {
+          link.click();
+        }
+        
+        toast({
+          title: "Ready to save",
+          description: "Long press the image and select 'Save to Photos' or 'Download Image'.",
+          duration: 6000,
+        });
+      } else {
+        link.click();
+        toast({
+          title: "Download started",
+          description: "Your awareness post has been downloaded.",
+        });
+      }
+      
     } catch (error) {
       console.error('Error downloading image:', error);
+      toast({
+        title: "Download failed",
+        description: "Unable to download image. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -247,21 +324,40 @@ const PostResultStep = () => {
           <div className="space-y-4">
             <Button 
               onClick={handleCopyToClipboard}
-              className="w-full bg-blue-600 text-white hover:bg-blue-700 border-0"
+              disabled={isProcessing}
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 border-0 disabled:opacity-50"
               size="lg"
             >
               <Copy className="mr-2 h-4 w-4" />
-              Copy to Clipboard
+              {isProcessing ? "Copying..." : "Copy to Clipboard"}
             </Button>
             
             <Button 
               onClick={handleDownloadImage}
-              className="w-full bg-white text-slate-900 hover:bg-white/90"
+              disabled={isProcessing}
+              className="w-full bg-white text-slate-900 hover:bg-white/90 disabled:opacity-50"
               size="lg"
             >
-              <Download className="mr-2 h-4 w-4" />
-              Download Image
+              {capabilities.canSaveToPhotos ? (
+                <Smartphone className="mr-2 h-4 w-4" />
+              ) : (
+                <Download className="mr-2 h-4 w-4" />
+              )}
+              {isProcessing 
+                ? "Processing..." 
+                : capabilities.canSaveToPhotos 
+                  ? "Save to Photos" 
+                  : "Download Image"
+              }
             </Button>
+            
+            {capabilities.isMobile && !capabilities.canSaveToPhotos && (
+              <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-3">
+                <p className="text-xs text-blue-200 text-center">
+                  💡 Tip: Long press the image above to save directly to your photos
+                </p>
+              </div>
+            )}
 
             {/* Hashtag Callout */}
             <div className="space-y-3">
