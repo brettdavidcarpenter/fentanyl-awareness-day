@@ -91,7 +91,7 @@ const RoleSelectionStep = () => {
           
           {/* Tagline */}
           <p className="text-xl text-blue-200 mb-6">
-            Choose your role and create your post in under 2 minutes
+            Create a social media post to raise awareness
           </p>
           
         </div>
