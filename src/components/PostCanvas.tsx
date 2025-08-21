@@ -1,5 +1,6 @@
 import { QRCodeSVG } from 'qrcode.react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
 
 interface PostCanvasProps {
   template: any;
@@ -13,6 +14,9 @@ interface PostCanvasProps {
 const PostCanvas = ({ template, personalization, customText, customImage, postType = 'quick', showTextOnImage = true }: PostCanvasProps) => {
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [canvasDataUrl, setCanvasDataUrl] = useState<string>('');
+  const [isGeneratingCanvas, setIsGeneratingCanvas] = useState(false);
+  const htmlVersionRef = useRef<HTMLDivElement>(null);
   const getMessage = () => {
     if (customText) return customText;
     
@@ -56,6 +60,36 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
     setImageLoaded(true);
   };
 
+  // Generate canvas version when image loads or content changes
+  useEffect(() => {
+    if (imageLoaded && htmlVersionRef.current && !isGeneratingCanvas) {
+      const generateCanvas = async () => {
+        setIsGeneratingCanvas(true);
+        try {
+          // Small delay to ensure DOM is fully rendered
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          const canvas = await html2canvas(htmlVersionRef.current!, {
+            backgroundColor: null,
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            foreignObjectRendering: true,
+          });
+          
+          const dataUrl = canvas.toDataURL('image/png', 0.95);
+          setCanvasDataUrl(dataUrl);
+        } catch (error) {
+          console.error('Error generating canvas:', error);
+        } finally {
+          setIsGeneratingCanvas(false);
+        }
+      };
+      
+      generateCanvas();
+    }
+  }, [imageLoaded, customText, customImage, template, personalization]);
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     console.log('❌ Image load error:', e.currentTarget.src);
     setImageLoaded(true); // Mark as loaded to prevent infinite loading state
@@ -97,14 +131,40 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   };
 
   return (
-    <div 
-      id="post-canvas" 
-      className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
-      style={{ 
-        fontSize: '16px',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
-      }}
-    >
+    <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto">
+      {/* Canvas version for user interaction (long-press, save) */}
+      {canvasDataUrl && (
+        <div 
+          id="post-canvas"
+          className="relative w-full bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
+          style={{ 
+            fontSize: '16px',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
+          }}
+        >
+          <img 
+            src={canvasDataUrl}
+            alt="Fentanyl Awareness Post - Long press to save"
+            className="w-full h-auto block"
+            style={{ 
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
+              WebkitTouchCallout: 'default'
+            }}
+          />
+        </div>
+      )}
+
+      {/* HTML version for rendering (hidden when canvas is ready) */}
+      <div 
+        ref={htmlVersionRef}
+        data-html-version
+        className={`relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl ${canvasDataUrl ? 'absolute opacity-0 pointer-events-none -z-10' : ''}`}
+        style={{ 
+          fontSize: '16px',
+          boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
+        }}
+      >
       {/* Polaroid-style inner container with black background */}
       <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
         {/* Image section with polaroid frame - fixed height for consistency */}
@@ -160,6 +220,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

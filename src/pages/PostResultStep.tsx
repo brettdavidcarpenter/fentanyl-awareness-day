@@ -150,7 +150,8 @@ const PostResultStep = () => {
   const handleCopyToClipboard = async () => {
     setIsProcessing(true);
     try {
-      const element = document.getElementById('post-canvas');
+      // Use the HTML version for html2canvas
+      const element = document.querySelector('[data-html-version]') as HTMLElement;
       if (!element) throw new Error('Canvas element not found');
       
       const canvas = await html2canvas(element, {
@@ -210,7 +211,8 @@ const PostResultStep = () => {
   const handleDownloadImage = async () => {
     setIsProcessing(true);
     try {
-      const element = document.getElementById('post-canvas');
+      // Use the HTML version for html2canvas
+      const element = document.querySelector('[data-html-version]') as HTMLElement;
       if (!element) throw new Error('Canvas element not found');
       
       const canvas = await html2canvas(element, {
