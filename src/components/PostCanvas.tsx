@@ -15,9 +15,6 @@ interface PostCanvasProps {
 const PostCanvas = ({ template, personalization, customText, customImage, postType = 'quick', showTextOnImage = true, enableLongPress = false }: PostCanvasProps) => {
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [canvasDataUrl, setCanvasDataUrl] = useState<string>('');
-  const [isGeneratingCanvas, setIsGeneratingCanvas] = useState(false);
-  const htmlVersionRef = useRef<HTMLDivElement>(null);
   const getMessage = () => {
     if (customText) return customText;
     
@@ -61,36 +58,6 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
     setImageLoaded(true);
   };
 
-  // Generate canvas version when image loads or content changes (only if enableLongPress is true)
-  useEffect(() => {
-    if (enableLongPress && imageLoaded && htmlVersionRef.current && !isGeneratingCanvas) {
-      const generateCanvas = async () => {
-        setIsGeneratingCanvas(true);
-        try {
-          // Small delay to ensure DOM is fully rendered
-          await new Promise(resolve => setTimeout(resolve, 200));
-          
-          const canvas = await html2canvas(htmlVersionRef.current!, {
-            backgroundColor: null,
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            foreignObjectRendering: true,
-          });
-          
-          const dataUrl = canvas.toDataURL('image/png', 0.95);
-          setCanvasDataUrl(dataUrl);
-        } catch (error) {
-          console.error('Error generating canvas:', error);
-          // Don't block UI if canvas generation fails
-        } finally {
-          setIsGeneratingCanvas(false);
-        }
-      };
-      
-      generateCanvas();
-    }
-  }, [enableLongPress, imageLoaded, customText, customImage, template, personalization, isGeneratingCanvas]);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     console.log('❌ Image load error:', e.currentTarget.src);
@@ -133,18 +100,14 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
   };
 
   return (
-    <>
-      {/* Always render the HTML version with post-canvas ID for preview generation */}
-      <div 
-        id="post-canvas"
-        ref={enableLongPress ? htmlVersionRef : undefined}
-        data-html-version={enableLongPress ? true : undefined}
-        className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
-        style={{ 
-          fontSize: '16px',
-          boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
-        }}
-      >
+    <div 
+      id="post-canvas"
+      className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[540px] mx-auto bg-white p-3 sm:p-4 lg:p-6 shadow-2xl"
+      style={{ 
+        fontSize: '16px',
+        boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
+      }}
+    >
         {/* Polaroid-style inner container with black background */}
         <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
           {/* Image section with polaroid frame - fixed height for consistency */}
@@ -200,27 +163,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
             )}
           </div>
         </div>
-      </div>
-      
-      {/* Canvas image overlay when enableLongPress is true and canvas is generated */}
-      {enableLongPress && canvasDataUrl && (
-        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]">
-          <div className="relative w-full h-full flex items-center justify-center">
-            <img 
-              src={canvasDataUrl}
-              alt="Fentanyl Awareness Post - Long press to save"
-              className="w-full h-auto block max-w-[320px] sm:max-w-[400px] lg:max-w-[540px]"
-              style={{ 
-                userSelect: 'none',
-                WebkitUserSelect: 'none',
-                WebkitTouchCallout: 'default',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)'
-              }}
-            />
-          </div>
-        </div>
-      )}
-    </>
+    </div>
   );
 };
 
