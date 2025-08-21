@@ -25,7 +25,8 @@ const HeroSection = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const targetDate = new Date("2025-08-21T00:00:00").getTime();
+    // Set target to 12:00 PM ET on August 21, 2025
+    const targetDate = new Date("2025-08-21T12:00:00-04:00").getTime();
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const difference = targetDate - now;
