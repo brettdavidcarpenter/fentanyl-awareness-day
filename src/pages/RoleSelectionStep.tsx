@@ -86,7 +86,7 @@ const RoleSelectionStep = () => {
           
           {/* Main Headline */}
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Make a post. Make an impact.
+            Share your Story
           </h1>
           
           {/* Tagline */}
