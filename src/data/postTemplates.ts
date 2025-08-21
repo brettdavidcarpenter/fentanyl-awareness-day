@@ -11,7 +11,7 @@ export const familyTemplates: PostTemplate[] = [
   {
     id: 'family-1',
     title: 'Honor & Remember',
-    message: 'In loving memory. Together we prevent other families from this heartbreak.',
+    message: 'Together we prevent other families from this heartbreak.',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: true
   },
@@ -28,14 +28,14 @@ export const lawEnforcementTemplates: PostTemplate[] = [
   {
     id: 'law-1',
     title: 'United We Stand',
-    message: 'Our department stands with families affected by fentanyl. Education saves lives. #FacingFentanyl',
+    message: "As law enforcement, we see fentanyl's devastating impact daily. Let's take a stand against Fentanyl",
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   },
   {
     id: 'law-2',
     title: 'Deadly Dose Warning',
-    message: '2 milligrams can be lethal. Knowledge protects our communities. #FentanylAwareness #PublicSafety #ShareTheMessage',
+    message: 'Just 2 milligrams of fentanyl can kill. Our duty is to warn, educate, and protect our community.',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   }
@@ -45,14 +45,14 @@ export const recoveryTemplates: PostTemplate[] = [
   {
     id: 'recovery-1',
     title: 'Hope & Recovery',
-    message: 'Recovery is possible. Hope is real. Resources are available today. #FacingFentanyl',
+    message: "Recovery from addiction is possible. We're here with support, resources, and hope. You're not alone.",
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   },
   {
     id: 'recovery-2',
     title: 'Breaking Stigma',
-    message: 'Breaking stigma, building support. We\'re here to help. #RecoverySupport #BreakTheStigma #FacingFentanyl',
+    message: 'Addiction is a disease, not a choice. Our community offers judgment-free support and resources.',
     imagePath: '/lovable-uploads/1a9d664a-b81b-400c-a32f-b7daeefdb2ec.png',
     customizable: false
   }

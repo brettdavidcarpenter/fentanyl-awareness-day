@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import html2canvas from 'html2canvas';
+import { getMobileInfo, getMobileOptimizedCanvasOptions } from '@/utils/mobileDetection';
 
 interface PreviewGenerationProps {
   formData: any;
@@ -13,33 +14,91 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
   const generationTimeoutRef = useRef<NodeJS.Timeout>();
   const lastFormDataRef = useRef<string>('');
 
-  const generatePreviewImage = useCallback(async () => {
+  const generatePreviewImage = useCallback(async (retryCount = 0) => {
     if (!triggerGeneration) return;
 
+    console.log('🎨 Starting preview generation...');
     setIsGenerating(true);
     setError(null);
     
+    const mobileInfo = getMobileInfo();
+    const maxRetries = mobileInfo.isMobile ? 2 : 1;
+    
     try {
-      // Wait a bit for DOM to update
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Wait for DOM to update and images to load (longer on mobile)
+      await new Promise(resolve => setTimeout(resolve, mobileInfo.isMobile ? 800 : 500));
       
-      const element = document.getElementById('hidden-post-canvas');
+      // Find the visible post canvas
+      const element = document.getElementById('post-canvas');
       if (!element) {
-        throw new Error('Hidden canvas element not found');
+        console.log('❌ Post canvas element not found');
+        throw new Error('Post canvas element not found');
       }
 
-      const canvas = await html2canvas(element, {
-        backgroundColor: null,
-        scale: 2,
-        useCORS: true
+      console.log('✅ Found canvas element:', {
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        children: element.children.length,
+        mobile: mobileInfo.isMobile
       });
 
-      const imageUrl = canvas.toDataURL('image/png', 0.95);
+      // Ensure all images in the canvas are fully loaded (longer timeout on mobile)
+      const images = element.querySelectorAll('img');
+      console.log(`🖼️ Found ${images.length} images in canvas`);
+      
+      await Promise.all(
+        Array.from(images).map((img, index) => {
+          if (img.complete && img.naturalWidth > 0) {
+            console.log(`✅ Image ${index} already loaded`);
+            return Promise.resolve();
+          }
+          
+          console.log(`⏳ Waiting for image ${index} to load...`);
+          return new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+              console.log(`⏰ Image ${index} load timeout`);
+              resolve(null);
+            }, mobileInfo.isMobile ? 5000 : 2000);
+            
+            img.onload = () => {
+              console.log(`✅ Image ${index} loaded successfully`);
+              clearTimeout(timeout);
+              resolve(null);
+            };
+            img.onerror = () => {
+              console.log(`❌ Image ${index} failed to load`);
+              clearTimeout(timeout);
+              resolve(null); // Don't reject, just continue
+            };
+          });
+        })
+      );
+
+      const canvasOptions = {
+        ...getMobileOptimizedCanvasOptions(mobileInfo),
+        scale: mobileInfo.isMobile ? 2 : 2.5, // Lower scale for preview
+        logging: false
+      };
+
+      console.log('🎨 Preview canvas options:', canvasOptions);
+
+      const canvas = await html2canvas(element, canvasOptions);
+
+      const imageUrl = canvas.toDataURL('image/png');
+      console.log('✅ Preview image generated successfully');
       setPreviewImageUrl(imageUrl);
     } catch (error) {
-      console.error('Error generating preview image:', error);
+      console.error(`❌ Error generating preview image (attempt ${retryCount + 1}):`, error);
+      
+      if (retryCount < maxRetries) {
+        console.log(`🔄 Retrying preview generation (${retryCount + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return generatePreviewImage(retryCount + 1);
+      }
+      
       setError('Failed to generate preview');
     } finally {
+      console.log('🏁 Preview generation completed');
       setIsGenerating(false);
     }
   }, [triggerGeneration]);

@@ -6,24 +6,29 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { TrackedButton } from "@/components/TrackedButton";
-import { Upload, Heart, Shield, Users } from "lucide-react";
+import { Upload, Heart, Shield, Users, Info } from "lucide-react";
 import { getTemplatesByPersona } from "@/data/postTemplates";
+import { processUploadedImage } from "@/utils/imageProcessor";
+import { useToast } from "@/hooks/use-toast";
 
 interface LivePostFormProps {
   onFormChange: (data: any) => void;
   initialData?: any;
+  showOnlyPersona?: boolean;
+  showOnlyCustomization?: boolean;
 }
 
-const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
-  const [selectedPersona, setSelectedPersona] = useState('family');
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
-  const [customText, setCustomText] = useState('');
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [personalization, setPersonalization] = useState({
-    name: '',
-    relationship: ''
-  });
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCustomization }: LivePostFormProps) => {
+  const [selectedPersona, setSelectedPersona] = useState(initialData?.persona || 'family');
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(initialData?.template || null);
+  const [customText, setCustomText] = useState(initialData?.customText || '');
+  const [isInitialized, setIsInitialized] = useState(!!initialData?.customText);
+  const [personalization, setPersonalization] = useState(
+    initialData?.personalization || { name: '', relationship: '' }
+  );
+  const [uploadedImage, setUploadedImage] = useState<string | null>(initialData?.uploadedImage || null);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+  const { toast } = useToast();
 
   const personas = [
     { id: 'family', title: 'Families & Friends', icon: Heart, color: 'text-red-500' },
@@ -34,17 +39,32 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
   // Initialize with default template and set initial text
   useEffect(() => {
     const templates = getTemplatesByPersona(selectedPersona);
-    if (templates.length > 0 && !selectedTemplate) {
+    if (templates.length > 0) {
       const template = templates[0];
-      setSelectedTemplate(template);
       
-      // Initialize customText with template message if not already initialized
+      // Always update template when persona changes
+      if (!selectedTemplate || selectedTemplate.id !== template.id) {
+        setSelectedTemplate(template);
+      }
+      
+      // Update customText with template message when persona changes or not initialized
       if (!isInitialized && template.message) {
         setCustomText(template.message);
         setIsInitialized(true);
       }
     }
   }, [selectedPersona, selectedTemplate, isInitialized]);
+
+  // Separate effect to handle persona changes and reset customText
+  useEffect(() => {
+    if (!isInitialized) {
+      const templates = getTemplatesByPersona(selectedPersona);
+      if (templates.length > 0 && templates[0].message) {
+        setCustomText(templates[0].message);
+        setIsInitialized(true);
+      }
+    }
+  }, [selectedPersona, isInitialized]);
 
   // Update parent component whenever form changes
   useEffect(() => {
@@ -58,22 +78,200 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
       uploadedImage,
       isCustomizing: !!customText || !!personalization.name || !!uploadedImage
     });
-  }, [selectedPersona, selectedTemplate, customText, personalization, uploadedImage, onFormChange]);
+  }, [selectedPersona, selectedTemplate, customText, personalization, uploadedImage]);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setUploadedImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid File",
+        description: "Please upload an image file (JPG, PNG, etc.)",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File Too Large",
+        description: "Please upload an image smaller than 5MB",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessingImage(true);
+    
+    try {
+      const result = await processUploadedImage(file);
+      setUploadedImage(result.dataUrl);
+      
+      if (result.wasProcessed) {
+        toast({
+          title: "Image Optimized!",
+          description: "Your image has been cropped and optimized for the best results.",
+        });
+      }
+    } catch (error) {
+      console.error('Error processing image:', error);
+      toast({
+        title: "Processing Error",
+        description: "Failed to process image. Please try a different image.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessingImage(false);
     }
   };
 
   const templates = getTemplatesByPersona(selectedPersona);
   const currentTemplate = selectedTemplate || templates[0];
 
+  // Render only persona selection for mobile first section
+  if (showOnlyPersona) {
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Choose Your Role</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3">
+              {personas.map((persona) => {
+                const IconComponent = persona.icon;
+                return (
+                  <Button
+                    key={persona.id}
+                    variant={selectedPersona === persona.id ? "default" : "outline"}
+                    onClick={() => {
+                      setSelectedPersona(persona.id);
+                      setSelectedTemplate(null);
+                      setIsInitialized(false);
+                    }}
+                    className="flex items-center justify-start gap-2 h-auto p-3"
+                  >
+                    <IconComponent className={`w-4 h-4 ${persona.color}`} />
+                    <span className="text-sm">{persona.title}</span>
+                  </Button>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Render only customization sections for mobile second section
+  if (showOnlyCustomization) {
+    return (
+      <div className="space-y-6">
+        {/* Custom Message */}
+        <Card className="bg-white/10 border-white/20">
+          <CardHeader>
+            <CardTitle className="text-lg text-white">Customize Your Message</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <Label htmlFor="custom-message" className="text-blue-200">Your Message (optional)</Label>
+              <Textarea
+                id="custom-message"
+                value={customText}
+                onChange={(e) => setCustomText(e.target.value)}
+                placeholder="Enter your custom message..."
+                className="min-h-[100px] resize-none bg-white/10 border-white/20 text-white placeholder:text-blue-200"
+                maxLength={uploadedImage ? 90 : 115}
+              />
+              <div className={`text-xs text-right flex items-center justify-between ${
+                (() => {
+                  const count = customText.length;
+                  const maxLength = uploadedImage ? 90 : 115;
+                  const warningThreshold = uploadedImage ? 72 : 95;
+                  const limitThreshold = uploadedImage ? 81 : 105;
+                  
+                  if (count <= warningThreshold) return 'text-green-300';
+                  if (count <= limitThreshold) return 'text-yellow-300';
+                  return 'text-red-300 font-medium';
+                })()
+              }`}>
+                <span className="text-blue-200">
+                  {(() => {
+                    const count = customText.length;
+                    const maxLength = uploadedImage ? 90 : 115;
+                    const warningThreshold = uploadedImage ? 72 : 95;
+                    const limitThreshold = uploadedImage ? 81 : 105;
+                    
+                    if (count > limitThreshold) return '⚠️ Character limit reached';
+                    if (count > warningThreshold) return '⚠️ Approaching limit';
+                    return 'Good length for polaroid';
+                  })()}
+                </span>
+                <span>{customText.length}/{uploadedImage ? 90 : 115}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Image Upload */}
+        <Card className="bg-white/10 border-white/20">
+          <CardHeader>
+            <CardTitle className="text-lg text-white">Upload Your Photo (optional)</CardTitle>
+            <div className="flex items-start gap-2 mt-2 p-2 bg-blue-900/30 rounded-md">
+              <Info className="w-4 h-4 text-blue-300 mt-0.5 flex-shrink-0" />
+              <div className="text-xs text-blue-200 space-y-1">
+                <p><strong>Best results:</strong> Square or portrait images</p>
+                <p><strong>Size:</strong> Under 5MB, 1080px+ recommended</p>
+                <p><strong>Formats:</strong> JPG, PNG</p>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center">
+                {uploadedImage ? (
+                  <div className="space-y-2">
+                    <img 
+                      src={uploadedImage} 
+                      alt="Uploaded preview" 
+                      className="w-24 h-24 mx-auto rounded object-cover"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setUploadedImage(null)}
+                      className="bg-red-600 border-red-500 text-white hover:bg-red-700 hover:border-red-600"
+                    >
+                      Remove Image
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Upload className="w-8 h-8 mx-auto mb-2 text-blue-200" />
+                    <p className="text-sm text-blue-200 mb-2">
+                      {isProcessingImage ? "Processing image..." : "Click to upload your own image"}
+                    </p>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={isProcessingImage}
+                      className="cursor-pointer bg-white/10 border-white/20 text-white disabled:opacity-50"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Default: render full form for desktop
   return (
     <div className="space-y-6">
       {/* Persona Selector */}
@@ -104,8 +302,6 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
           </div>
         </CardContent>
       </Card>
-
-
 
       {/* Custom Message */}
       <Card>
@@ -157,6 +353,14 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Upload Your Photo (optional)</CardTitle>
+          <div className="flex items-start gap-2 mt-2 p-2 bg-blue-50 rounded-md">
+            <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+            <div className="text-xs text-blue-700 space-y-1">
+              <p><strong>Best results:</strong> Square or portrait images</p>
+              <p><strong>Size:</strong> Under 5MB, 1080px+ recommended</p>
+              <p><strong>Formats:</strong> JPG, PNG</p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -180,13 +384,14 @@ const LivePostForm = ({ onFormChange, initialData }: LivePostFormProps) => {
                 <div>
                   <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
                   <p className="text-sm text-gray-600 mb-2">
-                    Click to upload your own image
+                    {isProcessingImage ? "Processing image..." : "Click to upload your own image"}
                   </p>
                   <Input
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="cursor-pointer"
+                    disabled={isProcessingImage}
+                    className="cursor-pointer disabled:opacity-50"
                   />
                 </div>
               )}

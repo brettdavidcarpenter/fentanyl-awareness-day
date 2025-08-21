@@ -1,18 +1,39 @@
 
-import { useState, useCallback, useRef } from 'react';
-import html2canvas from 'html2canvas';
+import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { TrackedButton } from "@/components/TrackedButton";
-import { useToast } from "@/hooks/use-toast";
+import { Download } from "lucide-react";
+import { getTemplatesByPersona } from "@/data/postTemplates";
 import { usePreviewGeneration } from "@/hooks/usePreviewGeneration";
+import { useIsMobile } from "@/hooks/use-mobile";
 import LivePostForm from "@/components/LivePostForm";
+import PersonaSelection from "@/components/PersonaSelection";
 import PostCanvas from '@/components/PostCanvas';
 import ShareSection from '@/components/ShareSection';
-
-import { getTemplatesByPersona } from "@/data/postTemplates";
+import html2canvas from 'html2canvas';
 
 const DayOfExperience = () => {
-  const { toast } = useToast();
-  const postCanvasRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const { previewImageUrl, isGenerating, error } = usePreviewGeneration({ 
+    formData: {
+      persona: 'family',
+      template: getTemplatesByPersona('family')[0],
+      customText: '',
+      personalization: { name: '', relationship: '' },
+      uploadedImage: null,
+      isCustomizing: false
+    }
+  });
+
+  // Redirect mobile users to the new multi-step flow
+  useEffect(() => {
+    if (isMobile) {
+      navigate('/day-of-experience');
+    }
+  }, [isMobile, navigate]);
+
   const [formData, setFormData] = useState<any>({
     persona: 'family',
     template: getTemplatesByPersona('family')[0],
@@ -21,12 +42,20 @@ const DayOfExperience = () => {
     uploadedImage: null,
     isCustomizing: false
   });
-  
-  // Use the preview generation hook
-  const { previewImageUrl, isGenerating, error } = usePreviewGeneration({ formData });
 
   const handleFormChange = useCallback((newData: any) => {
     setFormData(newData);
+  }, []);
+
+  const handlePersonaSelect = useCallback((persona: string) => {
+    const templates = getTemplatesByPersona(persona);
+    setFormData(prev => ({
+      ...prev,
+      persona,
+      template: templates[0],
+      customText: '',
+      personalization: { name: '', relationship: '' }
+    }));
   }, []);
 
   const handleDownloadImage = async () => {
@@ -51,17 +80,8 @@ const DayOfExperience = () => {
       link.download = 'fentanyl-awareness-post.png';
       link.href = imageUrl;
       link.click();
-      
-      toast({
-        title: "Image Downloaded!",
-        description: "Your post image has been saved to your device"
-      });
     } catch (error) {
-      toast({
-        title: "Download Failed",
-        description: "There was an error downloading your image. Please try again.",
-        variant: "destructive"
-      });
+      console.error('Error downloading image:', error);
     }
   };
 
@@ -81,120 +101,79 @@ const DayOfExperience = () => {
     return formData.uploadedImage || formData.template?.imagePath;
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-4">
-            Create Your Fentanyl Awareness Post
-          </h1>
-          <p className="text-xl text-blue-100">
-            Customize your message and see it come to life instantly
-          </p>
-        </div>
+  // Show loading or nothing while redirecting mobile users
+  if (isMobile) {
+    return null;
+  }
 
-        {/* Split Screen Layout */}
-        <div className="grid lg:grid-cols-5 gap-8 max-w-7xl mx-auto">
-          {/* Left Side - Form Controls */}
-          <div className="lg:col-span-2 space-y-6">
-            <LivePostForm 
-              onFormChange={handleFormChange}
-              initialData={formData}
-            />
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-2 text-primary">Day of Experience</h1>
+          <p className="text-lg text-muted-foreground">Create your awareness post for National Fentanyl Awareness Day</p>
+        </div>
+        
+        {/* Desktop Layout */}
+        <div className="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          {/* Left Column - Form */}
+          <div className="space-y-6">
+            <PersonaSelection onPersonaSelect={handlePersonaSelect} />
             
-            {/* Action Buttons */}
+            {formData.persona && (
+              <LivePostForm
+                onFormChange={handleFormChange}
+                initialData={formData}
+              />
+            )}
+          </div>
+          
+          {/* Right Column - Preview and Actions */}
+          <div className="space-y-6">
+            {/* Preview */}
+            <div className="bg-card rounded-lg p-6 border">
+              <h3 className="text-lg font-semibold mb-4">Preview</h3>
+              <PostCanvas
+                template={formData.template}
+                personalization={formData.personalization}
+                customText={formData.customText}
+                customImage={formData.uploadedImage}
+                postType={formData.uploadedImage ? 'upload' : 'quick'}
+              />
+            </div>
+            
+            {/* Actions */}
             <div className="space-y-4">
               <TrackedButton
                 onClick={handleDownloadImage}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                trackingName="download_post_image"
-                trackingCategory="post_creation"
-                trackingPage="day_of_experience"
+                className="w-full"
+                trackingCategory="download"
+                trackingName="download-desktop"
+                trackingPage="day-of-experience"
                 trackingData={{ 
                   persona: formData.persona, 
                   hasCustomText: !!formData.customText,
-                  hasUploadedImage: !!formData.uploadedImage
+                  hasUploadedImage: !!formData.uploadedImage 
                 }}
               >
+                <Download className="mr-2 h-4 w-4" />
                 Download Image
               </TrackedButton>
-
-            </div>
-          </div>
-
-          {/* Right Side - Live Preview */}
-          <div className="lg:col-span-3">
-            <div className="sticky top-8 space-y-6">
-              {/* Final Image Preview Header */}
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-white mb-2">Final Image Preview</h2>
-                <p className="text-blue-100">
-                  This is exactly what will be downloaded
-                </p>
-              </div>
-
-              {/* Post Preview - Generated Image */}
-              <div className="flex justify-center">
-                <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                  {isGenerating ? (
-                    <div className="w-[540px] h-[540px] bg-gray-200 rounded-lg flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                        <p className="text-gray-600">Generating preview...</p>
-                      </div>
-                    </div>
-                  ) : error ? (
-                    <div className="w-[540px] h-[540px] bg-red-50 rounded-lg flex items-center justify-center">
-                      <div className="text-center">
-                        <p className="text-red-600 mb-2">Preview generation failed</p>
-                        <p className="text-sm text-gray-500">The download function will still work</p>
-                      </div>
-                    </div>
-                  ) : previewImageUrl ? (
-                    <img 
-                      src={previewImageUrl} 
-                      alt="Final post preview" 
-                      className="w-[540px] h-[540px] object-contain rounded-lg"
-                    />
-                  ) : (
-                    <div className="w-[540px] h-[540px] bg-gray-100 rounded-lg flex items-center justify-center">
-                      <p className="text-gray-600">Loading preview...</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Hidden Canvas for Generation */}
-              <div className="absolute -left-[9999px] top-0 pointer-events-none">
-                <div id="hidden-post-canvas">
-                  <PostCanvas
-                    template={{
-                      ...formData.template,
-                      message: getCurrentMessage(),
-                      imagePath: getCurrentImage()
-                    }}
-                    personalization={formData.personalization}
-                    customText={formData.customText}
-                    customImage={formData.uploadedImage}
-                    postType={formData.uploadedImage ? 'upload' : 'quick'}
-                  />
-                </div>
-              </div>
-
-              {/* Social Media Caption */}
-              <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-                <h3 className="text-lg font-semibold text-white mb-3 text-center">Help Us By Using the Following Hashtags</h3>
-                <div className="bg-gray-800 p-4 rounded border text-sm text-gray-100">
-                  Create your own awareness post at https://facingfentanylnow.aware-share.com/day-of-experience #FacingFentanyl #FentanylAwareness #NationalFentanylPreventionDay
-                </div>
-              </div>
-
-
-              {/* Share the Tool */}
+              
               <ShareSection />
             </div>
           </div>
+        </div>
+        
+        {/* Hidden canvas for image generation */}
+        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+          <PostCanvas
+            template={formData.template}
+            personalization={formData.personalization}
+            customText={formData.customText}
+            customImage={formData.uploadedImage}
+            postType={formData.uploadedImage ? 'upload' : 'quick'}
+          />
         </div>
       </div>
     </div>

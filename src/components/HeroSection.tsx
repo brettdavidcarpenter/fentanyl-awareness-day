@@ -21,10 +21,12 @@ const HeroSection = () => {
   const [showTestSettings, setShowTestSettings] = useState(false);
   const [testDateOffset, setTestDateOffset] = useState(1);
   const [showAdminControls, setShowAdminControls] = useState(false);
+  const [isSendingTestEmails, setIsSendingTestEmails] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    const targetDate = new Date("2025-08-21T00:00:00").getTime();
+    // Set target to 12:00 PM ET on August 21, 2025
+    const targetDate = new Date("2025-08-21T12:00:00-04:00").getTime();
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const difference = targetDate - now;
@@ -92,6 +94,39 @@ const HeroSection = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleSendTestEmails = async () => {
+    setIsSendingTestEmails(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('send-reminder-emails', {
+        body: { forceTestMode: true }
+      });
+
+      if (error) {
+        console.error('Send test emails error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to send test emails. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Test Emails Sent!",
+          description: data?.message || "All eligible test reminder emails have been sent immediately.",
+        });
+      }
+    } catch (error) {
+      console.error('Send test emails error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send test emails. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSendingTestEmails(false);
     }
   };
 
@@ -213,13 +248,33 @@ const HeroSection = () => {
                       onChange={(e) => setTestDateOffset(parseInt(e.target.value) || 0)}
                       className="bg-white/10 border-white/20 text-white text-sm h-8"
                     />
-                    <p className="text-xs text-gray-400 mt-1">
-                      Cron job runs every 5 minutes
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+                     <p className="text-xs text-gray-400 mt-1">
+                       Cron job runs every 5 minutes
+                     </p>
+                   </div>
+                 )}
+                 
+                 {/* Send Test Emails Button */}
+                 <div className="mt-3 pt-3 border-t border-white/20">
+                   <TrackedButton
+                     type="button"
+                     onClick={handleSendTestEmails}
+                     disabled={isSendingTestEmails}
+                     variant="outline"
+                     size="sm"
+                     className="w-full text-xs border-white/20 text-white hover:bg-white/10"
+                     trackingName="admin_send_test_emails"
+                     trackingCategory="admin"
+                     trackingPage="home_hero"
+                   >
+                     {isSendingTestEmails ? "Sending..." : "Send Test Emails Immediately"}
+                   </TrackedButton>
+                   <p className="text-xs text-gray-400 mt-1 text-center">
+                     Sends all eligible test reminder emails now
+                   </p>
+                 </div>
+               </div>
+             )}
             
             <form onSubmit={handleEmailSubmit} className="space-y-3">
               <Input

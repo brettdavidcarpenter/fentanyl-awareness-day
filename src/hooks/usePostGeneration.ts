@@ -3,6 +3,7 @@ import { useState } from 'react';
 import html2canvas from 'html2canvas';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { getMobileInfo, getMobileOptimizedCanvasOptions } from '@/utils/mobileDetection';
 
 interface PostData {
   persona: string;
@@ -20,19 +21,49 @@ export const usePostGeneration = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
-  const generatePostImage = async (elementId: string): Promise<string | null> => {
+  const generatePostImage = async (elementId: string, retryCount = 0): Promise<string | null> => {
+    const mobileInfo = getMobileInfo();
+    const maxRetries = mobileInfo.isMobile ? 3 : 1;
+    
     try {
       const element = document.getElementById(elementId);
       if (!element) throw new Error('Post element not found');
 
-      const canvas = await html2canvas(element, {
-        scale: 1,
-        backgroundColor: '#ffffff'
-      });
+      console.log('📱 Generating post image - Mobile info:', mobileInfo);
 
-      return canvas.toDataURL('image/png', 0.95);
+      // Wait for images to load on mobile
+      if (mobileInfo.isMobile) {
+        const images = element.querySelectorAll('img');
+        await Promise.all(Array.from(images).map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+            setTimeout(resolve, 3000); // Timeout after 3s
+          });
+        }));
+        
+        // Additional delay for mobile rendering
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
+      const canvasOptions = getMobileOptimizedCanvasOptions(mobileInfo);
+      console.log('🎨 Canvas options:', canvasOptions);
+
+      const canvas = await html2canvas(element, canvasOptions);
+      const dataUrl = canvas.toDataURL('image/png');
+      
+      console.log('✅ Successfully generated image');
+      return dataUrl;
     } catch (error) {
-      console.error('Error generating post image:', error);
+      console.error(`❌ Error generating post image (attempt ${retryCount + 1}):`, error);
+      
+      if (retryCount < maxRetries) {
+        console.log(`🔄 Retrying image generation (${retryCount + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return generatePostImage(elementId, retryCount + 1);
+      }
+      
       return null;
     }
   };
