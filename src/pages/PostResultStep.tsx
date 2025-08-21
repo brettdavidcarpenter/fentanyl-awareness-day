@@ -356,7 +356,10 @@ const PostResultStep = () => {
               size="lg"
             >
               <Copy className="mr-2 h-4 w-4" />
-              {isProcessing ? "Copying..." : "Copy to Clipboard"}
+              {isProcessing 
+                ? (capabilities.isMobile ? "Sharing..." : "Copying...")
+                : (capabilities.isMobile ? "Share Post" : "Copy to Clipboard")
+              }
             </Button>
             
             <Button 
