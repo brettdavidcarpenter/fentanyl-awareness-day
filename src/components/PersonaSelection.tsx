@@ -22,7 +22,7 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
     },
     {
       id: 'law_enforcement',
-      title: 'Law Enforcement & Government',
+      title: 'I\'m Law Enforcement & Government',
       shortTitle: 'Law Enforcement',
       description: 'Educate communities and protect those you serve',
       icon: Shield,
