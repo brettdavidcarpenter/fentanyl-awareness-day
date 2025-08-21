@@ -112,7 +112,7 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
         <div className="w-full bg-black flex flex-col border-4 sm:border-6 lg:border-8 border-white">
           {/* Image section with polaroid frame - fixed height for consistency */}
           <div className="relative w-full bg-black p-4 pb-2 h-[280px] sm:h-[320px] lg:h-[360px]">
-            <div className="w-full h-full bg-gray-800 shadow-inner border-2 border-white relative">
+            <div className="w-full h-full bg-black shadow-inner border-2 border-white relative">
               <img 
                 src={getImageSrc()}
                 alt="Post image"
