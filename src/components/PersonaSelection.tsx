@@ -30,7 +30,7 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
     },
     {
       id: 'recovery',
-      title: 'Recovery Orgs',
+      title: 'I\'m part of a Recovery Org',
       shortTitle: 'Recovery',
       description: 'Share hope and resources for healing',
       icon: Users,
