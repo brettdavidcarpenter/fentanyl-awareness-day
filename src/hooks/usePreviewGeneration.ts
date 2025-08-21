@@ -71,14 +71,15 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
 
       const canvas = await html2canvas(element, {
         backgroundColor: '#ffffff',
-        scale: 2,
+        scale: 3,
         useCORS: true,
         allowTaint: false,
         foreignObjectRendering: false,
-        logging: false
+        logging: false,
+        imageTimeout: 15000
       });
 
-      const imageUrl = canvas.toDataURL('image/png', 0.95);
+      const imageUrl = canvas.toDataURL('image/png');
       console.log('✅ Preview image generated successfully');
       setPreviewImageUrl(imageUrl);
     } catch (error) {

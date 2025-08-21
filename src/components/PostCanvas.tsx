@@ -81,17 +81,17 @@ const PostCanvas = ({ template, personalization, customText, customImage, postTy
     return 'auto';
   };
 
-  // Better object fit strategy based on image type
+  // Better object fit strategy based on image type - prioritize quality preservation
   const getObjectFit = () => {
     if (!imageDimensions) return 'object-contain';
     
-    // For uploaded images, use cover to fill the frame better and reduce white space
+    // For uploaded images, prioritize preserving image quality over filling space
     if (customImage) {
-      // Use cover for most cases to minimize white space
-      if (isSquare || isIPhoneLandscape || isIPhonePortrait) {
+      // Use contain for better quality preservation, only use cover for very close aspect ratios
+      if (isSquare) {
         return 'object-cover';
       }
-      // Only use contain for extreme ratios
+      // Use contain for all other ratios to preserve image quality
       return 'object-contain';
     }
     

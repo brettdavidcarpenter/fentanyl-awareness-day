@@ -155,9 +155,12 @@ const PostResultStep = () => {
       if (!element) throw new Error('Post canvas element not found');
       
       const canvas = await html2canvas(element, {
-        backgroundColor: null,
-        scale: 2,
-        useCORS: true
+        backgroundColor: '#ffffff',
+        scale: 3,
+        useCORS: true,
+        allowTaint: false,
+        foreignObjectRendering: false,
+        imageTimeout: 15000
       });
       
       canvas.toBlob(async (blob) => {
@@ -220,7 +223,7 @@ const PostResultStep = () => {
           }
         }
         setIsProcessing(false);
-      }, 'image/png', 0.95);
+      }, 'image/png');
     } catch (error) {
       console.error('Error creating image:', error);
       setIsProcessing(false);
@@ -240,12 +243,15 @@ const PostResultStep = () => {
       if (!element) throw new Error('Post canvas element not found');
       
       const canvas = await html2canvas(element, {
-        backgroundColor: null,
-        scale: 2,
-        useCORS: true
+        backgroundColor: '#ffffff',
+        scale: 3,
+        useCORS: true,
+        allowTaint: false,
+        foreignObjectRendering: false,
+        imageTimeout: 15000
       });
       
-      const dataUrl = canvas.toDataURL('image/png', 0.95);
+      const dataUrl = canvas.toDataURL('image/png');
       
       // Try native photo library save first (mobile only)
       if (capabilities.canSaveToPhotos) {

@@ -26,11 +26,15 @@ export const usePostGeneration = () => {
       if (!element) throw new Error('Post element not found');
 
       const canvas = await html2canvas(element, {
-        scale: 1,
-        backgroundColor: '#ffffff'
+        scale: 3,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        allowTaint: false,
+        foreignObjectRendering: false,
+        imageTimeout: 15000
       });
 
-      return canvas.toDataURL('image/png', 0.95);
+      return canvas.toDataURL('image/png');
     } catch (error) {
       console.error('Error generating post image:', error);
       return null;
