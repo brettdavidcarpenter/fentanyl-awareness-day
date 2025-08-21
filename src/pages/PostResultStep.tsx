@@ -8,6 +8,7 @@ import { getTemplatesByPersona } from "@/data/postTemplates";
 import { useToast } from "@/hooks/use-toast";
 import { useNativeCapabilities } from "@/hooks/useNativeCapabilities";
 import html2canvas from 'html2canvas';
+import { getMobileInfo, getMobileOptimizedCanvasOptions } from '@/utils/mobileDetection';
 
 const PostResultStep = () => {
   const navigate = useNavigate();
@@ -149,19 +150,33 @@ const PostResultStep = () => {
 
   const handleCopyToClipboard = async () => {
     setIsProcessing(true);
+    const mobileInfo = getMobileInfo();
+    
     try {
+      console.log('📱 Copy to clipboard - Mobile info:', mobileInfo);
+      
       // Use the post-canvas element for html2canvas
       const element = document.querySelector('#post-canvas') as HTMLElement;
       if (!element) throw new Error('Post canvas element not found');
       
-      const canvas = await html2canvas(element, {
-        backgroundColor: '#ffffff',
-        scale: 3,
-        useCORS: true,
-        allowTaint: false,
-        foreignObjectRendering: false,
-        imageTimeout: 15000
-      });
+      // Wait for images to load on mobile
+      if (mobileInfo.isMobile) {
+        const images = element.querySelectorAll('img');
+        await Promise.all(Array.from(images).map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+            setTimeout(resolve, 3000);
+          });
+        }));
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      const canvasOptions = getMobileOptimizedCanvasOptions(mobileInfo);
+      console.log('🎨 Copy canvas options:', canvasOptions);
+      
+      const canvas = await html2canvas(element, canvasOptions);
       
       canvas.toBlob(async (blob) => {
         if (blob) {
@@ -237,19 +252,33 @@ const PostResultStep = () => {
 
   const handleDownloadImage = async () => {
     setIsProcessing(true);
+    const mobileInfo = getMobileInfo();
+    
     try {
+      console.log('📱 Download image - Mobile info:', mobileInfo);
+      
       // Use the post-canvas element for html2canvas
       const element = document.querySelector('#post-canvas') as HTMLElement;
       if (!element) throw new Error('Post canvas element not found');
       
-      const canvas = await html2canvas(element, {
-        backgroundColor: '#ffffff',
-        scale: 3,
-        useCORS: true,
-        allowTaint: false,
-        foreignObjectRendering: false,
-        imageTimeout: 15000
-      });
+      // Wait for images to load on mobile
+      if (mobileInfo.isMobile) {
+        const images = element.querySelectorAll('img');
+        await Promise.all(Array.from(images).map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+            setTimeout(resolve, 3000);
+          });
+        }));
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      const canvasOptions = getMobileOptimizedCanvasOptions(mobileInfo);
+      console.log('🎨 Download canvas options:', canvasOptions);
+      
+      const canvas = await html2canvas(element, canvasOptions);
       
       const dataUrl = canvas.toDataURL('image/png');
       

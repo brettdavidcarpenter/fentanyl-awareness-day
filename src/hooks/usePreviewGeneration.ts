@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import html2canvas from 'html2canvas';
+import { getMobileInfo, getMobileOptimizedCanvasOptions } from '@/utils/mobileDetection';
 
 interface PreviewGenerationProps {
   formData: any;
@@ -13,16 +14,19 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
   const generationTimeoutRef = useRef<NodeJS.Timeout>();
   const lastFormDataRef = useRef<string>('');
 
-  const generatePreviewImage = useCallback(async () => {
+  const generatePreviewImage = useCallback(async (retryCount = 0) => {
     if (!triggerGeneration) return;
 
     console.log('🎨 Starting preview generation...');
     setIsGenerating(true);
     setError(null);
     
+    const mobileInfo = getMobileInfo();
+    const maxRetries = mobileInfo.isMobile ? 2 : 1;
+    
     try {
-      // Wait for DOM to update and images to load
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Wait for DOM to update and images to load (longer on mobile)
+      await new Promise(resolve => setTimeout(resolve, mobileInfo.isMobile ? 800 : 500));
       
       // Find the visible post canvas
       const element = document.getElementById('post-canvas');
@@ -34,10 +38,11 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
       console.log('✅ Found canvas element:', {
         width: element.offsetWidth,
         height: element.offsetHeight,
-        children: element.children.length
+        children: element.children.length,
+        mobile: mobileInfo.isMobile
       });
 
-      // Ensure all images in the canvas are fully loaded
+      // Ensure all images in the canvas are fully loaded (longer timeout on mobile)
       const images = element.querySelectorAll('img');
       console.log(`🖼️ Found ${images.length} images in canvas`);
       
@@ -53,7 +58,7 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
             const timeout = setTimeout(() => {
               console.log(`⏰ Image ${index} load timeout`);
               resolve(null);
-            }, 2000);
+            }, mobileInfo.isMobile ? 5000 : 2000);
             
             img.onload = () => {
               console.log(`✅ Image ${index} loaded successfully`);
@@ -69,21 +74,28 @@ export const usePreviewGeneration = ({ formData, triggerGeneration = true }: Pre
         })
       );
 
-      const canvas = await html2canvas(element, {
-        backgroundColor: '#ffffff',
-        scale: 3,
-        useCORS: true,
-        allowTaint: false,
-        foreignObjectRendering: false,
-        logging: false,
-        imageTimeout: 15000
-      });
+      const canvasOptions = {
+        ...getMobileOptimizedCanvasOptions(mobileInfo),
+        scale: mobileInfo.isMobile ? 2 : 2.5, // Lower scale for preview
+        logging: false
+      };
+
+      console.log('🎨 Preview canvas options:', canvasOptions);
+
+      const canvas = await html2canvas(element, canvasOptions);
 
       const imageUrl = canvas.toDataURL('image/png');
       console.log('✅ Preview image generated successfully');
       setPreviewImageUrl(imageUrl);
     } catch (error) {
-      console.error('❌ Error generating preview image:', error);
+      console.error(`❌ Error generating preview image (attempt ${retryCount + 1}):`, error);
+      
+      if (retryCount < maxRetries) {
+        console.log(`🔄 Retrying preview generation (${retryCount + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return generatePreviewImage(retryCount + 1);
+      }
+      
       setError('Failed to generate preview');
     } finally {
       console.log('🏁 Preview generation completed');
