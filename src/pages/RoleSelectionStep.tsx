@@ -86,17 +86,20 @@ const RoleSelectionStep = () => {
           
           {/* Main Headline */}
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Make a post. Make an impact.
+            Share your Story
           </h1>
           
           {/* Tagline */}
           <p className="text-xl text-blue-200 mb-6">
-            Choose your role and create your post in under 2 minutes
+            Create a social media post to raise awareness
           </p>
           
         </div>
 
-
+        {/* Enhanced Role Selection */}
+        <div className="mb-12">
+          <PersonaSelection onPersonaSelect={handlePersonaSelect} />
+        </div>
 
         {/* Countdown Timer */}
         <div className="mb-8">
@@ -131,11 +134,6 @@ const RoleSelectionStep = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
-
-        {/* Enhanced Role Selection */}
-        <div className="mb-12">
-          <PersonaSelection onPersonaSelect={handlePersonaSelect} />
         </div>
 
         {/* Help Others Create Posts Section - Made less prominent */}

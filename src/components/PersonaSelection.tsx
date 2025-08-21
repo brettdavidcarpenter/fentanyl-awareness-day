@@ -14,7 +14,7 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
   const personas = [
     {
       id: 'family',
-      title: 'Families & Friends',
+      title: 'For Families & Friends',
       shortTitle: 'Family',
       description: 'Honor loved ones and share stories that save lives',
       icon: Heart,
@@ -22,7 +22,7 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
     },
     {
       id: 'law_enforcement',
-      title: 'Law Enforcement & Government',
+      title: 'I\'m Law Enforcement & Government',
       shortTitle: 'Law Enforcement',
       description: 'Educate communities and protect those you serve',
       icon: Shield,
@@ -30,7 +30,7 @@ const PersonaSelection = ({ onPersonaSelect }: PersonaSelectionProps) => {
     },
     {
       id: 'recovery',
-      title: 'Recovery Orgs',
+      title: 'I\'m part of a Recovery Org',
       shortTitle: 'Recovery',
       description: 'Share hope and resources for healing',
       icon: Users,

@@ -16,19 +16,66 @@ serve(async (req) => {
   }
 
   try {
-    const { email, signupId } = await req.json();
-    console.log('Sending welcome email to:', email, 'for signup ID:', signupId);
-
-    if (!email || !signupId) {
-      console.error('Missing email or signupId');
+    const body = await req.json();
+    
+    // Enhanced input validation and sanitization
+    if (!body || typeof body !== 'object') {
+      throw new Error('Invalid request body');
+    }
+    
+    const { email, signupId } = body;
+    
+    // Validate email input
+    if (!email || typeof email !== 'string') {
+      console.error('Email is required and must be a string');
       return new Response(
-        JSON.stringify({ error: 'Email and signupId are required' }),
+        JSON.stringify({ error: 'Email is required' }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
     }
+    
+    // Validate signupId input
+    if (!signupId || typeof signupId !== 'string') {
+      console.error('SignupId is required and must be a string');
+      return new Response(
+        JSON.stringify({ error: 'SignupId is required' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    const sanitizedEmail = email.trim().toLowerCase();
+    
+    if (sanitizedEmail.length > 254) {
+      console.error('Email address is too long:', sanitizedEmail.length);
+      return new Response(
+        JSON.stringify({ error: 'Email address is too long' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    // Basic UUID format validation for signupId
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(signupId)) {
+      console.error('Invalid signupId format:', signupId);
+      return new Response(
+        JSON.stringify({ error: 'Invalid signup ID format' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    console.log('Sending welcome email to:', sanitizedEmail, 'for signup ID:', signupId);
 
     // Initialize services
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
@@ -63,7 +110,7 @@ serve(async (req) => {
     // Send welcome email with unified professional template using new domain
     const emailResponse = await resend.emails.send({
       from: "Facing Fentanyl <noreply@mail.aware-share.com>",
-      to: [email],
+      to: [sanitizedEmail],
       subject: "Thank you for joining Fentanyl Awareness Day 2025",
       html: `
         <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; color: #333;">

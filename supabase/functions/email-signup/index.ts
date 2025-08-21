@@ -17,11 +17,18 @@ serve(async (req) => {
   }
 
   try {
-    const { email, testMode = false, testTargetDate, testDateOffsetDays } = await req.json();
-    console.log('Received email signup request for:', email, 'testMode:', testMode, 'testDateOffsetDays:', testDateOffsetDays);
-
-    if (!email) {
-      console.error('No email provided');
+    const body = await req.json();
+    
+    // Enhanced input validation and sanitization
+    if (!body || typeof body !== 'object') {
+      throw new Error('Invalid request body');
+    }
+    
+    const { email, testMode = false, testTargetDate, testDateOffsetDays } = body;
+    
+    // Validate and sanitize email input
+    if (!email || typeof email !== 'string') {
+      console.error('Email is required and must be a string');
       return new Response(
         JSON.stringify({ error: 'Email is required' }),
         { 
@@ -30,6 +37,48 @@ serve(async (req) => {
         }
       );
     }
+    
+    const sanitizedEmail = email.trim().toLowerCase();
+    
+    if (sanitizedEmail.length > 254) {
+      console.error('Email address is too long:', sanitizedEmail.length);
+      return new Response(
+        JSON.stringify({ error: 'Email address is too long' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    // Validate testMode
+    if (testMode !== undefined && typeof testMode !== 'boolean') {
+      console.error('testMode must be a boolean');
+      return new Response(
+        JSON.stringify({ error: 'Invalid test mode parameter' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    // Validate testDateOffsetDays
+    if (testDateOffsetDays !== undefined && 
+        (typeof testDateOffsetDays !== 'number' || 
+         testDateOffsetDays < -365 || 
+         testDateOffsetDays > 365)) {
+      console.error('Invalid testDateOffsetDays:', testDateOffsetDays);
+      return new Response(
+        JSON.stringify({ error: 'Test date offset must be between -365 and 365 days' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    console.log('Received email signup request for:', sanitizedEmail, 'testMode:', testMode, 'testDateOffsetDays:', testDateOffsetDays);
 
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
@@ -53,7 +102,7 @@ serve(async (req) => {
 
     // Validate email using the database function
     const { data: isValidData, error: validationError } = await supabase
-      .rpc('is_valid_email', { email });
+      .rpc('is_valid_email', { email: sanitizedEmail });
 
     if (validationError) {
       console.error('Email validation error:', validationError);
@@ -67,7 +116,7 @@ serve(async (req) => {
     }
 
     if (!isValidData) {
-      console.log('Invalid email format:', email);
+      console.log('Invalid email format:', sanitizedEmail);
       return new Response(
         JSON.stringify({ error: 'Invalid email format' }),
         { 
@@ -81,7 +130,7 @@ serve(async (req) => {
     const { data: existingEmail, error: checkError } = await supabase
       .from('email_signups')
       .select('id')
-      .eq('email', email.toLowerCase().trim())
+      .eq('email', sanitizedEmail)
       .maybeSingle();
 
     if (checkError) {
@@ -96,7 +145,7 @@ serve(async (req) => {
     }
 
     if (existingEmail) {
-      console.log('Email already exists:', email);
+      console.log('Email already exists:', sanitizedEmail);
       return new Response(
         JSON.stringify({ message: 'Email already registered for reminders' }),
         { 
@@ -123,7 +172,7 @@ serve(async (req) => {
     const { data, error } = await supabase
       .from('email_signups')
       .insert([{ 
-        email: email.toLowerCase().trim(),
+        email: sanitizedEmail,
         source: 'website',
         test_mode: testMode,
         reminder_offset_minutes: reminderOffsetMinutes,
