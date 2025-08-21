@@ -280,7 +280,7 @@ const PostResultStep = () => {
             <html>
               <head><title>Fentanyl Awareness Post</title></head>
               <body style="margin:0;background:#000;text-align:center;padding:20px;">
-                <p style="color:white;font-family:Arial;margin-bottom:20px;">Long press the image below and select "Save to Photos"</p>
+                <p style="color:white;font-family:Arial;margin-bottom:20px;">Save your awareness post</p>
                 <img src="${dataUrl}" style="max-width:100%;height:auto;" alt="Fentanyl Awareness Post"/>
               </body>
             </html>
@@ -291,7 +291,7 @@ const PostResultStep = () => {
         
         toast({
           title: "Ready to save",
-          description: "Long press the image and select 'Save to Photos' or 'Download Image'.",
+          description: "Your awareness post is ready to download.",
           duration: 6000,
         });
       } else {
@@ -386,14 +386,6 @@ const PostResultStep = () => {
                   : "Download Image"
               }
             </Button>
-            
-            {capabilities.isMobile && !capabilities.canSaveToPhotos && (
-              <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-3">
-                <p className="text-xs text-blue-200 text-center">
-                  💡 Tip: Long press the image above to save directly to your photos
-                </p>
-              </div>
-            )}
 
             {/* Hashtag Callout */}
             <div className="space-y-3">
