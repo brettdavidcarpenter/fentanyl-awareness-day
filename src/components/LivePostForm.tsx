@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { TrackedButton } from "@/components/TrackedButton";
-import { Upload, Heart, Shield, Users } from "lucide-react";
+import { Upload, Heart, Shield, Users, Info } from "lucide-react";
 import { getTemplatesByPersona } from "@/data/postTemplates";
+import { processUploadedImage } from "@/utils/imageProcessor";
+import { useToast } from "@/hooks/use-toast";
 
 interface LivePostFormProps {
   onFormChange: (data: any) => void;
@@ -25,6 +27,8 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
     initialData?.personalization || { name: '', relationship: '' }
   );
   const [uploadedImage, setUploadedImage] = useState<string | null>(initialData?.uploadedImage || null);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+  const { toast } = useToast();
 
   const personas = [
     { id: 'family', title: 'Families & Friends', icon: Heart, color: 'text-red-500' },
@@ -76,14 +80,51 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
     });
   }, [selectedPersona, selectedTemplate, customText, personalization, uploadedImage]);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setUploadedImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid File",
+        description: "Please upload an image file (JPG, PNG, etc.)",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File Too Large",
+        description: "Please upload an image smaller than 5MB",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessingImage(true);
+    
+    try {
+      const result = await processUploadedImage(file);
+      setUploadedImage(result.dataUrl);
+      
+      if (result.wasProcessed) {
+        toast({
+          title: "Image Optimized!",
+          description: "Your image has been cropped and optimized for the best results.",
+        });
+      }
+    } catch (error) {
+      console.error('Error processing image:', error);
+      toast({
+        title: "Processing Error",
+        description: "Failed to process image. Please try a different image.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessingImage(false);
     }
   };
 
@@ -179,6 +220,14 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
         <Card className="bg-white/10 border-white/20">
           <CardHeader>
             <CardTitle className="text-lg text-white">Upload Your Photo (optional)</CardTitle>
+            <div className="flex items-start gap-2 mt-2 p-2 bg-blue-900/30 rounded-md">
+              <Info className="w-4 h-4 text-blue-300 mt-0.5 flex-shrink-0" />
+              <div className="text-xs text-blue-200 space-y-1">
+                <p><strong>Best results:</strong> Square or portrait images</p>
+                <p><strong>Size:</strong> Under 5MB, 1080px+ recommended</p>
+                <p><strong>Formats:</strong> JPG, PNG</p>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -203,13 +252,14 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
                   <div>
                     <Upload className="w-8 h-8 mx-auto mb-2 text-blue-200" />
                     <p className="text-sm text-blue-200 mb-2">
-                      Click to upload your own image
+                      {isProcessingImage ? "Processing image..." : "Click to upload your own image"}
                     </p>
                     <Input
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      className="cursor-pointer bg-white/10 border-white/20 text-white"
+                      disabled={isProcessingImage}
+                      className="cursor-pointer bg-white/10 border-white/20 text-white disabled:opacity-50"
                     />
                   </div>
                 )}
@@ -303,6 +353,14 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Upload Your Photo (optional)</CardTitle>
+          <div className="flex items-start gap-2 mt-2 p-2 bg-blue-50 rounded-md">
+            <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+            <div className="text-xs text-blue-700 space-y-1">
+              <p><strong>Best results:</strong> Square or portrait images</p>
+              <p><strong>Size:</strong> Under 5MB, 1080px+ recommended</p>
+              <p><strong>Formats:</strong> JPG, PNG</p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -326,13 +384,14 @@ const LivePostForm = ({ onFormChange, initialData, showOnlyPersona, showOnlyCust
                 <div>
                   <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
                   <p className="text-sm text-gray-600 mb-2">
-                    Click to upload your own image
+                    {isProcessingImage ? "Processing image..." : "Click to upload your own image"}
                   </p>
                   <Input
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="cursor-pointer"
+                    disabled={isProcessingImage}
+                    className="cursor-pointer disabled:opacity-50"
                   />
                 </div>
               )}
