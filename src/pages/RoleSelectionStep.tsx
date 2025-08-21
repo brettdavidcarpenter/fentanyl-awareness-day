@@ -96,7 +96,10 @@ const RoleSelectionStep = () => {
           
         </div>
 
-
+        {/* Enhanced Role Selection */}
+        <div className="mb-12">
+          <PersonaSelection onPersonaSelect={handlePersonaSelect} />
+        </div>
 
         {/* Countdown Timer */}
         <div className="mb-8">
@@ -131,11 +134,6 @@ const RoleSelectionStep = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
-
-        {/* Enhanced Role Selection */}
-        <div className="mb-12">
-          <PersonaSelection onPersonaSelect={handlePersonaSelect} />
         </div>
 
         {/* Help Others Create Posts Section - Made less prominent */}
